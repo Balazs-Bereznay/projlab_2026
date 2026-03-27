@@ -1,0 +1,46 @@
+package model;
+
+/**
+ * A kiszórt sóval a jegesedés, vagy a hó megszüntetésére, illetve a havazás megelőzésére
+ * használható tisztító fej, ami só erőforrás használatával működik.
+ * Megvalósítja a Szorofej interfészt az erőforrás-kezelés és aktiválás érdekében.
+ */
+class Soszoro extends Fej implements Szorofej {
+    private Nyilvantarto nyilvantato;
+    /// Egy használattal egyszerre ekkora adag sót tud kiszórni az adott útegységre.
+    private static final double SO_ADAG = 5;
+
+    public Soszoro(int ertek, Nyilvantarto ny) {
+        super(ertek); // Meghívja a Fej konstruktorát
+        this.nyilvantarto = ny;
+    }
+
+    /**
+     * Só kiszórásával megkezdi a jég és hó olvasztását, illetve megelőzi
+     * újabb hó lerakódását az adott útegységen.
+     * A sózás csak akkor hajtódik végre, ha az aktiválás (sólevonás) sikeres volt.
+     * @param utegyseg Az aktuális útegység, amelyre a sót ki kell szórni.
+     * @return Igaz, ha az útegység megtisztul a metódus meghívása után, egyébként hamis.
+     */
+    @Override
+    public boolean hasznal(Utegyseg utegyseg) {
+        if (this.aktival(utegyseg)) {
+            utegyseg.sozas(SO_ADAG);
+
+            /// Akkor igaz, ha a kiszórt só adag elég az útegységen lévő hó/jég elolvasztásához
+            return utegyseg.getJegMagassag() <= utegyseg.getSoMennyiseg && utegyseg.getHoMagassag == utegyseg.getSoMennyiseg;
+        }
+        return false;
+    }
+
+    /**
+     * Elindítja a só felhasználásának folyamatát.
+     * Megkísérli levonni a szükséges sómennyiséget a Nyilvántartóból.
+     * @param utegyseg Az útegység, amelyen a fej aktiválásra kerül.
+     * @return Igaz, ha a készletben volt elegendő só és a levonás sikeres, egyébként hamis.
+     */
+    @Override
+    public boolean aktival(Utegyseg utegyseg){
+        return nyilvantato.soLevon(SO_ADAG);
+    }
+}
