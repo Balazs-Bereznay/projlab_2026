@@ -19,4 +19,12 @@ public abstract class Fej {
      * @param utegyseg Az aktuális útszakasz egysége, amelyen a takarítás történik.
      */
     public abstract boolean hasznal(Utegyseg utegyseg);
+
+    public int getErtek() {
+        return ertek;
+    }
+
+    public void setErtek(int ertek) {
+        this.ertek = ertek;
+    }
 }

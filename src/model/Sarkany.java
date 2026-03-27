@@ -7,7 +7,7 @@ package model;
 public class Sarkany extends Fej implements Szorofej {
     private Nyilvantarto nyilvantato;
     /// Biokerozin mennyiség, ami egy útegység megtakarításához szükséges.
-    private static final double BIOKEROZIN_ADAG = 5;
+    private static final int BIOKEROZIN_ADAG = 5;
 
     public Sarkany(int ertek, Nyilvantarto ny) {
         super(ertek); // Meghívja a Fej konstruktorát
@@ -40,5 +40,13 @@ public class Sarkany extends Fej implements Szorofej {
     @Override
     public boolean aktival (Utegyseg utegyseg){
         return nyilvantato.biokerozinLevon(BIOKEROZIN_ADAG);
+    }
+
+    public Nyilvantarto getNyilvantato() {
+        return nyilvantato;
+    }
+
+    public void setNyilvantato(Nyilvantarto nyilvantato) {
+        this.nyilvantato = nyilvantato;
     }
 }

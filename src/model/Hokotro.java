@@ -34,4 +34,12 @@ public class Hokotro extends Jarmu implements Iranyithato {
     public void utvonalatValaszt(ArrayList<Utegyseg> utegysegLista){
         // valamiben el kéne tárolni az útegység listát, de a járműben nincs ilyen paraméter csak út lista
     }
+
+    public Fej getFej() {
+        return fej;
+    }
+
+    public void setFej(Fej fej) {
+        this.fej = fej;
+    }
 }
