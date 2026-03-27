@@ -6,7 +6,7 @@ package model;
  * Megvalósítja a Szorofej interfészt az erőforrás-kezelés és aktiválás érdekében.
  */
 class Soszoro extends Fej implements Szorofej {
-    private Nyilvantarto nyilvantato;
+    private Nyilvantarto nyilvantarto;
     /// Egy használattal egyszerre ekkora adag sót tud kiszórni az adott útegységre.
     private static final double SO_ADAG = 5;
 
@@ -41,6 +41,6 @@ class Soszoro extends Fej implements Szorofej {
      */
     @Override
     public boolean aktival(Utegyseg utegyseg){
-        return nyilvantato.soLevon(SO_ADAG);
+        return nyilvantarto.soLevon(SO_ADAG);
     }
 }
