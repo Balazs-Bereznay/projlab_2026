@@ -8,7 +8,7 @@ package model;
 class Soszoro extends Fej implements Szorofej {
     private Nyilvantarto nyilvantato;
     /// Egy használattal egyszerre ekkora adag sót tud kiszórni az adott útegységre.
-    private static final double SO_ADAG = 5;
+    private static final int SO_ADAG = 5;
 
     public Soszoro(int ertek, Nyilvantarto ny) {
         super(ertek); // Meghívja a Fej konstruktorát
@@ -42,5 +42,13 @@ class Soszoro extends Fej implements Szorofej {
     @Override
     public boolean aktival(Utegyseg utegyseg){
         return nyilvantato.soLevon(SO_ADAG);
+    }
+
+    public Nyilvantarto getNyilvantato() {
+        return nyilvantato;
+    }
+
+    public void setNyilvantato(Nyilvantarto nyilvantato) {
+        this.nyilvantato = nyilvantato;
     }
 }
