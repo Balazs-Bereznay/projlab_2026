@@ -17,7 +17,7 @@ public class Sav {
     }
 
     ///Getter és setter
-    public Utegyseg getUtegyseg(){ return elsoUtegyseg; }
-    public void setUtegyseg(Utegyseg utegyseg){ this.elsoUtegyseg = utegyseg; }
+    public Utegyseg getElsoUtegyseg(){ return elsoUtegyseg; }
+    public void setElsoUtegyseg(Utegyseg elsoUtegyseg){ this.elsoUtegyseg = elsoUtegyseg; }
 
 }

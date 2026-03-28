@@ -34,12 +34,15 @@ public class Ut {
     public boolean getAlagut(){ return alagut; }
     public void setAlagut(boolean alagut){ this.alagut = alagut; }
 
+    public ArrayList<Sav> getSavok(){ return savok; }
+    public void setSavok(ArrayList<Sav> savok){ this.savok = savok};
+
     ///További metódusok
     /**
      * Végigiterál az út egyégein, megcsúszott járművet keresve.
      */
     public void balesetetKeres(){
-        //TODO
+        System.out.println("Baleset keresése.");
     }
 }
 

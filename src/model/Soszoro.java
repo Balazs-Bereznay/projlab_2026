@@ -28,7 +28,7 @@ class Soszoro extends Fej implements Szorofej {
             utegyseg.sozas(SO_ADAG);
 
             /// Akkor igaz, ha a kiszórt só adag elég az útegységen lévő hó/jég elolvasztásához
-            return utegyseg.getJegMagassag() <= utegyseg.getSoMennyiseg && utegyseg.getHoMagassag == utegyseg.getSoMennyiseg;
+            return utegyseg.getJegMagassag() <= utegyseg.getSoMennyiseg() && utegyseg.getHoMagassag() == utegyseg.getSoMennyiseg();
         }
         return false;
     }
@@ -44,11 +44,11 @@ class Soszoro extends Fej implements Szorofej {
         return nyilvantarto.soLevon(SO_ADAG);
     }
 
-    public Nyilvantarto getNyilvantato() {
-        return nyilvantato;
+    public Nyilvantarto getNyilvantarto() {
+        return nyilvantarto;
     }
 
-    public void setNyilvantato(Nyilvantarto nyilvantato) {
-        this.nyilvantato = nyilvantato;
+    public void setNyilvantarto(Nyilvantarto nyilvantarto) {
+        this.nyilvantarto = nyilvantarto;
     }
 }
