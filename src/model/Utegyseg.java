@@ -7,7 +7,7 @@ package model;
  */
 public class Utegyseg {
     private static final int HO_ELAKADAS_KUSZOB = 15;
-    private static final int LETAPOSOTTSAG_KUSZOB = 10;
+    private static final int LETAPOSOTTSAG_KUSZOB = 5;
 
     private int letaposottsag;
     private double megcsuszasEsely;
@@ -77,11 +77,19 @@ public class Utegyseg {
      * @param mennyiseg Az a hómennyiség, amivel nő az útegységen lévő hóréteg.
      */
     public void havazas(int mennyiseg){
-        hoMagassag += mennyiseg;
-
-        if(hoMagassag >= HO_ELAKADAS_KUSZOB)
-            blokkolt = true;
-        //TODO
+        System.out.println("Hómagasság növelése az útegységen " + mennyiseg + " mennyiségű hóval.");
+        ///Ha nincs só az úton, ami olvasztaná a havat
+        if(soMennyiseg == 0){
+            if(jegMagassag > 0)
+                jegesedes(mennyiseg);
+            else{
+                hoMagassag += mennyiseg;
+                if(hoMagassag >= HO_ELAKADAS_KUSZOB){
+                    blokkolt = true;
+                    System.out.println("Blokkolva lett az útegység.");
+                }
+            }
+        }
     }
 
     /**
@@ -89,28 +97,37 @@ public class Utegyseg {
      * @param mennyiseg Az a sómennyiség, amivel nő az útegységen lévő sóréteg.
      */
     public void sozas(int mennyiseg){
+        System.out.println("Sómennyiség növelése az útegységen " + mennyiseg + " mennyiségű sóval.");
         soMennyiseg += mennyiseg;
-        //TODO
     }
 
     /**
-     * Növeli a jégréteg vastagságát ha  a letaposottság  értéke elér
+     * Növeli a jégréteg vastagságát ha  a letaposottság értéke elér
      * egy adott értéket, illetve ha további hó esik a jégre.
      * @param mennyiseg Ennyivel nő meg a jégréteg az útegységen.
      */
     public void jegesedes(int mennyiseg){
-        //TODO
-        jegMagassag += mennyiseg;
+        if(soMennyiseg == 0) {
+            jegMagassag += mennyiseg;
+            ///Ha már nincs hó, akkor nem kell újra nullává állítani a szintjét
+            if(hoMagassag != 0)
+                hoMagassag = 0;
+            if(jegMagassag >= HO_ELAKADAS_KUSZOB)
+                blokkolt = true;
+            System.out.println("Jegesedés: " + mennyiseg + " mennyiségű jéggel nőtt meg a jégmagasság.");
+        }
     }
 
     /**
      * A járművek áthaladása tömöríti a havat, ami később jégréteg kialakulásához vezethet.
      */
-    public void taposodas(){
-        //TODO
-        letaposottsag += 2;
-        if(letaposottsag >= LETAPOSOTTSAG_KUSZOB)
-            jegesedes();
+    public void taposodas(int mertek){
+        letaposottsag += mertek;
+        if(letaposottsag >= LETAPOSOTTSAG_KUSZOB) {
+            ///Ha taposás miatt lesz jég, akkor olyan nagy lesz, mint az ott lévő letaposott hó
+            jegesedes(hoMagassag);
+            letaposottsag = 0;
+        }
     }
 
     /**
@@ -120,14 +137,33 @@ public class Utegyseg {
     public void jegtores(){
         hoMagassag = jegMagassag;
         jegMagassag = 0;
-        System.out.println("A jégből hó lett.");
+        if(hoMagassag < HO_ELAKADAS_KUSZOB){
+            System.out.println("A jégből kevés hó lett.");
+        }else{
+            System.out.println("A jégből mély hó lett.");
+        }
+
     }
 
     /**
      * A só hatására csökkenti a hó vagy jégvastagság méretét.
      */
     public void soOlvasztas(){
-        //TODO
+        if(soMennyiseg > 0) {
+            soMennyiseg--;
+            System.out.println("Sómennyiség csökken.");
+            if(hoMagassag > 0) {
+                hoMagassag--;
+                System.out.println("Hómagasság csökken.");
+            }else if(jegMagassag > 0) {
+                jegMagassag--;
+                System.out.println("Jégmagasság csökken.");
+            }
+        }
+        if(hoMagassag < HO_ELAKADAS_KUSZOB && jegMagassag < HO_ELAKADAS_KUSZOB) {
+            blokkolt = false;
+            System.out.println("Nincs blokkolva az úttest.");
+        }
     }
 
     /**
@@ -143,17 +179,33 @@ public class Utegyseg {
      * Visszaadja, hogy jeges útegység esetén a jármű megcsúszott-e vagy sem.
      * @return Visszaadja, hogy megcsúszott-e az útegységen lévő jármű.
      */
-    public bool megcsuszas(){
-        //TODO
+    public boolean megcsuszas(){
+        if(jegMagassag > 0 && (Math.random() < megcsuszasEsely) ){
+            ///System.out.println("A jármű megcsúszott.");
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Regisztrálja, hogy egy jarmű megérkezett egy adott útegységre, kiválasztva
+     * Regisztrálja, hogy egy jármű megérkezett egy adott útegységre, kiválasztva
      * az esetleges interakciókat.
      * @param jarmu Az a jármű, ami rálép az útegységre.
      */
-    public void ralep(Jarmu jarmu){
-        //TODO
+    public boolean ralep(Jarmu jarmu){     ///Új visszatérési típus
+        if(!jarmu.getClass().getSimpleName().equals("Hokotro")){
+            if(blokkolt) {
+                System.out.println("A jármű nem tudott az útegységre lépni, mert az blokkolva van.");
+                return false;
+            }else if(jegMagassag > 0 && megcsuszas()){
+                jarmu.csuszik();
+            }
+        }
+        this.jarmu = jarmu;
+        taposodas(1);
+        System.out.println("A jármű sikeresen lépett az útegységre.");
+
+        return true;
     }
 }
 
