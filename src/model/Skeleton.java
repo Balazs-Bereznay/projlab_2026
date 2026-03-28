@@ -240,15 +240,136 @@ public class Skeleton {
     }
 
     private void buszfejlesztesVasarlasa() {
+        tesztInditas("Buszfejlesztés vásárlása");
 
+        // Inicializálás
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        Bolt b = new Bolt(0, 0);
+        //b.setNyilvantarto(ny);
+
+        Busz busz = new Busz();
+        Sebessegfejlesztes sf = new Sebessegfejlesztes();
+
+
+        hivas("b:Bolt", "sebessegFejlesztes(busz)");
+        b.sebessegFejlesztes(busz);
+
+        hivas("sf:Sebessegfejlesztes", "getAr()");
+        sf.getAr();
+        visszater("sf:Sebessegfejlesztes", "ar");
+
+        hivas("ny:Nyilvantarto", "penzLevon(mennyiseg)");
+        ny.penzLevon(0);
+
+        if (igenNemBeker("Van elég pénz?")) {
+            visszater("ny:Nyilvantarto", "true");
+
+            hivas("sf:Sebessegfejlesztes", "fejleszt()");
+            sf.fejleszt();
+
+            hivas("busz:Busz", "setSebesseg(megnoveltErtek)");
+            busz.setSebesseg(0);
+            visszater("busz:Busz", "void");
+
+            visszater("sf:Sebessegfejlesztes", "void");
+            visszater("b:Bolt", "void");
+
+            tesztLezaras("Siker");
+        } else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("b:Bolt", "void");
+
+            tesztLezaras("Sikertelen");
+        }
     }
 
     private void fejcsereABoltban() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Fejcsere a boltban");
+
+        // Inicializálás
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        Bolt b = new Bolt(0, 0);
+        //b.setNyilvantarto(ny);
+
+        Sopro sopro = new Sopro();
+        Hokotro h = new Hokotro(sopro);
+
+        Hanyo hanyo = new Hanyo();
+
+
+        hivas("b:Bolt", "hanyoVasarol(h)");
+        b.hanyoVasarol(h);
+
+        hivas("ny:Nyilvantarto", "penzLevon(ar)");
+        ny.penzLevon(0);
+        if (igenNemBeker("Van elég pénz?")) {
+            visszater("ny:Nyilvantarto", "true");
+
+            hivas("h:Hokotro", "setFej(hanyo)");
+            h.setFej(hanyo);
+            visszater("h:Hokotro", "void");
+
+            visszater("b:Bolt", "void");
+
+            tesztLezaras("Siker");
+        }
+        else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("b:Bolt", "void");
+
+            tesztLezaras("Sikertelen");
+        }
     }
 
     private void npcTorlodasKezelese() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("NPC torlódás kezelése");
+
+        // Inicializálás
+        Utegyseg u1 = new Utegyseg();
+        Utegyseg u2 = new Utegyseg();
+        Utegyseg u3 = new Utegyseg();
+        Auto a1 = new Auto();
+        Auto a2 = new Auto();
+        u1.setKovetkezoUtegyseg(u2);
+        u1.setBalUtegyseg(u3);
+        u2.setJarmu(a1);
+        u2.setBlokkolt(true);
+
+
+        hivas("a2:Auto", "lep()");
+        a2.lep();
+
+        hivas("u2:Utegyseg", "getBlokkolt()");
+        u2.getBlokkolt();
+        visszater("u2:Utegyseg", "true");
+
+        hivas("u1:Utegyseg", "getBalUtegyseg()");
+        u1.getBalUtegyseg();
+        visszater("u1:Utegyseg", "u3");
+
+        hivas("u3:Utegyseg", "getBlokkolt()");
+        u3.getBlokkolt();
+
+        if (igenNemBeker("Szabad a szomszédos sáv?")) {
+            visszater("u3:Utegyseg", "false");
+
+            hivas("u1:Utegyseg", "setJarmu(null)");
+            u1.setJarmu(null);
+            visszater("u1:Utegyseg", "void");
+
+            hivas("u3:Utegyseg", "elfogad(a2)");
+            u3.setJarmu(a2);
+            visszater("u3:Utegyseg", "void");
+
+            visszater("a2:Auto", "void");
+
+            tesztLezaras("Siker");
+        } else {
+            visszater("u3:Utegyseg", "true");
+            visszater("a2:Auto", "void");
+
+            tesztLezaras("Sikertelen");
+        }
     }
 
     private void sarkanyFejHasznalata() {
@@ -304,7 +425,62 @@ public class Skeleton {
     }
 
     private void soszoroFejHosszutavuHatasa() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Sószóró fej hosszútávú hatása");
+
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        Soszoro sosz = new Soszoro(ny);
+        Hokotro h = new Hokotro(sosz);
+        Utegyseg u = new Utegyseg();
+        u.havazas(5);
+
+
+        hivas("h:Hokotro", "takarit()");
+        h.takarit();
+
+        hivas("sosz:Soszoro", "hasznal(u)");
+        sosz.hasznal(u);
+
+        hivas("sosz:Soszoro", "aktival(u)");
+        sosz.aktival(u);
+
+        hivas("ny:Nyilvantarto", "soLevon(mennyiseg)");
+        ny.soLevon(0);
+
+        if (igenNemBeker("Van elég só a fej használatához?")) {
+            visszater("ny:Nyilvantarto", "true");
+            visszater("sosz:Soszoro", "true");
+
+            hivas("u:Utegyseg", "sozas(mennyiseg)");
+            u.sozas(0);
+            visszater("u:Utegyseg", "void");
+
+            visszater("sosz:Soszoro", "true");
+            visszater("h:Hokotro", "void");
+
+            if (igenNemBeker("Van még só az útegységen?")) {
+                if (igenNemBeker("Van hó az útegységen?")) {
+                    hivas("u:Utegyseg", "hoOlvad()");
+                    u.soOlvasztas();
+                    visszater("u:Utegyseg", "void");
+
+                    hivas("u:Utegyseg", "setSoMennyiseg(soMennyiseg-1)");
+                    u.setSoMennyiseg(0);
+                    visszater("u:Utegyseg", "void");
+
+                    tesztLezaras("Siker");
+                } else {
+                    tesztLezaras("Véget ért - Nincs hó");
+                }
+            } else {
+                tesztLezaras("Véget ért - Nincs só");
+            }
+        } else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("sosz:Soszoro", "false");
+            visszater("sosz:Soszoro", "false");
+            visszater("h:Hokotro", "void");
+            tesztLezaras("Sikertelen");
+        }
     }
 
     private void jegreHulloHo() {
