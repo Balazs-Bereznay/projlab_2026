@@ -4,8 +4,8 @@ package model;
  * A kotrófejek egyik fajtája, amely a havat elhányja az útról.
  */
 public class Hanyo extends Fej {
-    public Hanyo(int ertek) {
-        super(ertek);
+    public Hanyo() {
+        super(200);
     }
 
     /**

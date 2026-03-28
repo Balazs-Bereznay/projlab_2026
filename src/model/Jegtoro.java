@@ -5,8 +5,8 @@ package model;
  * Nem tisztítja meg az útegységet, csak a jeget átalakítja hóvá.
  */
 public class Jegtoro extends Fej {
-    public Jegtoro(int ertek) {
-        super(ertek);
+    public Jegtoro() {
+        super(150);
     }
 
     /**

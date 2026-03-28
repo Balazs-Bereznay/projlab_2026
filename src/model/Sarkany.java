@@ -9,8 +9,8 @@ public class Sarkany extends Fej implements Szorofej {
     /// Biokerozin mennyiség, ami egy útegység megtakarításához szükséges.
     private static final int BIOKEROZIN_ADAG = 5;
 
-    public Sarkany(int ertek, Nyilvantarto ny) {
-        super(ertek); // Meghívja a Fej konstruktorát
+    public Sarkany(Nyilvantarto ny) {
+        super(300); // Meghívja a Fej konstruktorát
         this.nyilvantarto = ny;
     }
 

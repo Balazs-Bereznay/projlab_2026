@@ -5,8 +5,8 @@ package model;
  * söpri a havat a hókotró sávjából.
  */
 public class Sopro extends Fej {
-    public Sopro(int ertek) {
-        super(ertek);
+    public Sopro() {
+        super(100);
     }
 
     /**

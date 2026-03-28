@@ -10,8 +10,8 @@ class Soszoro extends Fej implements Szorofej {
     /// Egy használattal egyszerre ekkora adag sót tud kiszórni az adott útegységre.
     private static final int SO_ADAG = 5;
 
-    public Soszoro(int ertek, Nyilvantarto ny) {
-        super(ertek); // Meghívja a Fej konstruktorát
+    public Soszoro(Nyilvantarto ny) {
+        super(250); // Meghívja a Fej konstruktorát
         this.nyilvantarto = ny;
     }
 
