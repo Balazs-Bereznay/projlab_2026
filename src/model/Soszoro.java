@@ -24,6 +24,7 @@ class Soszoro extends Fej implements Szorofej {
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
+        System.out.println("A hókotró használja a sószóró fejet.");
         if (this.aktival(utegyseg)) {
             utegyseg.sozas(SO_ADAG);
 
@@ -41,6 +42,7 @@ class Soszoro extends Fej implements Szorofej {
      */
     @Override
     public boolean aktival(Utegyseg utegyseg){
+        System.out.println("A hókotró megpróbálja aktiválni a sószóró fejet.");
         return nyilvantarto.soLevon(SO_ADAG);
     }
 

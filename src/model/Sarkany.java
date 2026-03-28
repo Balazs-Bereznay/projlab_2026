@@ -23,6 +23,7 @@ public class Sarkany extends Fej implements Szorofej {
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
+        System.out.println("A hókotró használja a sárkány fejet.");
         if (this.aktival(utegyseg)) {
             utegyseg.jegtores();    /// Jég megszüntetése
             utegyseg.tisztulas();   /// Hó eltávolítása
@@ -39,6 +40,7 @@ public class Sarkany extends Fej implements Szorofej {
      */
     @Override
     public boolean aktival (Utegyseg utegyseg){
+        System.out.println("A hókotró megpróbálja aktiválni a sárkány fejet.");
         return nyilvantarto.biokerozinLevon(BIOKEROZIN_ADAG);
     }
 

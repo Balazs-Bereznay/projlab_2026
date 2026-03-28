@@ -22,7 +22,8 @@ public class Hokotro extends Jarmu implements Iranyithato {
      * A művelet sikeres elvégzése után a jármű bevételt generál a rendszer számára.
      */
     public void takarit() {
-
+        fej.hasznal(utegyseg);
+        System.out.println("A hókotró elkezdi takarítani az útegységet.");
     }
 
     /**
@@ -32,7 +33,9 @@ public class Hokotro extends Jarmu implements Iranyithato {
      */
     @Override
     public void utvonalatValaszt(ArrayList<Utegyseg> utegysegLista){
-        // valamiben el kéne tárolni az útegység listát, de a járműben nincs ilyen paraméter csak út lista
+        System.out.println("Hókotró utvonalatValaszt() meghívva.");
+        System.out.println("Kiválasztott útegysegek száma: " +
+                (utegysegLista == null ? 0 : utegysegLista.size()));
     }
 
     public Fej getFej() {

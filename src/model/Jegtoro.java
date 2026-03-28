@@ -17,6 +17,7 @@ public class Jegtoro extends Fej {
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
+        System.out.println("A hókotró használja a hányó fejet.");
         utegyseg.jegtores();
 
         /// Nem tudja teljesen megtisztítani az útegységet

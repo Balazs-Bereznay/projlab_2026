@@ -17,6 +17,7 @@ public class Sopro extends Fej {
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
+        System.out.println("A hókotró használja a söprő fejet.");
         int hoMennyiseg = utegyseg.getHoMagassag();
 
         utegyseg.tisztulas();   /// hoMagassag-ot 0-ra állítja
