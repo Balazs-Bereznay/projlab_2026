@@ -240,7 +240,7 @@ public class Skeleton {
     }
 
     private void buszfejlesztesVasarlasa() {
-        // TODO: A teszteset implementációja később kerül ide.
+
     }
 
     private void fejcsereABoltban() {
@@ -252,7 +252,22 @@ public class Skeleton {
     }
 
     private void sarkanyFejHasznalata() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Sárkány fej használata");
+
+        // Inicializálás
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        Sarkany s = new Sarkany(ny);
+        Hokotro h = new Hokotro(s);     // Hókotró létrehozása és fej beállítása
+        Utegyseg u = new Utegyseg();
+
+        h.setUtegyseg(u);               // A jármű pozíciójának beállítása a teszthez
+        u.havazas(5);
+
+        hivas("h:Hokotro", "takarit()");
+        h.takarit();
+        visszater("h:Hokotro", "takarit()");
+
+        tesztLezaras("Siker");
     }
 
     private void soszoroFejHosszutavuHatasa() {
