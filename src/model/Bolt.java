@@ -21,26 +21,32 @@ public class Bolt {
     /**
      * A játékos megvásárol egy új hokotrót
      */
-    public void hokotroVasarol(){}
+    public void hokotroVasarol(){
+        System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
+    }
 
     /**
      * Egy játékos által vásárolt adott mennyiségű sót hozzáadja a nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi sót  akarunk vásárolni.
      */
-    public void soVasarol(int mennyiseg){}
+    public void soVasarol(int mennyiseg){
+        System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
+    }
 
     /**
      * "Egy játékos által vásárolt adott mennyiségű biokerozint hozzáadja a Nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi biokerozint  akarunk vásárolni.
      */
-    public void setBiokerozinVasarol(int mennyiseg){}
+    public void setBiokerozinVasarol(int mennyiseg){
+        System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
+    }
 
     /**
      * A jatékos megvásárol egy seprőfejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      * @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void seproVasarol(Hokotro hokotro){
-
+        System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
     /**
@@ -48,7 +54,7 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void hanyoVasarol(Hokotro hokotro){
-
+        System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
     /**
@@ -56,7 +62,7 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void jegtoroVasarol(Hokotro hokotro){
-
+        System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
     /**
@@ -64,7 +70,7 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void soszoroVasarol(Hokotro hokotro){
-
+        System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
     /**
@@ -72,7 +78,7 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public  void sarkanyVasarol(Hokotro hokotro){
-
+        System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
     /**
@@ -80,6 +86,7 @@ public class Bolt {
      * @return A só aktuális ára
      */
     public int getSoAr() {
+        System.out.println("Lekérdezték a só árát, ami jelenleg: " + this.soAr);
         return soAr;
     }
     /**
@@ -88,12 +95,14 @@ public class Bolt {
      */
     public void setSoAr(int soAr) {
         this.soAr = soAr;
+        System.out.println("Árváltozás! A só egységára " + this.soAr + " értékre lett beállítva.");
     }
     /**
      * a biokerozin egységárának a gettere
      * @return A biokerozin aktuális literenkénti ára.
      */
     public int getBiokerozinAr() {
+        System.out.println("Lekérdezték a biokerozin árát, ami jelenleg: " + this.biokerozinAr);
         return biokerozinAr;
     }
     /**
@@ -102,5 +111,6 @@ public class Bolt {
      */
     public void setBiokerozinAr(int biokerozinAr) {
         this.biokerozinAr = biokerozinAr;
+        System.out.println("Árváltozás! A biokerozin egységára " + this.biokerozinAr + " értékre lett beállítva.");
     }
 }

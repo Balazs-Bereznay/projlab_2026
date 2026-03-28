@@ -34,12 +34,19 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
     /**
      * Megvizsgálja, hogy a munkahelyükre be nem ért autók száma meghalad-e egy előre meghatározott határt, ami a játék végét jelenti.
      */
-    public void ellenorizJatekVege(){}
+    public void ellenorizJatekVege(){
+        if(nemBeertAutokSzama > 15){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
+            System.out.println("A játék végetért: Túl sok ember nem ért be időben a munkahelyére:  " + this.nemBeertAutokSzama+"autó akadt el");
+        }
+    }
 
     /**
      * Megnöveli a munkahelyükre be nem ért autók számlálóját.
      */
-    public void nemBeertAutokNovel(){}
+    public void nemBeertAutokNovel(){
+        this.nemBeertAutokSzama++;
+        System.out.println("Egy újabb autó nem ért be a munkahelyére.");
+    }
 
     /**
      * növeljük a nyilvátartott só mennyiségét
@@ -47,7 +54,10 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void soNovel(int mennyiseg) {}
+    public void soNovel(int mennyiseg) {
+        System.out.println(mennyiseg + " egység só hozzáadva a raktárhoz.");
+
+    }
 
     /**
      * csökkentjük a nyilvátartott só mennyiségét
@@ -55,7 +65,9 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void soLevon(int mennyiseg){}
+    public void soLevon(int mennyiseg){
+        System.out.println(mennyiseg + " egység só elhasználva.");
+    }
 
     /**
      * csökkentjük a nyilvátartott biokerozin mennyiségét
@@ -63,7 +75,10 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void biokerozinLevon(int mennyiseg) {}
+    public void biokerozinLevon(int mennyiseg) {
+
+        System.out.println(mennyiseg + " egység biokerozin elhasználva.");
+    }
 
     /**
      * növeljük a nyilvátartott biokerozin mennyiségét
@@ -71,27 +86,36 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void biokerozinNovel(int mennyiseg) {}
+    public void biokerozinNovel(int mennyiseg) {
+
+        System.out.println(mennyiseg + " egység biokerozin betöltve a raktárhoz.");
+    }
 
     /**
      * növeljük a bankunkban lévő pénzösszeget.
      * @param mennyiseg annak az értéke amennyivel növelni akarjuk a bankunkban lévő pénz értékét
      */
     @Override
-    public void penzNovel(int mennyiseg) {}
+    public void penzNovel(int mennyiseg) {
+        System.out.println(" A közös kassza " + mennyiseg + " tallérral nőtt.");
+    }
 
     /**
      * csökkentjük a bankunkban lévő pénzösszeget.
      * @param mennyiseg annak az értéke amennyivel csökkenteni akarjuk a bankunkban lévő pénz értékét
      */
     @Override
-    public void penzLevon(int mennyiseg) {}
+    public void penzLevon(int mennyiseg) {
+        System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+    }
 
     /**
      * A közös kasszában lévő pénz mennyiségének a gettere.
      * @return A közös kassza aktuális egyenlege.
      */
     public int getPenz() {
+        System.out.println("Lekérdezték az aktuális egyenleget: " + this.penz);
+
         return penz;
     }
 
@@ -101,6 +125,8 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     public void setPenz(int penz) {
         this.penz = penz;
+        System.out.println("A közös kassza egyenlege felülírva, az új érték: " + this.penz);
+
     }
 
     /**
@@ -108,6 +134,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      * @return Az aktuálisan elérhető só mennyisége.
      */
     public int getSo() {
+        System.out.println("Lekérdezték az aktuális sókészletet: " + this.so);
         return so;
     }
 
@@ -117,6 +144,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     public void setSo(int so) {
         this.so = so;
+        System.out.println("A sókészlet állapota felülírva, az új érték: " + this.so);
     }
 
     /**
@@ -124,6 +152,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      * @return Az aktuális biokerozin készlet.
      */
     public int getBiokerozin() {
+        System.out.println("Lekérdezték az aktuális biokerozin készletet: " + this.biokerozin);
         return biokerozin;
     }
 
@@ -133,6 +162,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     public void setBiokerozin(int biokerozin) {
         this.biokerozin = biokerozin;
+        System.out.println("A biokerozin készlet felülírva, az új érték: " + this.biokerozin);
     }
 
     /**
@@ -140,7 +170,9 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      * @return Az elakadt autók száma.
      */
     public int getNemBeertAutokSzama() {
+        System.out.println("Lekérdezték a be nem ért autók számát: " + this.nemBeertAutokSzama);
         return nemBeertAutokSzama;
+
     }
 
     /**
@@ -149,6 +181,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     public void setNemBeertAutokSzama(int nem) {
         this.nemBeertAutokSzama = nem;
+        System.out.println("A be nem ért autók számlálója felülírva, az új érték: " + this.nemBeertAutokSzama);
     }
 
 }
