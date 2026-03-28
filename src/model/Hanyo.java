@@ -16,14 +16,7 @@ public class Hanyo extends Fej {
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
         System.out.println("A hókotró használja a hányó fejet.");
-        boolean tiszta = utegyseg.getHoMagassag() == 0;
 
-        utegyseg.tisztulas();   /// hoMagassag-ot 0-ra állítja
-
-        /**
-         * Csak akkor térjen vissza igazzal, ha eredetileg nem volt tiszta
-         * és visszatéréskor már teljesen tiszta az útegység, tehát nincs rajta jég sem
-         */
-        return utegyseg.getJegMagassag() == 0 && !tiszta;
+        return false;
     }
 }

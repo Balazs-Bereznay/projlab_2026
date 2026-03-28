@@ -22,7 +22,6 @@ public class Hokotro extends Jarmu implements Iranyithato {
      * A művelet sikeres elvégzése után a jármű bevételt generál a rendszer számára.
      */
     public void takarit() {
-        fej.hasznal(utegyseg);
         System.out.println("A hókotró elkezdi takarítani az útegységet.");
     }
 

@@ -18,20 +18,7 @@ public class Sopro extends Fej {
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
         System.out.println("A hókotró használja a söprő fejet.");
-        int hoMennyiseg = utegyseg.getHoMagassag();
 
-        utegyseg.tisztulas();   /// hoMagassag-ot 0-ra állítja
-
-        Utegyseg szomszed = utegyseg.getJobbUtegyseg();
-
-        if (szomszed != null) {
-            szomszed.havazas(hoMennyiseg);
-        }
-
-        /**
-         * Csak akkor térjen vissza igazzal, ha eredetileg nem volt tiszta
-         * és visszatéréskor már teljesen tiszta az útegység, tehát nincs rajta jég sem
-         */
-        return hoMennyiseg > 0 && utegyseg.getJegMagassag() == 0;
+        return false;
     }
 }
