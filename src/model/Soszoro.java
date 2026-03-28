@@ -44,11 +44,11 @@ class Soszoro extends Fej implements Szorofej {
         return nyilvantarto.soLevon(SO_ADAG);
     }
 
-    public Nyilvantarto getNyilvantato() {
-        return nyilvantato;
+    public Nyilvantarto getNyilvantarto() {
+        return nyilvantarto;
     }
 
-    public void setNyilvantato(Nyilvantarto nyilvantato) {
-        this.nyilvantato = nyilvantato;
+    public void setNyilvantarto(Nyilvantarto nyilvantarto) {
+        this.nyilvantarto = nyilvantarto;
     }
 }
