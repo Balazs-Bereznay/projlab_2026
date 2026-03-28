@@ -28,7 +28,7 @@ class Soszoro extends Fej implements Szorofej {
             utegyseg.sozas(SO_ADAG);
 
             /// Akkor igaz, ha a kiszórt só adag elég az útegységen lévő hó/jég elolvasztásához
-            return utegyseg.getJegMagassag() <= utegyseg.getSoMennyiseg && utegyseg.getHoMagassag == utegyseg.getSoMennyiseg;
+            return utegyseg.getJegMagassag() <= utegyseg.getSoMennyiseg() && utegyseg.getHoMagassag() == utegyseg.getSoMennyiseg();
         }
         return false;
     }
