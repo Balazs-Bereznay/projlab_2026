@@ -12,10 +12,12 @@ public abstract class Buszfejlesztes {
     protected int ar;
 
     public int getAr() {
+        System.out.println("Lekérdezték a buszfejlesztés árát.");
         return ar;
     }
 
     public void setAr(int ar) {
+        System.out.println("Beállították a buszfejlesztés árát.");
         this.ar = ar;
     }
 

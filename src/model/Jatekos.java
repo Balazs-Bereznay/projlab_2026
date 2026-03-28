@@ -33,18 +33,22 @@ public class Jatekos {
     }
 
     public List<Iranyithato> getFlotta() {
+        System.out.println("Lekérdezték a játékos flottáját.");
         return flotta;
     }
 
     public void setFlotta(List<Iranyithato> flotta) {
+        System.out.println("Beállították a játékos flottáját.");
         this.flotta = flotta;
     }
 
     public Nyilvantarto getNyilvantarto() {
+        System.out.println("Lekérdezték a játékos nyilvántartóját.");
         return nyilvantarto;
     }
 
     public void setNyilvantarto(Nyilvantarto nyilvantarto) {
+        System.out.println("Beállították a játékos nyilvántartóját.");
         this.nyilvantarto = nyilvantarto;
     }
 }

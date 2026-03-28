@@ -12,6 +12,7 @@ public class Hozamfejlesztes extends Buszfejlesztes {
      */
     @Override
     public void fejleszt() {
+        System.out.println("Hozamfejlesztés alkalmazva.");
         // TODO:
     }
 }

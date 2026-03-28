@@ -12,6 +12,7 @@ public class Tapadasfejlesztes extends Buszfejlesztes {
      */
     @Override
     public void fejleszt() {
+        System.out.println("Tapadásfejlesztés alkalmazva.");
         // TODO:
     }
 }
