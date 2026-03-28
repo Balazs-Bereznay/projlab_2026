@@ -12,6 +12,7 @@ public class Sebessegfejlesztes extends Buszfejlesztes {
      */
     @Override
     public void fejleszt() {
+        System.out.println("Sebességfejlesztés alkalmazva.");
         // TODO:
     }
 }
