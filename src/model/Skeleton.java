@@ -5,6 +5,9 @@ import java.util.Scanner;
 /*
  * Skeleton osztály – segédfüggvények összefoglalása
  *
+ * A Skeleton osztály feladata, hogy konzolos felületet biztosítson a
+ * szkeleton tesztesetek futtatásához. A tényleges tesztlogika később
+ * kerül bele az egyes teszteset-metódusokba, ezért azok most üresek.
  *
  * A jelenlegi osztályban az alábbi segédfüggvények találhatók:
  *
@@ -39,8 +42,8 @@ import java.util.Scanner;
  *   A megadott szöveget a pillanatnyi behúzási szintnek megfelelően írja ki,
  *   így alkalmas hívási hierarchia szemléltetésére.
  *
- * Kérlek a teszteseket megírása során bátran használjátok ezeket a függvényeket, így egységesebb
- * és letisztultabb tud lenni ez a jó nagy osztály. Köszike - BB
+ * Ezek a függvények azért készültek, hogy az egyes tesztesetek később
+ * egységes formában legyenek megvalósíthatók és naplózhatók.
  */
 public class Skeleton {
 
@@ -60,6 +63,7 @@ public class Skeleton {
             "Sárkány fej használata",
             "Sószóró fej hosszútávú hatása",
             "Jégre hulló hó",
+            "Komplex vásárlási lánc",
             "Megcsúszás jégen",
             "NPC útvonaltervezés",
             "Pénz hozzáadása a kasszához",
@@ -168,27 +172,30 @@ public class Skeleton {
                 jegreHulloHo();
                 break;
             case 16:
-                megcsuszasJegen();
+                komplexVasarlasiLanc();
                 break;
             case 17:
-                npcUtvonaltervezes();
+                megcsuszasJegen();
                 break;
             case 18:
-                penzHozzaadasaAKasszahoz();
+                npcUtvonaltervezes();
                 break;
             case 19:
-                autoSikeresSavvaltasa();
+                penzHozzaadasaAKasszahoz();
                 break;
             case 20:
-                melyHobanElakadas();
+                autoSikeresSavvaltasa();
                 break;
             case 21:
-                jatekVege();
+                melyHobanElakadas();
                 break;
             case 22:
-                buszmegalloErintese();
+                jatekVege();
                 break;
             case 23:
+                buszmegalloErintese();
+                break;
+            case 24:
                 jegkepzodesTaposasMiatt();
                 break;
             default:
@@ -253,6 +260,10 @@ public class Skeleton {
     }
 
     private void jegreHulloHo() {
+        // TODO: A teszteset implementációja később kerül ide.
+    }
+
+    private void komplexVasarlasiLanc() {
         // TODO: A teszteset implementációja később kerül ide.
     }
 
