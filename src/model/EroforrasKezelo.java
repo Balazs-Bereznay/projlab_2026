@@ -19,7 +19,7 @@ public interface EroforrasKezelo {
      * @param mennyiseg annak az értéke amennyivel csökkenteni szeretnénk,
      *  a rendelkezésre álló mennyiséget.
      */
-    void soLevon(int mennyiseg);
+    boolean soLevon(int mennyiseg);
 
     /**
      * A közös készletnek a biokerozin mennyiségét növeli
@@ -33,5 +33,5 @@ public interface EroforrasKezelo {
      * @param mennyiseg annak az értéke amennyivel csökkenteni szeretnénk,
      *  a rendelkezésre álló mennyiséget.
      */
-    void biokerozinLevon(int mennyiseg);
+    boolean biokerozinLevon(int mennyiseg);
 }

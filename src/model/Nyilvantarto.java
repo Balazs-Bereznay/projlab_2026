@@ -65,8 +65,14 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void soLevon(int mennyiseg){
+    public boolean soLevon(int mennyiseg){
         System.out.println(mennyiseg + " egység só elhasználva.");
+
+        if(so - mennyiseg >= 0){
+            so -= mennyiseg;
+            return true;
+        }
+        else {  return  false;}
     }
 
     /**
@@ -75,9 +81,15 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public void biokerozinLevon(int mennyiseg) {
+    public boolean biokerozinLevon(int mennyiseg) {
 
         System.out.println(mennyiseg + " egység biokerozin elhasználva.");
+
+        if(biokerozin - mennyiseg >= 0){
+            biokerozin -= mennyiseg;
+            return true;
+        }
+        else {  return  false;}
     }
 
     /**
