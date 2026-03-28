@@ -265,9 +265,42 @@ public class Skeleton {
 
         hivas("h:Hokotro", "takarit()");
         h.takarit();
-        visszater("h:Hokotro", "takarit()");
 
-        tesztLezaras("Siker");
+        hivas("f:Fej", "hasznal()");
+        s.hasznal(u);
+
+        hivas("f:Fej", "aktival()");
+        s.aktival(u);
+
+        hivas("ny:Nyilvantarto", "biokerozinLevon()");
+        ny.biokerozinLevon(0);
+
+        if (igenNemBeker("Van elég biokerozin?")) {
+            visszater("ny:Nyilvantarto", "true");
+            visszater("f:Fej", "true");
+
+            hivas("u:Utegyseg", "jegtores()");
+            u.jegtores();
+            visszater("u:Utegyseg", "void");
+
+            hivas("u:Utegyseg", "tisztulas()");
+            u.tisztulas();
+            visszater("u:Utegyseg", "void");
+
+            visszater("f:Fej", "true");
+
+            visszater("h:Hokotro", "void");
+
+            tesztLezaras("Siker");
+        }
+        else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("f:Fej", "false");
+            visszater("f:Fej", "false");
+            visszater("h:Hokotro", "void");
+
+            tesztLezaras("Sikertelen");
+        }
     }
 
     private void soszoroFejHosszutavuHatasa() {
