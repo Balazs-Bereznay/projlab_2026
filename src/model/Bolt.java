@@ -12,6 +12,8 @@ public class Bolt {
     private  int soAr;
     /// a megvasarolható biokerozin egységára
     private  int biokerozinAr;
+    /// a nyilvantarto amiben majd eltaroljuk hogy az egyes nyersanyagokbol mennyi all rednelkezesre
+    private Nyilvantarto nyilvantarto;
 
     public Bolt(int soAr, int biokerozinAr) {
         this.soAr = soAr;
@@ -39,6 +41,19 @@ public class Bolt {
      */
     public void setBiokerozinVasarol(int mennyiseg){
         System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
+    }
+
+    public void sebessegFejlesztes(Busz busz){
+        nyilvantarto.penzLevon(10);
+        System.out.println("A busz sebessége fejlesztve lett!");
+    }
+    public void tapadasFejlesztes(Busz busz){
+        nyilvantarto.penzLevon(10);
+        System.out.println("A busz tapadasa fejlesztve lett!");
+    }
+    public void hozamFejlesztes(Busz busz){
+        nyilvantarto.penzLevon(10);
+        System.out.println("A busz hozama fejlesztve lett!");
     }
 
     /**
