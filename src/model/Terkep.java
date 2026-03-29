@@ -21,10 +21,10 @@ public class Terkep {
 
     ///Getterek és setterek
     public ArrayList<Ut> getElLista(){ return elLista; }
-    public void setElLista(ArrayList<Ut> elLista){ this.elLista = elLista};
+    public void setElLista(ArrayList<Ut> elLista){ this.elLista = elLista; };
 
     public ArrayList<Csomopont> getCsomopontLista(){ return csomopontLista; }
-    public void setCsomopontLista(ArrayList<Csomopont> csomopontLista){ this.csomopontLista = csomopontLista};
+    public void setCsomopontLista(ArrayList<Csomopont> csomopontLista){ this.csomopontLista = csomopontLista; };
 
     ///További metódusok
     /**
@@ -33,7 +33,7 @@ public class Terkep {
      * @param vegpont Az a legvégső csomópont, ahová az autónak érkeznie kell.
      * @return Az autó útvonalát reprezentáló utakból álló llista.
      */
-    public ArrayList<Ut>() void utvonalTervezes(Csomopont kezdopont, Csomopont vegpont){
+    public ArrayList<Ut> utvonalTervezes(Csomopont kezdopont, Csomopont vegpont){
         System.out.println("Elkészült az útvonal.");
         ArrayList<Ut> utvonal = new ArrayList<>();
         System.out.println("<-- Terkep.utvonalTervezes() : ArrayList<Ut>");

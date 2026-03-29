@@ -38,8 +38,8 @@ public class Csomopont {
     public String getAzonosito(){ return azonosito; }
     public void setAzonosito(String azonosito){ this.azonosito = azonosito; }
 
-    public ArrayList<Ut> getUtLista(){ return savok; }
-    public void setSavok(ArrayList<Ut> utLista){ this.utLista = utLista};
+    public ArrayList<Ut> getUtLista(){ return utLista; }
+    public void setSavok(ArrayList<Ut> utLista){ this.utLista = utLista; };
 
     ///További metódusok
     /**
