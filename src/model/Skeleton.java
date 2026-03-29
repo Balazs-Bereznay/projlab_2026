@@ -391,7 +391,7 @@ public class Skeleton {
         // Inicializálás
         Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
         Bolt b = new Bolt(0, 0);
-        //b.setNyilvantarto(ny);
+        b.setNyilvantarto(ny);
 
         Busz busz = new Busz();
         Sebessegfejlesztes sf = new Sebessegfejlesztes();
@@ -435,7 +435,7 @@ public class Skeleton {
         // Inicializálás
         Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
         Bolt b = new Bolt(0, 0);
-        //b.setNyilvantarto(ny);
+        b.setNyilvantarto(ny);
 
         Sopro sopro = new Sopro();
         Hokotro h = new Hokotro(sopro);
@@ -503,7 +503,7 @@ public class Skeleton {
             u1.setJarmu(null);
             visszater("u1:Utegyseg", "void");
 
-            hivas("u3:Utegyseg", "elfogad(a2)");
+            hivas("u3:Utegyseg", "setJarmu(a2)");
             u3.setJarmu(a2);
             visszater("u3:Utegyseg", "void");
 
@@ -603,6 +603,7 @@ public class Skeleton {
             visszater("sosz:Soszoro", "true");
             visszater("h:Hokotro", "void");
 
+            System.out.println("=== Következő iteráció ===");
             if (igenNemBeker("Van még só az útegységen?")) {
                 if (igenNemBeker("Van hó az útegységen?")) {
                     hivas("u:Utegyseg", "hoOlvad()");
