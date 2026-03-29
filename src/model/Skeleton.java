@@ -658,11 +658,45 @@ public class Skeleton {
     }
 
     private void jatekVege() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Játék vége");
+
+        /// Inicializálás
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+
+        hivas("ny:Nyilvantarto", "ellenorizJatekVege()");
+        if(igenNemBeker("Teljesült a vereségi feltétel?")){
+            ny.setNemBeertAutokSzama(20);
+            ny.ellenorizJatekVege();
+            visszater("ny:Nyilvantarto", "true");
+            tesztLezaras("Sikeres, a játék véget ért");
+        }else{
+            ny.setNemBeertAutokSzama(5);
+            ny.ellenorizJatekVege();
+            visszater("ny:Nyilvantarto", "false");
+            tesztLezaras("Sikertelen, a játék nem ért véget");
+        }
+
     }
 
     private void buszmegalloErintese() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Buszmegálló érintése");
+
+        /// Inicializálás
+        Busz b = new Busz();
+        Ut ut = new Ut();
+        Sav s = new Sav();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueUtolso = new Utegyseg();
+        Csomopont bm = new Csomopont();
+
+        // Egységek összekötése
+        ArrayList<Sav> savok = new ArrayList<>();
+        savok.add(s);
+        ut.setSavok(savok);
+        s.setElsoUtegyseg(ueAkt);
+        ueAkt.setKovetkezoUtegyseg(ueUtolso);
+        ueAkt.setJarmu(b);
+        b.setUtegyseg(ueAkt);
     }
 
     private void jegkepzodesTaposasMiatt() {
@@ -694,6 +728,7 @@ public class Skeleton {
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
             hivas("ueKov","jegesedes()");
         }
+        //TODO
 
 
         visszater("b:Busz","void");
