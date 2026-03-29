@@ -1085,6 +1085,7 @@ public class Skeleton {
 
         if (igenNemBeker("Van elég biokerozin?")) {
             ny.biokerozinLevon(0);
+
             visszater("ny:Nyilvantarto", "true");
             visszater("f:Fej", "true");
 
