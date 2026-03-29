@@ -136,9 +136,6 @@ public class Utegyseg {
                 jegesedes(mennyiseg);
             else {
                 hoMagassag += mennyiseg;
-                /*if(hoMagassag >= HO_ELAKADAS_KUSZOB){
-                    blokkolt = true;
-                    System.out.println("Blokkolva lett az útegység.");*/
             }
         }
     }
@@ -166,6 +163,7 @@ public class Utegyseg {
             if (hoMagassag != 0)
                 hoMagassag = 0;
             System.out.println("Jegesedés: " + mennyiseg + " mennyiségű jéggel nőtt meg a jégmagasság.");
+            System.out.println("A hómagasság 0.");
         }
     }
 
@@ -178,6 +176,7 @@ public class Utegyseg {
             System.out.println("Taposás: " + mertek + " mértékkel lett letaposva az út.");
             if (letaposottsag >= LETAPOSOTTSAG_KUSZOB) {
                 ///Ha taposás miatt lesz jég, akkor olyan nagy lesz, mint az ott lévő letaposott hó
+                System.out.println("Elérte a küszöböt a letaposottság mértéke.");
                 jegesedes(hoMagassag);
                 letaposottsag = 0;
             }
@@ -205,13 +204,13 @@ public class Utegyseg {
      */
     public void soOlvasztas() {
         if (soMennyiseg > 0) {
-            soMennyiseg--;
+            //soMennyiseg--;
             System.out.println("Sómennyiség csökken.");
             if (hoMagassag > 0) {
-                hoMagassag--;
+                //hoMagassag--;
                 System.out.println("Hómagasság csökken.");
             } else if (jegMagassag > 0) {
-                jegMagassag--;
+                //jegMagassag--;
                 System.out.println("Jégmagasság csökken.");
             }
         }
@@ -238,9 +237,10 @@ public class Utegyseg {
      */
     public boolean megcsuszas() {
         if (jegMagassag > 0 && (Math.random() < megcsuszasEsely)) {
-            ///System.out.println("A jármű megcsúszott.");
+            System.out.println("A jármű megcsúszott.");
             return true;
         }
+        System.out.println("A jármű nem csúszott meg.");
         return false;
     }
 
@@ -273,21 +273,20 @@ public class Utegyseg {
             /// Elakadás vizsgálata: Ha a hóréteg eléri a kritikus szintet
             if (this.hoMagassag >= HO_ELAKADAS_KUSZOB || this.jegMagassag >= HO_ELAKADAS_KUSZOB) {
 
-                /// A jármű ráhajtott a mély hóra, ezért ELAKAD, és a sáv BLOKKOLT lesz
+                /// A jármű ráhajtott a mély hóra, ezért elakad, és a sáv blokkolt lesz
                 this.blokkolt = true;
-                jarmu.elakad();
-                System.out.println("A jármű mély hóra/jégre futott és elakadt! A sáv blokkolttá vált.");
+                //jarmu.elakad();
+                System.out.println("A jármű mély hóra/jégre futott és elakadt. A sáv blokkolttá vált.");
                 return true;
             }
 
             /// Megcsúszás vizsgálata jeges úton (Ha nem akadt el)
             if (this.jegMagassag > 0 && megcsuszas()) {
                 System.out.println("A jármű megcsúszott a jégen!");
-                jarmu.csuszik();
+                //jarmu.csuszik();
             }
         }
-        taposodas(1);
-        //System.out.println("<- Utegyseg.ralep() visszatért: true");
+        //taposodas(1);
         return true;
     }
 }

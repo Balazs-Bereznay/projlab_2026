@@ -651,7 +651,48 @@ public class Skeleton {
     }
 
     private void autoSikeresSavvaltasa() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Autó sikeres sávváltása");
+
+        /// Inicializálás
+        Auto a = new Auto();
+        Ut ut = new Ut();
+        Sav s1 = new Sav();
+        Sav s2 = new Sav();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueJobb = new Utegyseg();
+        Utegyseg ueKov = new Utegyseg();
+
+        // Egységek összekötése
+        ut.addSav(s1);
+        ut.addSav(s2);
+        s1.setElsoUtegyseg(ueAkt);
+        ueAkt.setKovetkezoUtegyseg(ueKov);
+        ueAkt.setJobbUtegyseg(ueJobb);
+        ueJobb.setBalUtegyseg(ueAkt);
+        ueAkt.setJarmu(a);
+        a.setUtegyseg(ueAkt);
+
+        // Az ueAkt-ról lépne előre az ueKov-re, de nem tud.
+        // Így sávot akar váltani, ha true a válasz típusa, az ueJobb útegységre megy át,
+        // ha false, akkor elakad (mert nincs több szomszédos útegység, ami szabad lenne).
+
+        ueKov.setJarmu(new Auto());
+        hivas("a:Auto", "lep()");
+        a.lep();
+
+        hivas("ueKov:Utegyseg", "ralep(a)");
+        ueKov.ralep(a);
+        visszater("ueKov:Utegyseg", "false");
+
+        if (igenNemBeker("Sikeres legyen a sávváltás? (Szabad a jobb oldali útegység?)")) {
+            hivas("a:Auto", "savValtas()");
+
+            hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
+            Utegyseg cel = ueAkt.getJobbUtegyseg();
+            visszater("ueAkt:Utegyseg", "ueJobb");
+            //TODO
+        }
+
     }
 
     private void melyHobanElakadas() {
@@ -691,13 +732,45 @@ public class Skeleton {
         Csomopont bm = new Csomopont();
 
         // Egységek összekötése
-        ArrayList<Sav> savok = new ArrayList<>();
-        savok.add(s);
-        ut.setSavok(savok);
+        ut.addSav(s);
+        ut.setVegpont2(bm);
         s.setElsoUtegyseg(ueAkt);
         ueAkt.setKovetkezoUtegyseg(ueUtolso);
+        bm.addUt(ut);
         ueAkt.setJarmu(b);
         b.setUtegyseg(ueAkt);
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        hivas("ueKov:Utegyseg", "ralep(b)");
+        ueUtolso.ralep(b);
+        visszater("ueKov:Utegyseg","true");
+
+        if(igenNemBeker("A csomópont egy megálló?")){
+            bm.setBuszmegallo(true);
+            hivas("bm:Csomopont", "jarmuErkezik(b)");
+            bm.jarmuErkezik(b);
+
+            hivas("b:Busz", "megalloErintese(bm)");
+            b.megalloErintese(bm);
+            visszater("b:Busz", "megalloErintese(bm)");
+
+            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("b:Busz","void");
+
+            tesztLezaras("Sikeres, a busz megállót érintett");
+        }else{
+            hivas("b:Busz", "megalloErintese(null)");
+            b.megalloErintese(null);
+            visszater("b:Busz", "megalloErintese(null)");
+
+            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("b:Busz","void");
+
+            tesztLezaras("Sikertelen, a busz nem érintett megállót");
+        }
+
     }
 
     private void jegkepzodesTaposasMiatt() {
@@ -711,9 +784,7 @@ public class Skeleton {
         Utegyseg ueKov = new Utegyseg();
 
         // Egységek összekötése
-        ArrayList<Sav> savok = new ArrayList<>();
-        savok.add(s);
-        ut.setSavok(savok);
+        ut.addSav(s);
         s.setElsoUtegyseg(ueAkt);
         ueAkt.setKovetkezoUtegyseg(ueKov);
         ueAkt.setJarmu(b);
@@ -727,13 +798,19 @@ public class Skeleton {
         visszater("ueKov:Utegyseg","true");
 
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
-            hivas("ueKov","jegesedes()");
-        }
-        //TODO
+            hivas("ueKov","taposodas(10)");
+            ueKov.taposodas(10);
+            visszater("ueKov","taposodas(10)");
 
+            visszater("b:Busz","void");
+            tesztLezaras("Sikeres, jeges lett az útegység");
+        }else{}
+            hivas("ueKov","taposodas(1)");
+            ueKov.taposodas(1);
+            visszater("ueKov","taposodas(1)");
 
-        visszater("b:Busz","void");
-
+            visszater("b:Busz","void");
+            tesztLezaras("Sikertelen, nem lett jeges az útegység");
     }
 
     /**
