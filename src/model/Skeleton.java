@@ -1470,6 +1470,7 @@ public class Skeleton {
     private void melyHobanElakadas() {
         tesztInditas("Mély hóban elakadás");
 
+        /// Inicializálás
         Busz b = new Busz();
         Ut ut = new Ut();
         Sav s1 = new Sav();
@@ -1493,43 +1494,17 @@ public class Skeleton {
         ueAkt.setJarmu(b);
         b.setUtegyseg(ueAkt);
 
-        ueKov.setHoMagassag(20);
-
         hivas("b:Busz", "lep()");
         b.lep();
 
-        hivas("ueKov:Utegyseg", "ralep(b)");
-
-
-        /*boolean siker = ueKov.ralep(b);
-        visszater("ueKov:Utegyseg", String.valueOf(siker));
-
-        // A ralep() híváson belül (vagy a logolás kedvéért utána)
-        // látszódnia kell az elakadás folyamatának:
-        if (b.isElakadt()) {
-            hivas("b:Busz", "elakad()");
-
-            // A Jarmu.elakad() beállítja az útegységet blokkoltra
-            hivas("ueKov:Utegyseg", "setBlokkolt(true)");
-            ueKov.setBlokkolt(true);
-            visszater("ueKov:Utegyseg", "void");
-
-            visszater("b:Busz", "void");
-        }
-
-        visszater("b:Busz", "void"); // lep() vége*/
-
-        hivas("b:Busz", "lep()");
-        b.lep();
-
-        if (igenNemBeker("Elérte a hómagasság a küszöböt a következő útegységen?")) {
+        if(igenNemBeker("Elérte a hómagasság a küszöböt a következő útegységen?")){
             ueKov.setHoMagassag(20);
 
             hivas("ueKov:Utegyseg", "ralep(b)");
             ueKov.ralep(b);
             visszater("ueKov:Utegyseg", "true");
 
-            if (igenNemBeker("Tud a busz sávot váltani? (Szabad valamelyik szomszédos sáv?)")) {
+            if(igenNemBeker("Tud a busz sávot váltani? (Szabad valamelyik szomszédos sáv?)")){
                 ueJobb.setBlokkolt(false);
                 ueJobb.setJarmu(null);
 
@@ -1544,7 +1519,7 @@ public class Skeleton {
                 visszater("b:Busz", "void");
                 tesztLezaras("Sikeres, a busz elakadt az eredeti sávban, de sikeresen sávot váltott a jobboldalira.");
 
-            } else {
+            }else{
                 ueJobb.setBlokkolt(true);
                 ueBal.setBlokkolt(true);
 
@@ -1560,7 +1535,7 @@ public class Skeleton {
                 tesztLezaras("Sikertelen, a busz mély hóba futott és nem tudott sávot váltani, mert a szomszédok is blokkoltak.");
             }
 
-        } else {
+        }else{
             ueKov.setHoMagassag(5);
 
             hivas("ueKov:Utegyseg", "ralep(b)");
