@@ -34,17 +34,20 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
     /**
      * Megvizsgálja, hogy a munkahelyükre be nem ért autók száma meghalad-e egy előre meghatározott határt, ami a játék végét jelenti.
      */
-    public void ellenorizJatekVege(){
+    public boolean ellenorizJatekVege(){
         if(nemBeertAutokSzama > 15){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
             System.out.println("A játék végetért: Túl sok ember nem ért be időben a munkahelyére:  " + this.nemBeertAutokSzama+"autó akadt el");
+            return true;
         }
+        else
+            return false;
     }
 
     /**
      * Megnöveli a munkahelyükre be nem ért autók számlálóját.
      */
-    public void nemBeertAutokNovel(){
-        this.nemBeertAutokSzama++;
+    public void nemBeertAutokNovel(int mennyiseg){
+        this.nemBeertAutokSzama+=mennyiseg;
         System.out.println("Egy újabb autó nem ért be a munkahelyére.");
     }
 

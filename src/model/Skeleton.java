@@ -224,19 +224,164 @@ public class Skeleton {
     }
 
     private void takaritasHohanyoval() {
-        // TODO: A teszteset implementációja később kerül ide.
+
+            tesztInditas("Takarítás hóhányóval és bevétel elszámolása (Sikeres és Sikertelen eset)");
+            /// inicializalas
+            Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+            Utegyseg u1 = new Utegyseg();
+            Hanyo hny = new Hanyo();
+            Hokotro j = new Hokotro(hny);
+
+            j.setFej(hny);
+            u1.setJarmu(j);
+            j.setUtegyseg(u1);
+            j.setNyilvantarto(ny);
+
+
+            hivas("j:Hokotro", "takarit()");
+            hivas("hny:Hanyo", "hasznal(u1)");
+            int hoMagassag = egeszBeker("Hány centi hó van az útegységen?");
+
+            if (hoMagassag > 0) {
+                hivas("u1:Utegyseg", "tisztul()");
+                visszater("u1:Utegyseg", "void");
+                visszater("hny:Hanyo", "true");
+                hivas("ny:Nyilvantarto", "penzNovel(bevetel)");
+                ny.penzNovel(10);
+                visszater("ny:Nyilvantarto", "void");
+                visszater("j:Hokotro", "void");
+                tesztLezaras("Sikeres takarítás: Az útegység megtisztult, a bevétel jóváírásra került.");
+
+            } else {
+                visszater("hny:Hanyo", "false (sikertelen)");
+                visszater("j:Hokotro", "void");
+                tesztLezaras("Sikertelen takarítás: Tiszta úton a takarítás érdemi része elmarad, nincs bevétel.");
+            }
+
     }
 
     private void hokotroMozgasa() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Hokotrü mozgása útvonalon és csomóponton");
+
+        /// inicializálás
+        Utegyseg u1  = new Utegyseg();
+        Utegyseg u2 = new Utegyseg();
+        Csomopont cs  = new Csomopont();
+        Sopro sp = new Sopro();
+
+        Hokotro h = new Hokotro(sp);
+
+        u1.setJarmu(h);
+        h.setUtegyseg(u1);
+
+        boolean csomopont = igenNemBeker("csomóponton keresztül halad tovább a hokotró?");
+        if(!csomopont) {
+            hivas("u2:Utegyseg", "ralep(this)");
+            visszater("u2:Utegyseg", "true");
+
+            hivas("j:Hokotro", "sikeresLepes(u2)");
+
+            visszater("j:Hokotro", "void");
+            visszater("j:Hokotro", "void");
+
+            tesztLezaras("Sikeres alapmozgás: A hókotró akadálytalanul rálépett a következő útegységre.");
+        }
+        else{
+            hivas("cs:Csomopont", "jarmuTavozik(this)");
+            visszater("cs:Csomopont", "void");
+
+            hivas("cs:Csomopont", "jarmuErkezik(this)");
+            visszater("cs:Csomopont", "void");
+
+            hivas("u2:Utegyseg", "ralep(this)");
+            visszater("u2:Utegyseg", "true");
+
+            hivas("h:Hokotro", "sikeresLepes(u2)");
+            visszater("h:Hokotro", "void");
+
+            visszater("h:Hokotro", "void");
+
+            tesztLezaras("Sikeres csomóponti mozgás: a hókotró új útra fordult és rálépett az első útegységére");
+
+        }
     }
 
     private void jegtoresFolyamata() {
-        // TODO: A teszteset implementációja később kerül ide.
+
+        tesztInditas("jegtores folyamata");
+
+        //Inicializalas
+        Utegyseg u1 = new Utegyseg();
+        Jegtoro jt = new Jegtoro();
+        Hokotro h = new Hokotro(jt);
+        u1.setJarmu(h);
+        h.setUtegyseg(u1);
+        u1.setJegMagassag(1);
+
+
+        hivas("h:Hokotro","takarit()");
+        h.takarit();
+
+        hivas("jt:Jegtoro","hasznal(u1)");
+        jt.hasznal(u1);
+
+        hivas("u1:Utegyseg", "jegtores()");
+        u1.setJegMagassag(egeszBeker("milyen magas a jég az utegységen?"));
+        if(u1.getJegMagassag() > 0){
+            u1.jegtores();
+            visszater("u1:Utegyseg", "void");
+            visszater("jt:Jegtoro", "true");
+            visszater("j:Hokotro", "void");
+            tesztLezaras("Sikeres az útegységen lévő jég fel lett törve.");
+
+        }
+        else{
+            visszater("u1:Utegyseg", "void");
+            visszater("jt:Jegtoro", "false");
+            visszater("j:Hokotro", "void");
+            tesztLezaras("Sikertelen-nincs jég az útegységen.");
+        }
+
     }
 
     private void kritikusVeresegSzimulacio() {
-        // TODO: A teszteset implementációja később kerül ide.
+
+        tesztInditas("kritikus vereseg szimulacio");
+
+        //Inicializáció
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        Utegyseg u1 = new  Utegyseg();
+        Utegyseg u2  = new Utegyseg();
+        Auto a1 = new Auto();
+        Auto a2 = new Auto();
+
+        u1.setJarmu(a1);
+        a1.setUtegyseg(u1);
+        u2.setJarmu(a2);
+        a2.setUtegyseg(u2);
+        a1.setNyilvantarto(ny);
+        a2.setNyilvantarto(ny);
+
+        hivas("a1:Auto","baleset()");
+        a1.baleset();
+        hivas("ny:Nyilvantarto","nemBeertAutokNovel()");
+        ny.nemBeertAutokNovel(2);
+        visszater("ny:Nyilvantarto","void");
+        visszater("a1:Auto","void");
+
+        hivas("ny:Nyilvantarto","ellenorizJatekVege()");
+        if(igenNemBeker("Meghaladta a be nem ért autók száma a küszöbértéket?")){
+
+        ny.setNemBeertAutokSzama(16);
+        ny.ellenorizJatekVege();
+        visszater("ny:Nyilvantarto","true");
+        tesztLezaras("Sikeresen lefutott a teszt, a jateknek tul sok be nem érő autos miatt végetért");
+        }
+        else{
+            visszater("ny:Nyilvantarto","false");
+            tesztLezaras("Sikertelen teszt, mivel a be nem érő autosok száman em haladja meg a küszöbértéket, a jaték nem ért véget.");
+        }
+
     }
 
     private void buszfejlesztesVasarlasa() {

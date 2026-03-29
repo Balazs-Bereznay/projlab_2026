@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * Tartalmazza a közös tulajdonságokat és alapvető működéseket.
  */
 public abstract class Jarmu {
+
+    protected Nyilvantarto nyilvantarto; /// DAVID rakta hozzá mert a kritikus vereseghez kellene hogy ha az auto balesetezik akkor a nyivlantartonak tudja noveni a nembeertatuos erteket.
     protected int sebesseg;
     protected Utegyseg utegyseg;
     protected ArrayList<Ut> kijeloltUtvonal;
@@ -125,6 +127,10 @@ public abstract class Jarmu {
 
     public boolean isMegcsuszott() {
         return megcsuszott;
+    }
+
+    public void setNyilvantarto(Nyilvantarto nyilvantarto) { /// Ezi is DAVID irta hozza
+        this.nyilvantarto = nyilvantarto;
     }
 
     @Override
