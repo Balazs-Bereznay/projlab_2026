@@ -53,6 +53,9 @@ public class Csomopont {
 
         }else if(jarmu.getClass().getSimpleName().equals("Busz") && buszmegallo)
             System.out.println("Ez egy megállója a busznak.");
+        else{
+            System.out.println("Ez egy sima kereszteződés.");
+        }
     }
 
     /**
