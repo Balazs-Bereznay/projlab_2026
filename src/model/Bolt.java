@@ -128,4 +128,14 @@ public class Bolt {
         this.biokerozinAr = biokerozinAr;
         System.out.println("Árváltozás! A biokerozin egységára " + this.biokerozinAr + " értékre lett beállítva.");
     }
+
+    /**
+     * Egy uj nyilvantarto beallitasa amit a bolt tud kezelni.
+     * @param ny amit be akarunk allitani uj nyilvantartonak
+     */
+    public void setNyilvantarto(Nyilvantarto ny) {
+        nyilvantarto = ny;
+        System.out.println("uj nyilvantarto lett beallitva");
+
+    }
 }
