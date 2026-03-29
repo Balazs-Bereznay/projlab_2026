@@ -74,6 +74,9 @@ public abstract class Jarmu {
      */
     public void baleset() {
         this.baleset = true;
+        if (utegyseg != null) {
+            utegyseg.setBlokkolt(true);
+        }
         System.out.println(getClass().getSimpleName() + " balesetet szenvedett.");
     }
 
@@ -82,7 +85,93 @@ public abstract class Jarmu {
      */
     public void elakad() {
         this.elakadt = true;
+        if (utegyseg != null) {
+            utegyseg.setBlokkolt(true);
+        }
         System.out.println(getClass().getSimpleName() + " elakadt.");
+    }
+
+    /**
+     * Frissíti a jármű helyzetét egy sikeres lépés után.
+     * @param ujUtegyseg Az útegység, amelyre a jármű sikeresen rálépett.
+     */
+    public void sikeresLepes(Utegyseg ujUtegyseg) {
+        if (ujUtegyseg == null) {
+            System.out.println("Nincs megadott uj utegyseg.");
+            return;
+        }
+
+        if (this.utegyseg != null) {
+            this.utegyseg.setJarmu(null);
+        }
+
+        this.utegyseg = ujUtegyseg;
+        this.utegyseg.setJarmu(this);
+
+        System.out.println(getClass().getSimpleName() + " sikeresen atlepett egy uj utegysegre.");
+    }
+
+    /**
+     * A jármű megpróbál sávot váltani egy szomszédos útegységre.
+     * Először a jobb, majd a bal oldali szomszédot vizsgálja.
+     */
+    public void savValtas() {
+        if (utegyseg == null) {
+            System.out.println("A jarmu nincs utegysegen, nem tud savot valtani.");
+            return;
+        }
+
+        Utegyseg cel = null;
+
+        if (utegyseg.getJobbUtegyseg() != null
+                && utegyseg.getJobbUtegyseg().getJarmu() == null
+                && !utegyseg.getJobbUtegyseg().getBlokkolt()) {
+            cel = utegyseg.getJobbUtegyseg();
+        } else if (utegyseg.getBalUtegyseg() != null
+                && utegyseg.getBalUtegyseg().getJarmu() == null
+                && !utegyseg.getBalUtegyseg().getBlokkolt()) {
+            cel = utegyseg.getBalUtegyseg();
+        }
+
+        if (cel == null) {
+            System.out.println("Nincs szabad szomszedos sav, a savvaltas sikertelen.");
+            return;
+        }
+
+        sikeresLepes(cel);
+        System.out.println(getClass().getSimpleName() + " sikeresen savot valtott.");
+    }
+
+    /**
+     * Megpróbál karambolpartnert keresni a jármű közvetlen környezetében.
+     * Skeleton szinten a következő, jobb és bal szomszédos útegységeken álló járművet vizsgálja.
+     */
+    public void KeresPartner() {
+        if (utegyseg == null) {
+            System.out.println("A jarmu nincs utegysegen, nem tud karambolpartnert keresni.");
+            return;
+        }
+
+        Jarmu partner = null;
+
+        if (utegyseg.getKovetkezoUtegyseg() != null && utegyseg.getKovetkezoUtegyseg().getJarmu() != null) {
+            partner = utegyseg.getKovetkezoUtegyseg().getJarmu();
+        } else if (utegyseg.getJobbUtegyseg() != null && utegyseg.getJobbUtegyseg().getJarmu() != null) {
+            partner = utegyseg.getJobbUtegyseg().getJarmu();
+        } else if (utegyseg.getBalUtegyseg() != null && utegyseg.getBalUtegyseg().getJarmu() != null) {
+            partner = utegyseg.getBalUtegyseg().getJarmu();
+        }
+
+        if (partner == null) {
+            System.out.println("Nem talalhato karambolpartner a kozelben.");
+            return;
+        }
+
+        System.out.println(getClass().getSimpleName() + " karambolpartnert talalt: "
+                + partner.getClass().getSimpleName());
+
+        this.baleset();
+        partner.baleset();
     }
 
     public void setKijeloltUtvonal(ArrayList<Ut> kijeloltUtvonal) {
