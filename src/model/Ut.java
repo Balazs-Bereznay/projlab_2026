@@ -44,5 +44,15 @@ public class Ut {
     public void balesetetKeres(){
         System.out.println("Baleset keresése.");
     }
+
+    /**
+     * Hozzáfűz egy Sav típusú objektumot az savok végéres.
+     * @param sav Az a sáv, ami bekerül az savok listába.
+     */
+    public void addSav(Sav sav) {
+        if (sav != null && !savok.contains(sav)) {
+            savok.add(sav);
+        }
+    }
 }
 
