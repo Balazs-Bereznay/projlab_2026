@@ -204,13 +204,13 @@ public class Utegyseg {
      */
     public void soOlvasztas() {
         if (soMennyiseg > 0) {
-            //soMennyiseg--;
+            soMennyiseg--;
             System.out.println("Sómennyiség csökken.");
             if (hoMagassag > 0) {
-                //hoMagassag--;
+                hoMagassag--;
                 System.out.println("Hómagasság csökken.");
             } else if (jegMagassag > 0) {
-                //jegMagassag--;
+                jegMagassag--;
                 System.out.println("Jégmagasság csökken.");
             }
         }
@@ -274,7 +274,7 @@ public class Utegyseg {
 
                 /// A jármű ráhajtott a mély hóra, ezért elakad, és a sáv blokkolt lesz
                 this.blokkolt = true;
-                jarmu.elakad();
+                //jarmu.elakad();
                 System.out.println("A jármű mély hóra/jégre futott és elakadt. A sáv blokkolttá vált.");
                 return true;
             }

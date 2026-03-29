@@ -926,9 +926,112 @@ public class Skeleton {
         }
     }
 
-
     private void melyHobanElakadas() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Mély hóban elakadás");
+
+        Busz b = new Busz();
+        Ut ut = new Ut();
+        Sav s1 = new Sav();
+        Sav s2 = new Sav();
+        Sav s3 = new Sav();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueKov = new Utegyseg();
+        Utegyseg ueJobb = new Utegyseg();
+        Utegyseg ueBal = new Utegyseg();
+
+        // Egységek összekötése
+        ut.addSav(s1);
+        ut.addSav(s2);
+        ut.addSav(s3);
+        s1.setElsoUtegyseg(ueAkt);
+        s2.setElsoUtegyseg(ueJobb);
+        s3.setElsoUtegyseg(ueBal);
+        ueAkt.setKovetkezoUtegyseg(ueKov);
+        ueAkt.setJobbUtegyseg(ueJobb);
+        ueAkt.setBalUtegyseg(ueBal);
+        ueAkt.setJarmu(b);
+        b.setUtegyseg(ueAkt);
+
+        ueKov.setHoMagassag(20);
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        hivas("ueKov:Utegyseg", "ralep(b)");
+
+
+        /*boolean siker = ueKov.ralep(b);
+        visszater("ueKov:Utegyseg", String.valueOf(siker));
+
+        // A ralep() híváson belül (vagy a logolás kedvéért utána)
+        // látszódnia kell az elakadás folyamatának:
+        if (b.isElakadt()) {
+            hivas("b:Busz", "elakad()");
+
+            // A Jarmu.elakad() beállítja az útegységet blokkoltra
+            hivas("ueKov:Utegyseg", "setBlokkolt(true)");
+            ueKov.setBlokkolt(true);
+            visszater("ueKov:Utegyseg", "void");
+
+            visszater("b:Busz", "void");
+        }
+
+        visszater("b:Busz", "void"); // lep() vége*/
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        if (igenNemBeker("Elérte a hómagasság a küszöböt a következő útegységen?")) {
+            ueKov.setHoMagassag(20);
+
+            hivas("ueKov:Utegyseg", "ralep(b)");
+            ueKov.ralep(b);
+            visszater("ueKov:Utegyseg", "true");
+
+            if (igenNemBeker("Tud a busz sávot váltani? (Szabad valamelyik szomszédos sáv?)")) {
+                ueJobb.setBlokkolt(false);
+                ueJobb.setJarmu(null);
+
+                hivas("b:Busz", "savValtas()");
+
+                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueJobb");
+
+                hivas("b:Busz", "sikeresLepes(ueJobb)");
+                visszater("b:Busz", "void");
+
+                visszater("b:Busz", "void");
+                tesztLezaras("Sikeres, a busz elakadt az eredeti sávban, de sikeresen sávot váltott a jobboldalira.");
+
+            } else {
+                ueJobb.setBlokkolt(true);
+                ueBal.setBlokkolt(true);
+
+                hivas("b:Busz", "savValtas()");
+
+                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueJobb");
+                hivas("ueAkt:Utegyseg", "getBalUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueBal");
+
+                visszater("b:Busz", "void");
+
+                tesztLezaras("Sikertelen, a busz mély hóba futott és nem tudott sávot váltani, mert a szomszédok is blokkoltak.");
+            }
+
+        } else {
+            ueKov.setHoMagassag(5);
+
+            hivas("ueKov:Utegyseg", "ralep(b)");
+            ueKov.ralep(b);
+            visszater("ueKov:Utegyseg", "true");
+
+            hivas("b:Busz", "sikeresLepes(ueKov)");
+            b.sikeresLepes(ueKov);
+            visszater("b:Busz", "void");
+
+            tesztLezaras("Sikeres, a hó nem volt elég mély az elakadáshoz, a busz továbbhaladt.");
+        }
     }
 
     private void jatekVege() {
