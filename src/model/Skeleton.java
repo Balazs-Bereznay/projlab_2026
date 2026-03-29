@@ -632,22 +632,225 @@ public class Skeleton {
 
     private void jegreHulloHo() {
         // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Jégre hulló hó");
+
+        // Inicializálás
+        Utegyseg u = new Utegyseg();
+
+        hivas("u:Utegyseg", "havazas(mennyiseg)");
+        if (igenNemBeker("Jeges az útegység? (I/N)")) {
+            visszater("u:Utegyseg", "true");
+            System.out.println("Jégmagasság beállítása 2-re a teszthez.");
+            u.setJegMagassag(2);
+            int jegMagassagElotte = u.getJegMagassag();
+            int mennyiseg = egeszBeker("Mennyi hó hullik az útegységre?");
+            u.havazas(mennyiseg);
+
+            int jegMagassagUtana = u.getJegMagassag();
+            System.out.println("[Jégmagasság változás: " + jegMagassagElotte + " -> " + jegMagassagUtana + "]");
+
+            visszater("u:Utegyseg", "void");
+            tesztLezaras("Sikeres: Jeges útegységen a hó jégréteget növelt.");
+        } else {
+            visszater("u:Utegyseg", "false");
+            visszater("u:Utegyseg", "void");
+            tesztLezaras("Sikertelen: Az útegység nem jeges, a jégréteg nem nőtt.");
+        }
     }
 
     private void komplexVasarlasiLanc() {
         // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Komplex vásárlási lánc");
+
+        // Inicializálás (kommunikációs diagram szerint)
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+        hivas("ny:Nyilvantarto", "penzNovel(sok_penz)");
+        ny.penzNovel(egeszBeker("Mennyi induló pénzt kapjon a kassza?"));
+        visszater("ny:Nyilvantarto", "void");
+
+        Bolt b = new Bolt(0, 0);
+        hivas("b:Bolt", "setNyilvantarto(ny)");
+        // A korábbi tesztekhez igazodva, ha nincs ilyen metódus, ez a sor kikommentelhető.
+        b.setNyilvantarto(ny);
+        visszater("b:Bolt", "void");
+
+        Hokotro h = new Hokotro(new Sopro());
+        Sarkany s = new Sarkany(ny);
+
+        // 1) hókotró vásárlása
+        hivas("b:Bolt", "hokotroVasarol()");
+        if (igenNemBeker("Sikeres a penzLevon(ar) a hókotró vásárlásnál? (I/N)")) {
+            visszater("ny:Nyilvantarto", "true");
+            visszater("b:Bolt", "void");
+        } else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("b:Bolt", "void");
+            tesztLezaras("Sikertelen: Hókotró vásárlásnál nem volt elegendő pénz.");
+            return;
+        }
+
+        // 2) fejcsere sárkány fejre
+        hivas("b:Bolt", "fejCsere(s)");
+        if (igenNemBeker("Sikeres a penzLevon(ar) a fejcserénél? (I/N)")) {
+            visszater("ny:Nyilvantarto", "true");
+
+            hivas("h:Hokotro", "setFej(s)");
+            h.setFej(s);
+            visszater("h:Hokotro", "void");
+
+            visszater("b:Bolt", "void");
+        } else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("b:Bolt", "void");
+            tesztLezaras("Sikertelen: Fejcsere nem történt meg pénzhiány miatt.");
+            return;
+        }
+
+        // 3) biokerozin vásárlása
+        int mennyiseg = egeszBeker("Mennyi biokerozint vásároljon?");
+        hivas("b:Bolt", "biokerozinVasarol(mennyiseg)");
+        if (igenNemBeker("Sikeres a penzLevon(ar) a biokerozin vásárlásnál? (I/N)")) {
+            visszater("ny:Nyilvantarto", "true");
+
+            hivas("ny:Nyilvantarto", "biokerozinNovel(mennyiseg)");
+            ny.biokerozinNovel(mennyiseg);
+            visszater("ny:Nyilvantarto", "void");
+
+            visszater("b:Bolt", "void");
+            tesztLezaras("Sikeres: A komplex vásárlási lánc végrehajtva.");
+        } else {
+            visszater("ny:Nyilvantarto", "false");
+            visszater("b:Bolt", "void");
+            tesztLezaras("Sikertelen: Biokerozin vásárlásnál nem volt elegendő pénz.");
+        }
     }
 
     private void megcsuszasJegen() {
         // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Megcsúszás jégen");
+
+        // Inicializálás (kommunikációs diagram szerint)
+        Utegyseg uJelenlegi = new Utegyseg();
+        Utegyseg uJeges = new Utegyseg();
+        Auto a = new Auto();
+
+        hivas("uJelenlegi:Utegyseg", "setKovetkezoUtegyseg(uJeges)");
+        uJelenlegi.setKovetkezoUtegyseg(uJeges);
+        visszater("uJelenlegi:Utegyseg", "void");
+
+        hivas("uJeges:Utegyseg", "jegesedes()");
+        uJeges.jegesedes(2);
+        visszater("uJeges:Utegyseg", "void");
+
+        hivas("a:Auto", "setUtegyseg(uJelenlegi)");
+        a.setUtegyseg(uJelenlegi);
+        uJelenlegi.setJarmu(a);
+        visszater("a:Auto", "void");
+
+        // Szekvencia diagram szerinti lep() folyamat
+        hivas("a:Auto", "lep()");
+
+        hivas("uJelenlegi:Utegyseg", "getKovetkezoUtegyseg()");
+        Utegyseg kov = uJelenlegi.getKovetkezoUtegyseg();
+        visszater("uJelenlegi:Utegyseg", "uJeges");
+
+        hivas("uJeges:Utegyseg", "ralep(a)");
+        boolean ralepSikeres = kov.ralep(a);
+
+        if (ralepSikeres) {
+            visszater("uJeges:Utegyseg", "true");
+
+            hivas("uJeges:Utegyseg", "megcsuszas()");
+            if (igenNemBeker("Megcsúszik a jármű? (I/N)")) {
+                visszater("uJeges:Utegyseg", "true");
+
+                hivas("a:Auto", "csuszik()");
+                a.csuszik();
+                visszater("a:Auto", "void");
+
+                visszater("uJeges:Utegyseg", "void");
+                visszater("a:Auto", "void");
+
+                tesztLezaras("Sikeres: A jármű megcsúszott a jeges útegységen.");
+            } else {
+                visszater("uJeges:Utegyseg", "false");
+                visszater("uJeges:Utegyseg", "void");
+                visszater("a:Auto", "void");
+
+                tesztLezaras("Sikertelen: Nem történt megcsúszás.");
+            }
+        } else {
+            visszater("uJeges:Utegyseg", "false");
+            visszater("a:Auto", "void");
+            tesztLezaras("Sikertelen: A jármű nem tudott rálépni a következő útegységre.");
+        }
     }
 
     private void npcUtvonaltervezes() {
         // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("NPC útvonaltervezés");
+
+        // Inicializálás (kommunikációs diagram szerint)
+        Terkep t = new Terkep();
+        Csomopont kezdopont = new Csomopont();
+        Csomopont celpont = new Csomopont();
+        Utegyseg elsoUE = new Utegyseg();
+        Utegyseg kovetkezoUE = new Utegyseg();
+        Sav sav = new Sav(elsoUE);
+        Ut ut = new Ut();
+        Auto npc = new Auto();
+
+        hivas("sav:Sav", "setElsoUtegyseg(elsoUE)");
+        sav.setElsoUtegyseg(elsoUE);
+        visszater("sav:Sav", "void");
+
+        hivas("elsoUE:Utegyseg", "setKovetkezoUtegyseg(kovetkezoUE)");
+        elsoUE.setKovetkezoUtegyseg(kovetkezoUE);
+        visszater("elsoUE:Utegyseg", "void");
+
+        hivas("elsoUE:Utegyseg", "setJarmu(npc)");
+        elsoUE.setJarmu(npc);
+        visszater("elsoUE:Utegyseg", "void");
+
+        hivas("npc:Auto", "setUtegyseg(elsoUE)");
+        npc.setUtegyseg(elsoUE);
+        visszater("npc:Auto", "void");
+
+        hivas("t:Terkep", "addUt(ut)");
+        //t.addUt(ut);
+        visszater("t:Terkep", "void");
+
+        hivas("t:Terkep", "addCsomopont(kezdopont)");
+        //t.addCsomopont(kezdopont);
+        visszater("t:Terkep", "void");
+
+        hivas("t:Terkep", "addCsomopont(celpont)");
+        //t.addCsomopont(celpont);
+        visszater("t:Terkep", "void");
+
+        // Szekvenciadiagram szerinti főhívás
+        hivas("npc:Auto", "utvonalKereses(t)");
+        hivas("t:Terkep", "utvonalTervezes(kezdopont, celpont)");
+        t.utvonalTervezes(kezdopont, celpont);
+        visszater("t:Terkep", "utvonal");
+        visszater("npc:Auto", "void");
+
+        tesztLezaras("Sikeres: Az NPC útvonaltervezése lefutott.");
     }
 
     private void penzHozzaadasaAKasszahoz() {
         // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Pénz hozzáadása a kasszához");
+
+        // Inicializálás (kommunikációs diagram szerint)
+        Nyilvantarto n = new Nyilvantarto(0, 0, 0, 0);
+
+        hivas("n:Nyilvantarto", "penzNovel(osszeg)");
+        int osszeg = egeszBeker("Mennyi pénzt adsz hozzá a kasszához?");
+        n.penzNovel(osszeg);
+        visszater("n:Nyilvantarto", "void");
+
+        tesztLezaras("Sikeres: A kassza egyenlege növelve lett.");
     }
 
     private void autoSikeresSavvaltasa() {
