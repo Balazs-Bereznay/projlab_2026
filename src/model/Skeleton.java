@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /*
  * Skeleton osztály – segédfüggvények összefoglalása
@@ -669,22 +670,10 @@ public class Skeleton {
 
         /// Inicializálás
         Busz b = new Busz();
-        Utegyseg ueKov = new Utegyseg(4, 0.0, null, null, null, null, 10, 0, false, 0);
-        Utegyseg ueAkt = new Utegyseg(0, 0.0, b, ueKov, null, null, 0, 0, false, 0);
-        Sav s = new Sav(ueAkt);
-        ArrayList<Sav> savok = new ArrayList<>();
-        savok.add(s);
-        Ut ut = new Ut(savok, null, null, false);
-        b.setUtegyseg(ueAkt);
-
-
-
-        /* /// Inicializálás
-        Busz b = new Busz();
         Ut ut = new Ut();
         Sav s = new Sav();
-        Utegyseg ueAkt = new Ut();
-        Utegyseg ueKov = new Ut();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueKov = new Utegyseg();
 
         // Egységek összekötése
         ArrayList<Sav> savok = new ArrayList<>();
@@ -693,12 +682,21 @@ public class Skeleton {
         s.setElsoUtegyseg(ueAkt);
         ueAkt.setKovetkezoUtegyseg(ueKov);
         ueAkt.setJarmu(b);
-        b.setUtegyseg(ueAkt);*/
+        b.setUtegyseg(ueAkt);
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        hivas("ueKov:Utegyseg", "ralep(b)");
+        ueKov.ralep(b);
+        visszater("ueKov:Utegyseg","true");
+
+        if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
+            hivas("ueKov","jegesedes()");
+        }
 
 
-
-
-
+        visszater("b:Busz","void");
 
     }
 

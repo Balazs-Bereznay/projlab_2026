@@ -165,8 +165,6 @@ public class Utegyseg {
             ///Ha már nincs hó, akkor nem kell újra nullává állítani a szintjét
             if (hoMagassag != 0)
                 hoMagassag = 0;
-            /*if(jegMagassag >= HO_ELAKADAS_KUSZOB)
-                blokkolt = true;*/
             System.out.println("Jegesedés: " + mennyiseg + " mennyiségű jéggel nőtt meg a jégmagasság.");
         }
     }
@@ -177,6 +175,7 @@ public class Utegyseg {
     public void taposodas(int mertek) {
         if (hoMagassag > 0) {
             letaposottsag += mertek;
+            System.out.println("Taposás: " + mertek + " mértékkel lett letaposva az út.");
             if (letaposottsag >= LETAPOSOTTSAG_KUSZOB) {
                 ///Ha taposás miatt lesz jég, akkor olyan nagy lesz, mint az ott lévő letaposott hó
                 jegesedes(hoMagassag);
