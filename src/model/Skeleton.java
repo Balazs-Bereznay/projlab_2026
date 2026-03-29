@@ -540,9 +540,10 @@ public class Skeleton {
         s.aktival(u);
 
         hivas("ny:Nyilvantarto", "biokerozinLevon()");
-        ny.biokerozinLevon(0);
+
 
         if (igenNemBeker("Van elég biokerozin?")) {
+            ny.biokerozinLevon(0);
             visszater("ny:Nyilvantarto", "true");
             visszater("f:Fej", "true");
 
