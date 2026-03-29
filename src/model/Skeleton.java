@@ -311,7 +311,41 @@ public class Skeleton {
     }
 
     private void jegkepzodesTaposasMiatt() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Jégképződés taposás miatt");
+
+        /// Inicializálás
+        Busz b = new Busz();
+        Utegyseg ueKov = new Utegyseg(4, 0.0, null, null, null, null, 10, 0, false, 0);
+        Utegyseg ueAkt = new Utegyseg(0, 0.0, b, ueKov, null, null, 0, 0, false, 0);
+        Sav s = new Sav(ueAkt);
+        ArrayList<Sav> savok = new ArrayList<>();
+        savok.add(s);
+        Ut ut = new Ut(savok, null, null, false);
+        b.setUtegyseg(ueAkt);
+
+
+
+        /* /// Inicializálás
+        Busz b = new Busz();
+        Ut ut = new Ut();
+        Sav s = new Sav();
+        Utegyseg ueAkt = new Ut();
+        Utegyseg ueKov = new Ut();
+
+        // Egységek összekötése
+        ArrayList<Sav> savok = new ArrayList<>();
+        savok.add(s);
+        ut.setSavok(savok);
+        s.setElsoUtegyseg(ueAkt);
+        ueAkt.setKovetkezoUtegyseg(ueKov);
+        ueAkt.setJarmu(b);
+        b.setUtegyseg(ueAkt);*/
+
+
+
+
+
+
     }
 
     /**

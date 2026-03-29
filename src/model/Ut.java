@@ -35,7 +35,7 @@ public class Ut {
     public void setAlagut(boolean alagut){ this.alagut = alagut; }
 
     public ArrayList<Sav> getSavok(){ return savok; }
-    public void setSavok(ArrayList<Sav> savok){ this.savok = savok};
+    public void setSavok(ArrayList<Sav> savok){ this.savok = savok; };
 
     ///További metódusok
     /**
