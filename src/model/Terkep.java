@@ -39,4 +39,24 @@ public class Terkep {
         System.out.println("<-- Terkep.utvonalTervezes() : ArrayList<Ut>");
         return utvonal;
     }
+
+    /**
+     * Hozzáfűz egy Ut típusú objektumot az elLista végére.
+     * @param ut Az az út, ami bekerül az elLista listába.
+     */
+    public void addUt(Ut ut) {
+        if (ut != null && !elLista.contains(ut)) {
+            elLista.add(ut);
+        }
+    }
+
+    /**
+     * Hozzáfűz egy Csomopont típusú objektumot az csomopontLista végéres.
+     * @param csomopont Az a csomópont, ami bekerül az csomopontLista listába.
+     */
+    public void addCsomopont(Csomopont csomopont) {
+        if (csomopont != null && !csomopontLista.contains(csomopont)) {
+            csomopontLista.add(csomopont);
+        }
+    }
 }

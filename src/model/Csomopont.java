@@ -62,4 +62,14 @@ public class Csomopont {
     public void jarmuTavozik(Jarmu jarmu){
         System.out.println("Jármű áttéve a következő útegységre.");
     }
+
+    /**
+     * Hozzáfűz egy Ut típusú objektumot az utLista végére.
+     * @param ut Az az út, ami bekerül az utLista listába.
+     */
+    public void addUt(Ut ut) {
+        if (ut != null && !utLista.contains(ut)) {
+            utLista.add(ut);
+        }
+    }
 }

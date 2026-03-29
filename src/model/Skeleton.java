@@ -391,7 +391,7 @@ public class Skeleton {
         // Inicializálás
         Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
         Bolt b = new Bolt(0, 0);
-        //b.setNyilvantarto(ny);
+        b.setNyilvantarto(ny);
 
         Busz busz = new Busz();
         Sebessegfejlesztes sf = new Sebessegfejlesztes();
@@ -435,7 +435,7 @@ public class Skeleton {
         // Inicializálás
         Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
         Bolt b = new Bolt(0, 0);
-        //b.setNyilvantarto(ny);
+        b.setNyilvantarto(ny);
 
         Sopro sopro = new Sopro();
         Hokotro h = new Hokotro(sopro);
@@ -503,7 +503,7 @@ public class Skeleton {
             u1.setJarmu(null);
             visszater("u1:Utegyseg", "void");
 
-            hivas("u3:Utegyseg", "elfogad(a2)");
+            hivas("u3:Utegyseg", "setJarmu(a2)");
             u3.setJarmu(a2);
             visszater("u3:Utegyseg", "void");
 
@@ -603,6 +603,7 @@ public class Skeleton {
             visszater("sosz:Soszoro", "true");
             visszater("h:Hokotro", "void");
 
+            System.out.println("=== Következő iteráció ===");
             if (igenNemBeker("Van még só az útegységen?")) {
                 if (igenNemBeker("Van hó az útegységen?")) {
                     hivas("u:Utegyseg", "hoOlvad()");
@@ -861,11 +862,45 @@ public class Skeleton {
     }
 
     private void jatekVege() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Játék vége");
+
+        /// Inicializálás
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+
+        hivas("ny:Nyilvantarto", "ellenorizJatekVege()");
+        if(igenNemBeker("Teljesült a vereségi feltétel?")){
+            ny.setNemBeertAutokSzama(20);
+            ny.ellenorizJatekVege();
+            visszater("ny:Nyilvantarto", "true");
+            tesztLezaras("Sikeres, a játék véget ért");
+        }else{
+            ny.setNemBeertAutokSzama(5);
+            ny.ellenorizJatekVege();
+            visszater("ny:Nyilvantarto", "false");
+            tesztLezaras("Sikertelen, a játék nem ért véget");
+        }
+
     }
 
     private void buszmegalloErintese() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Buszmegálló érintése");
+
+        /// Inicializálás
+        Busz b = new Busz();
+        Ut ut = new Ut();
+        Sav s = new Sav();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueUtolso = new Utegyseg();
+        Csomopont bm = new Csomopont();
+
+        // Egységek összekötése
+        ArrayList<Sav> savok = new ArrayList<>();
+        savok.add(s);
+        ut.setSavok(savok);
+        s.setElsoUtegyseg(ueAkt);
+        ueAkt.setKovetkezoUtegyseg(ueUtolso);
+        ueAkt.setJarmu(b);
+        b.setUtegyseg(ueAkt);
     }
 
     private void jegkepzodesTaposasMiatt() {
@@ -897,6 +932,7 @@ public class Skeleton {
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
             hivas("ueKov","jegesedes()");
         }
+        //TODO
 
 
         visszater("b:Busz","void");
