@@ -274,7 +274,7 @@ public class Utegyseg {
 
                 /// A jármű ráhajtott a mély hóra, ezért elakad, és a sáv blokkolt lesz
                 this.blokkolt = true;
-                //jarmu.elakad();
+                jarmu.elakad();
                 System.out.println("A jármű mély hóra/jégre futott és elakadt. A sáv blokkolttá vált.");
                 return true;
             }
