@@ -887,16 +887,45 @@ public class Skeleton {
         ueKov.ralep(a);
         visszater("ueKov:Utegyseg", "false");
 
-        if (igenNemBeker("Sikeres legyen a sávváltás? (Szabad a jobb oldali útegység?)")) {
+        if (igenNemBeker("Sikeres legyen a sávváltás? (Szabad a jobb oldali sáv?)")) {
             hivas("a:Auto", "savValtas()");
+            a.savValtas();
 
+            // A savValtas() belülről hívja a getJobbUtegyseg()-et
             hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
-            Utegyseg cel = ueAkt.getJobbUtegyseg();
             visszater("ueAkt:Utegyseg", "ueJobb");
-            //TODO
-        }
 
+            hivas("a:Auto", "sikeresLepes(ueJobb)");
+
+            // A sikeresLepes() frissíti a referenciákat
+            hivas("ueAkt:Utegyseg", "setJarmu(null)");
+            visszater("ueAkt:Utegyseg", "void");
+
+            hivas("ueJobb:Utegyseg", "setJarmu(a)");
+            visszater("ueJobb:Utegyseg", "void");
+
+            visszater("a:Auto", "void"); // sikeresLepes vége
+            visszater("a:Auto", "void"); // savValtas vége
+
+            visszater("a:Auto", "void"); // lep vége
+            tesztLezaras("Sikeres, a sávváltás megtörtént, így az autó a jobb oldali sávba ment át.");
+
+        } else {
+            // Ha a felhasználó szerint nem sikeres (pl. foglalt a jobb sáv is)
+            ueJobb.setBlokkolt(true);
+            hivas("a:Auto", "savValtas()");
+            a.savValtas();
+
+            hivas("a:Auto", "elakad()");
+            a.elakad();
+            visszater("a:Auto", "void");
+
+            visszater("a:Auto", "void"); // savValtas vége
+            visszater("a:Auto", "void"); // lep vége
+            tesztLezaras("Sikertelen, a sávváltás nem sikerült, így az autó az akadály előtt maradt és elakadt.");
+        }
     }
+
 
     private void melyHobanElakadas() {
         // TODO: A teszteset implementációja később kerül ide.
@@ -957,18 +986,18 @@ public class Skeleton {
 
             hivas("b:Busz", "megalloErintese(bm)");
             b.megalloErintese(bm);
-            visszater("b:Busz", "megalloErintese(bm)");
+            visszater("b:Busz", "void");
 
-            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("bm:Csomopont", "void");
             visszater("b:Busz","void");
 
             tesztLezaras("Sikeres, a busz megállót érintett");
         }else{
             hivas("b:Busz", "megalloErintese(null)");
             b.megalloErintese(null);
-            visszater("b:Busz", "megalloErintese(null)");
+            visszater("b:Busz", "void");
 
-            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("bm:Csomopont", "void");
             visszater("b:Busz","void");
 
             tesztLezaras("Sikertelen, a busz nem érintett megállót");
@@ -1003,14 +1032,14 @@ public class Skeleton {
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
             hivas("ueKov","taposodas(10)");
             ueKov.taposodas(10);
-            visszater("ueKov","taposodas(10)");
+            visszater("ueKov","void");
 
             visszater("b:Busz","void");
             tesztLezaras("Sikeres, jeges lett az útegység");
         }else{}
             hivas("ueKov","taposodas(1)");
             ueKov.taposodas(1);
-            visszater("ueKov","taposodas(1)");
+            visszater("ueKov","void");
 
             visszater("b:Busz","void");
             tesztLezaras("Sikertelen, nem lett jeges az útegység");
