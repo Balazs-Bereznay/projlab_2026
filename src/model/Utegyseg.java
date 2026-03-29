@@ -204,13 +204,13 @@ public class Utegyseg {
      */
     public void soOlvasztas() {
         if (soMennyiseg > 0) {
-            //soMennyiseg--;
+            soMennyiseg--;
             System.out.println("Sómennyiség csökken.");
             if (hoMagassag > 0) {
-                //hoMagassag--;
+                hoMagassag--;
                 System.out.println("Hómagasság csökken.");
             } else if (jegMagassag > 0) {
-                //jegMagassag--;
+                jegMagassag--;
                 System.out.println("Jégmagasság csökken.");
             }
         }
@@ -259,12 +259,11 @@ public class Utegyseg {
         /// senki nem léphet rá (még a hókotró sem mehet "át" rajta).
         if (this.blokkolt || this.jarmu != null) {
             System.out.println("A rálépés sikertelen: az útegység foglalt vagy blokkolva van.");
-            //System.out.println("<- Utegyseg.ralep() visszatért: false");
             return false;
         }
 
         /// A jármű fizikailag rálép az útegységre (lefoglalja a referenciát)
-        this.jarmu = jarmu;
+        jarmu.sikeresLepes(this);
         System.out.println("Az útegység referenciája frissítve, a járművet fogadta.");
 
         /// A Hókotrókra nem vonatkoznak az időjárás negatív hatásai
@@ -283,10 +282,10 @@ public class Utegyseg {
             /// Megcsúszás vizsgálata jeges úton (Ha nem akadt el)
             if (this.jegMagassag > 0 && megcsuszas()) {
                 System.out.println("A jármű megcsúszott a jégen!");
-                //jarmu.csuszik();
+                jarmu.csuszik();
             }
         }
-        //taposodas(1);
+        // Itt majd meghívja a taposodast
         return true;
     }
 }

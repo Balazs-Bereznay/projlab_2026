@@ -205,23 +205,564 @@ public class Skeleton {
     }
 
     private void hoesesEgyUtegysegre() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Hóesés egy útegységre");
+
+        Utegyseg u = new Utegyseg();
+
+        boolean jeges = igenNemBeker("Jeges az útegység?");
+
+        if (jeges) {
+            u.setJegMagassag(1);
+        }
+
+        hivas("u:Utegyseg", "havazas(1)");
+        u.havazas(1);
+        visszater("u:Utegyseg", "void");
+
+        tesztLezaras(
+                "hoMagassag=" + u.getHoMagassag()
+                        + ", jegMagassag=" + u.getJegMagassag()
+                        + ", blokkolt=" + u.getBlokkolt()
+        );
     }
 
     private void eroforrasVasarlasa() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Erőforrás vásárlása");
+
+        Bolt bolt = new Bolt(10, 20);
+        Nyilvantarto ny = new Nyilvantarto(1000, 0, 0, 0);
+
+        boolean sotVesz = igenNemBeker("Sót szeretnél vásárolni? (nem esetén biokerozint veszünk)");
+        int mennyiseg = egeszBeker("Add meg a vásárolni kívánt mennyiséget:");
+
+        if (sotVesz) {
+            int fizetendo = bolt.getSoAr() * mennyiseg;
+
+            hivas("bolt:Bolt", "soVasarol(" + mennyiseg + ")");
+            bolt.soVasarol(mennyiseg);
+            visszater("bolt:Bolt", "void");
+
+            hivas("ny:Nyilvantarto", "penzLevon(" + fizetendo + ")");
+            ny.penzLevon(fizetendo);
+            visszater("ny:Nyilvantarto", "void");
+
+            hivas("ny:Nyilvantarto", "soNovel(" + mennyiseg + ")");
+            ny.soNovel(mennyiseg);
+            visszater("ny:Nyilvantarto", "void");
+
+            tesztLezaras("Sikeres sóvásárlás, mennyiség=" + mennyiseg
+                    + ", fizetendő=" + fizetendo
+                    + ", aktuális sókészlet=" + ny.getSo());
+        } else {
+            int fizetendo = bolt.getBiokerozinAr() * mennyiseg;
+
+            hivas("bolt:Bolt", "setBiokerozinVasarol(" + mennyiseg + ")");
+            bolt.setBiokerozinVasarol(mennyiseg);
+            visszater("bolt:Bolt", "void");
+
+            hivas("ny:Nyilvantarto", "penzLevon(" + fizetendo + ")");
+            ny.penzLevon(fizetendo);
+            visszater("ny:Nyilvantarto", "void");
+
+            hivas("ny:Nyilvantarto", "biokerozinNovel(" + mennyiseg + ")");
+            ny.biokerozinNovel(mennyiseg);
+            visszater("ny:Nyilvantarto", "void");
+
+            tesztLezaras("Sikeres biokerozin-vásárlás, mennyiség=" + mennyiseg
+                    + ", fizetendő=" + fizetendo
+                    + ", aktuális biokerozin készlet=" + ny.getBiokerozin());
+        }
     }
 
     private void uttisztitasSoproFejjel() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Úttisztítás Söprő fejjel");
+
+        Utegyseg u1 = new Utegyseg();
+        Utegyseg jobbSzomszed = new Utegyseg();
+        Sopro sopro = new Sopro();
+        Hokotro hokotro = new Hokotro(sopro);
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+
+        hokotro.setUtegyseg(u1);
+        u1.setJarmu(hokotro);
+
+        u1.setHoMagassag(3);
+
+        boolean vanJobbSzomszed = igenNemBeker("Van a menetirány szerinti jobb oldalon szomszédos útegység?");
+
+        if (vanJobbSzomszed) {
+            u1.setJobbUtegyseg(jobbSzomszed);
+        }
+
+        hivas("hokotro:Hokotro", "getFej().hasznal(u1)");
+        boolean sikeres = hokotro.getFej().hasznal(u1);
+        visszater("hokotro:Hokotro", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("ny:Nyilvantarto", "penzNovel(10)");
+            ny.penzNovel(10);
+            visszater("ny:Nyilvantarto", "void");
+        }
+
+        if (vanJobbSzomszed) {
+            tesztLezaras(
+                    "sikeres=" + sikeres
+                            + ", u1.hoMagassag=" + u1.getHoMagassag()
+                            + ", u1.jegMagassag=" + u1.getJegMagassag()
+                            + ", jobbSzomszed.hoMagassag=" + jobbSzomszed.getHoMagassag()
+            );
+        } else {
+            tesztLezaras(
+                    "sikeres=" + sikeres
+                            + ", u1.hoMagassag=" + u1.getHoMagassag()
+                            + ", u1.jegMagassag=" + u1.getJegMagassag()
+                            + ", a hó az út szélére került"
+            );
+        }
     }
 
     private void osszecsuszasSzimulacio() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Összecsúszás szimuláció");
+
+        Utegyseg u1 = new Utegyseg();
+        Utegyseg u2 = new Utegyseg();
+
+        Auto a1 = new Auto();
+        Auto a2 = new Auto();
+
+        u1.setJegMagassag(1);
+        u1.setMegcsuszasEsely(1.0);
+
+        u1.setKovetkezoUtegyseg(u2);
+
+        a1.setUtegyseg(u1);
+        u1.setJarmu(a1);
+
+        a2.setUtegyseg(u2);
+        u2.setJarmu(a2);
+
+        hivas("a1:Auto", "lep()");
+        a1.lep();
+        visszater("a1:Auto", "void");
+
+        boolean megcsuszik = igenNemBeker("Megcsússzon a jármű?");
+
+        if (megcsuszik) {
+            hivas("a1:Auto", "csuszik()");
+            a1.csuszik();
+            visszater("a1:Auto", "void");
+
+            hivas("a1:Auto", "KeresPartner()");
+            a1.KeresPartner();
+            visszater("a1:Auto", "void");
+        }
+
+        tesztLezaras(
+                "a1.baleset=" + a1.isBaleset()
+                        + ", a2.baleset=" + a2.isBaleset()
+                        + ", u1.blokkolt=" + u1.getBlokkolt()
+                        + ", u2.blokkolt=" + u2.getBlokkolt()
+        );
     }
 
     private void buszTeljesMenetrendiKor() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Busz teljes menetrendi kör");
+
+        // Csomópontok
+        Csomopont veg1 = new Csomopont();
+        Csomopont meg1 = new Csomopont();
+        Csomopont meg2 = new Csomopont();
+        Csomopont veg2 = new Csomopont();
+
+        veg1.setAzonosito("Vegallomas1");
+        meg1.setAzonosito("Megallo1");
+        meg2.setAzonosito("Megallo2");
+        veg2.setAzonosito("Vegallomas2");
+
+        veg1.setBuszmegallo(true);
+        meg1.setBuszmegallo(true);
+        meg2.setBuszmegallo(true);
+        veg2.setBuszmegallo(true);
+
+        // Utegysegek a teljes körhöz:
+        // veg1 -> meg1 -> meg2 -> veg2 -> meg2 -> meg1 -> veg1
+        Utegyseg u11 = new Utegyseg();
+        Utegyseg u12 = new Utegyseg();
+
+        Utegyseg u21 = new Utegyseg();
+        Utegyseg u22 = new Utegyseg();
+
+        Utegyseg u31 = new Utegyseg();
+        Utegyseg u32 = new Utegyseg();
+
+        Utegyseg u41 = new Utegyseg();
+        Utegyseg u42 = new Utegyseg();
+
+        Utegyseg u51 = new Utegyseg();
+        Utegyseg u52 = new Utegyseg();
+
+        Utegyseg u61 = new Utegyseg();
+        Utegyseg u62 = new Utegyseg();
+
+        // Utegyseg-láncok
+        u11.setKovetkezoUtegyseg(u12);
+        u21.setKovetkezoUtegyseg(u22);
+        u31.setKovetkezoUtegyseg(u32);
+        u41.setKovetkezoUtegyseg(u42);
+        u51.setKovetkezoUtegyseg(u52);
+        u61.setKovetkezoUtegyseg(u62);
+
+        // Sávok
+        Sav s1 = new Sav(u11);
+        Sav s2 = new Sav(u21);
+        Sav s3 = new Sav(u31);
+        Sav s4 = new Sav(u41);
+        Sav s5 = new Sav(u51);
+        Sav s6 = new Sav(u61);
+
+        // Utak
+        Ut ut1 = new Ut();
+        ut1.setVegpont1(veg1);
+        ut1.setVegpont2(meg1);
+        ut1.addSav(s1);
+
+        Ut ut2 = new Ut();
+        ut2.setVegpont1(meg1);
+        ut2.setVegpont2(meg2);
+        ut2.addSav(s2);
+
+        Ut ut3 = new Ut();
+        ut3.setVegpont1(meg2);
+        ut3.setVegpont2(veg2);
+        ut3.addSav(s3);
+
+        Ut ut4 = new Ut();
+        ut4.setVegpont1(veg2);
+        ut4.setVegpont2(meg2);
+        ut4.addSav(s4);
+
+        Ut ut5 = new Ut();
+        ut5.setVegpont1(meg2);
+        ut5.setVegpont2(meg1);
+        ut5.addSav(s5);
+
+        Ut ut6 = new Ut();
+        ut6.setVegpont1(meg1);
+        ut6.setVegpont2(veg1);
+        ut6.addSav(s6);
+
+        // Kapcsolatok a csomópontok és utak között
+        veg1.addUt(ut1);
+        veg1.addUt(ut6);
+
+        meg1.addUt(ut1);
+        meg1.addUt(ut2);
+        meg1.addUt(ut5);
+        meg1.addUt(ut6);
+
+        meg2.addUt(ut2);
+        meg2.addUt(ut3);
+        meg2.addUt(ut4);
+        meg2.addUt(ut5);
+
+        veg2.addUt(ut3);
+        veg2.addUt(ut4);
+
+        // Busz létrehozása
+        Busz busz = new Busz(veg1, veg2, 1, null, 1);
+        Nyilvantarto ny = new Nyilvantarto(0, 0, 0, 0);
+
+        ArrayList megallok = new ArrayList();
+        megallok.add(meg1);
+        megallok.add(meg2);
+        busz.setMegallokLista(megallok);
+
+        ArrayList utvonal = new ArrayList();
+        utvonal.add(ut1);
+        utvonal.add(ut2);
+        utvonal.add(ut3);
+        utvonal.add(ut4);
+        utvonal.add(ut5);
+        utvonal.add(ut6);
+        busz.setKijeloltUtvonal(utvonal);
+
+        ArrayList utegysegLista = new ArrayList();
+        utegysegLista.add(u11);
+        utegysegLista.add(u12);
+        utegysegLista.add(u21);
+        utegysegLista.add(u22);
+        utegysegLista.add(u31);
+        utegysegLista.add(u32);
+        utegysegLista.add(u41);
+        utegysegLista.add(u42);
+        utegysegLista.add(u51);
+        utegysegLista.add(u52);
+        utegysegLista.add(u61);
+        utegysegLista.add(u62);
+
+        hivas("busz:Busz", "utvonalatValaszt(utegysegLista)");
+        busz.utvonalatValaszt(utegysegLista);
+        visszater("busz:Busz", "void");
+
+        // --- veg1 -> meg1 ---
+        hivas("veg1:Csomopont", "jarmuTavozik(busz)");
+        veg1.jarmuTavozik(busz);
+        visszater("veg1:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u11:Utegyseg", "ralep(busz)");
+        boolean sikeres = u11.ralep(busz);
+        visszater("u11:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u11)");
+            busz.sikeresLepes(u11);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u12:Utegyseg", "ralep(busz)");
+        sikeres = u12.ralep(busz);
+        visszater("u12:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u12)");
+            busz.sikeresLepes(u12);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("meg1:Csomopont", "jarmuErkezik(busz)");
+        meg1.jarmuErkezik(busz);
+        visszater("meg1:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(meg1)");
+        busz.megalloErintese(meg1);
+        visszater("busz:Busz", "void");
+
+        // --- meg1 -> meg2 ---
+        hivas("meg1:Csomopont", "jarmuTavozik(busz)");
+        meg1.jarmuTavozik(busz);
+        visszater("meg1:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u21:Utegyseg", "ralep(busz)");
+        sikeres = u21.ralep(busz);
+        visszater("u21:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u21)");
+            busz.sikeresLepes(u21);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u22:Utegyseg", "ralep(busz)");
+        sikeres = u22.ralep(busz);
+        visszater("u22:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u22)");
+            busz.sikeresLepes(u22);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("meg2:Csomopont", "jarmuErkezik(busz)");
+        meg2.jarmuErkezik(busz);
+        visszater("meg2:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(meg2)");
+        busz.megalloErintese(meg2);
+        visszater("busz:Busz", "void");
+
+        // --- meg2 -> veg2 ---
+        hivas("meg2:Csomopont", "jarmuTavozik(busz)");
+        meg2.jarmuTavozik(busz);
+        visszater("meg2:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u31:Utegyseg", "ralep(busz)");
+        sikeres = u31.ralep(busz);
+        visszater("u31:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u31)");
+            busz.sikeresLepes(u31);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u32:Utegyseg", "ralep(busz)");
+        sikeres = u32.ralep(busz);
+        visszater("u32:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u32)");
+            busz.sikeresLepes(u32);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("veg2:Csomopont", "jarmuErkezik(busz)");
+        veg2.jarmuErkezik(busz);
+        visszater("veg2:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(veg2)");
+        busz.megalloErintese(veg2);
+        visszater("busz:Busz", "void");
+
+        // --- veg2 -> meg2 ---
+        hivas("veg2:Csomopont", "jarmuTavozik(busz)");
+        veg2.jarmuTavozik(busz);
+        visszater("veg2:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u41:Utegyseg", "ralep(busz)");
+        sikeres = u41.ralep(busz);
+        visszater("u41:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u41)");
+            busz.sikeresLepes(u41);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u42:Utegyseg", "ralep(busz)");
+        sikeres = u42.ralep(busz);
+        visszater("u42:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u42)");
+            busz.sikeresLepes(u42);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("meg2:Csomopont", "jarmuErkezik(busz)");
+        meg2.jarmuErkezik(busz);
+        visszater("meg2:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(meg2)");
+        busz.megalloErintese(meg2);
+        visszater("busz:Busz", "void");
+
+        // --- meg2 -> meg1 ---
+        hivas("meg2:Csomopont", "jarmuTavozik(busz)");
+        meg2.jarmuTavozik(busz);
+        visszater("meg2:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u51:Utegyseg", "ralep(busz)");
+        sikeres = u51.ralep(busz);
+        visszater("u51:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u51)");
+            busz.sikeresLepes(u51);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u52:Utegyseg", "ralep(busz)");
+        sikeres = u52.ralep(busz);
+        visszater("u52:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u52)");
+            busz.sikeresLepes(u52);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("meg1:Csomopont", "jarmuErkezik(busz)");
+        meg1.jarmuErkezik(busz);
+        visszater("meg1:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(meg1)");
+        busz.megalloErintese(meg1);
+        visszater("busz:Busz", "void");
+
+        // --- meg1 -> veg1 ---
+        hivas("meg1:Csomopont", "jarmuTavozik(busz)");
+        meg1.jarmuTavozik(busz);
+        visszater("meg1:Csomopont", "void");
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u61:Utegyseg", "ralep(busz)");
+        sikeres = u61.ralep(busz);
+        visszater("u61:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u61)");
+            busz.sikeresLepes(u61);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("busz:Busz", "lep()");
+        busz.lep();
+        visszater("busz:Busz", "void");
+
+        hivas("u62:Utegyseg", "ralep(busz)");
+        sikeres = u62.ralep(busz);
+        visszater("u62:Utegyseg", String.valueOf(sikeres));
+
+        if (sikeres) {
+            hivas("busz:Busz", "sikeresLepes(u62)");
+            busz.sikeresLepes(u62);
+            visszater("busz:Busz", "void");
+        }
+
+        hivas("veg1:Csomopont", "jarmuErkezik(busz)");
+        veg1.jarmuErkezik(busz);
+        visszater("veg1:Csomopont", "void");
+
+        hivas("busz:Busz", "megalloErintese(veg1)");
+        busz.megalloErintese(veg1);
+        visszater("busz:Busz", "void");
+
+        hivas("busz:Busz", "jutalomKiszamitasa()");
+        int bevetel = busz.jutalomKiszamitasa();
+        visszater("busz:Busz", String.valueOf(bevetel));
+
+        hivas("ny:Nyilvantarto", "penzNovel(" + bevetel + ")");
+        ny.penzNovel(bevetel);
+        visszater("ny:Nyilvantarto", "void");
+
+        tesztLezaras(
+                "bevetel=" + bevetel
+                        + ", erintettMegallokSzama=" + busz.getErintettLista().size()
+                        + ", utvonalHossza=" + busz.getKijeloltUtvonal().size()
+        );
     }
 
     private void takaritasHohanyoval() {
@@ -888,19 +1429,151 @@ public class Skeleton {
         ueKov.ralep(a);
         visszater("ueKov:Utegyseg", "false");
 
-        if (igenNemBeker("Sikeres legyen a sávváltás? (Szabad a jobb oldali útegység?)")) {
+        if (igenNemBeker("Sikeres legyen a sávváltás? (Szabad a jobb oldali sáv?)")) {
             hivas("a:Auto", "savValtas()");
+            a.savValtas();
 
+            // A savValtas() belülről hívja a getJobbUtegyseg()-et
             hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
-            Utegyseg cel = ueAkt.getJobbUtegyseg();
             visszater("ueAkt:Utegyseg", "ueJobb");
-            //TODO
-        }
 
+            hivas("a:Auto", "sikeresLepes(ueJobb)");
+
+            // A sikeresLepes() frissíti a referenciákat
+            hivas("ueAkt:Utegyseg", "setJarmu(null)");
+            visszater("ueAkt:Utegyseg", "void");
+
+            hivas("ueJobb:Utegyseg", "setJarmu(a)");
+            visszater("ueJobb:Utegyseg", "void");
+
+            visszater("a:Auto", "void"); // sikeresLepes vége
+            visszater("a:Auto", "void"); // savValtas vége
+
+            visszater("a:Auto", "void"); // lep vége
+            tesztLezaras("Sikeres, a sávváltás megtörtént, így az autó a jobb oldali sávba ment át.");
+
+        } else {
+            // Ha a felhasználó szerint nem sikeres (pl. foglalt a jobb sáv is)
+            ueJobb.setBlokkolt(true);
+            hivas("a:Auto", "savValtas()");
+            a.savValtas();
+
+            hivas("a:Auto", "elakad()");
+            a.elakad();
+            visszater("a:Auto", "void");
+
+            visszater("a:Auto", "void"); // savValtas vége
+            visszater("a:Auto", "void"); // lep vége
+            tesztLezaras("Sikertelen, a sávváltás nem sikerült, így az autó az akadály előtt maradt és elakadt.");
+        }
     }
 
     private void melyHobanElakadas() {
-        // TODO: A teszteset implementációja később kerül ide.
+        tesztInditas("Mély hóban elakadás");
+
+        Busz b = new Busz();
+        Ut ut = new Ut();
+        Sav s1 = new Sav();
+        Sav s2 = new Sav();
+        Sav s3 = new Sav();
+        Utegyseg ueAkt = new Utegyseg();
+        Utegyseg ueKov = new Utegyseg();
+        Utegyseg ueJobb = new Utegyseg();
+        Utegyseg ueBal = new Utegyseg();
+
+        // Egységek összekötése
+        ut.addSav(s1);
+        ut.addSav(s2);
+        ut.addSav(s3);
+        s1.setElsoUtegyseg(ueAkt);
+        s2.setElsoUtegyseg(ueJobb);
+        s3.setElsoUtegyseg(ueBal);
+        ueAkt.setKovetkezoUtegyseg(ueKov);
+        ueAkt.setJobbUtegyseg(ueJobb);
+        ueAkt.setBalUtegyseg(ueBal);
+        ueAkt.setJarmu(b);
+        b.setUtegyseg(ueAkt);
+
+        ueKov.setHoMagassag(20);
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        hivas("ueKov:Utegyseg", "ralep(b)");
+
+
+        /*boolean siker = ueKov.ralep(b);
+        visszater("ueKov:Utegyseg", String.valueOf(siker));
+
+        // A ralep() híváson belül (vagy a logolás kedvéért utána)
+        // látszódnia kell az elakadás folyamatának:
+        if (b.isElakadt()) {
+            hivas("b:Busz", "elakad()");
+
+            // A Jarmu.elakad() beállítja az útegységet blokkoltra
+            hivas("ueKov:Utegyseg", "setBlokkolt(true)");
+            ueKov.setBlokkolt(true);
+            visszater("ueKov:Utegyseg", "void");
+
+            visszater("b:Busz", "void");
+        }
+
+        visszater("b:Busz", "void"); // lep() vége*/
+
+        hivas("b:Busz", "lep()");
+        b.lep();
+
+        if (igenNemBeker("Elérte a hómagasság a küszöböt a következő útegységen?")) {
+            ueKov.setHoMagassag(20);
+
+            hivas("ueKov:Utegyseg", "ralep(b)");
+            ueKov.ralep(b);
+            visszater("ueKov:Utegyseg", "true");
+
+            if (igenNemBeker("Tud a busz sávot váltani? (Szabad valamelyik szomszédos sáv?)")) {
+                ueJobb.setBlokkolt(false);
+                ueJobb.setJarmu(null);
+
+                hivas("b:Busz", "savValtas()");
+
+                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueJobb");
+
+                hivas("b:Busz", "sikeresLepes(ueJobb)");
+                visszater("b:Busz", "void");
+
+                visszater("b:Busz", "void");
+                tesztLezaras("Sikeres, a busz elakadt az eredeti sávban, de sikeresen sávot váltott a jobboldalira.");
+
+            } else {
+                ueJobb.setBlokkolt(true);
+                ueBal.setBlokkolt(true);
+
+                hivas("b:Busz", "savValtas()");
+
+                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueJobb");
+                hivas("ueAkt:Utegyseg", "getBalUtegyseg()");
+                visszater("ueAkt:Utegyseg", "ueBal");
+
+                visszater("b:Busz", "void");
+
+                tesztLezaras("Sikertelen, a busz mély hóba futott és nem tudott sávot váltani, mert a szomszédok is blokkoltak.");
+            }
+
+        } else {
+            ueKov.setHoMagassag(5);
+
+            hivas("ueKov:Utegyseg", "ralep(b)");
+            ueKov.ralep(b);
+            visszater("ueKov:Utegyseg", "true");
+
+            hivas("b:Busz", "sikeresLepes(ueKov)");
+            b.sikeresLepes(ueKov);
+            visszater("b:Busz", "void");
+
+            tesztLezaras("Sikeres, a hó nem volt elég mély az elakadáshoz, a busz továbbhaladt.");
+        }
     }
 
     private void jatekVege() {
@@ -958,18 +1631,18 @@ public class Skeleton {
 
             hivas("b:Busz", "megalloErintese(bm)");
             b.megalloErintese(bm);
-            visszater("b:Busz", "megalloErintese(bm)");
+            visszater("b:Busz", "void");
 
-            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("bm:Csomopont", "void");
             visszater("b:Busz","void");
 
             tesztLezaras("Sikeres, a busz megállót érintett");
         }else{
             hivas("b:Busz", "megalloErintese(null)");
             b.megalloErintese(null);
-            visszater("b:Busz", "megalloErintese(null)");
+            visszater("b:Busz", "void");
 
-            visszater("bm:Csomopont", "jarmuErkezik(b)");
+            visszater("bm:Csomopont", "void");
             visszater("b:Busz","void");
 
             tesztLezaras("Sikertelen, a busz nem érintett megállót");
@@ -1004,14 +1677,14 @@ public class Skeleton {
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
             hivas("ueKov","taposodas(10)");
             ueKov.taposodas(10);
-            visszater("ueKov","taposodas(10)");
+            visszater("ueKov","void");
 
             visszater("b:Busz","void");
             tesztLezaras("Sikeres, jeges lett az útegység");
         }else{}
             hivas("ueKov","taposodas(1)");
             ueKov.taposodas(1);
-            visszater("ueKov","taposodas(1)");
+            visszater("ueKov","void");
 
             visszater("b:Busz","void");
             tesztLezaras("Sikertelen, nem lett jeges az útegység");
