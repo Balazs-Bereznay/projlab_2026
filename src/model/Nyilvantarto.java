@@ -58,6 +58,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     @Override
     public void soNovel(int mennyiseg) {
+        so+= mennyiseg;
         System.out.println(mennyiseg + " egység só hozzáadva a raktárhoz.");
 
     }
@@ -102,7 +103,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     @Override
     public void biokerozinNovel(int mennyiseg) {
-
+        biokerozin += mennyiseg;
         System.out.println(mennyiseg + " egység biokerozin betöltve a raktárhoz.");
     }
 
@@ -112,6 +113,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     @Override
     public void penzNovel(int mennyiseg) {
+        penz += mennyiseg;
         System.out.println(" A közös kassza " + mennyiseg + " tallérral nőtt.");
     }
 
@@ -121,6 +123,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     @Override
     public void penzLevon(int mennyiseg) {
+        penz -= mennyiseg;
         System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
     }
 
@@ -130,7 +133,6 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     public int getPenz() {
         System.out.println("Lekérdezték az aktuális egyenleget: " + this.penz);
-
         return penz;
     }
 
