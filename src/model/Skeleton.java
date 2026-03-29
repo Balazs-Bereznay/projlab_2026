@@ -72,7 +72,8 @@ public class Skeleton {
             "Mély hóban elakadás",
             "Játék vége",
             "Buszmegálló érintése",
-            "Jégképződés taposás miatt"
+            "Jégképződés taposás miatt",
+            "Komplex teszteset"
     };
 
     private final Scanner scanner;
@@ -199,9 +200,106 @@ public class Skeleton {
             case 24:
                 jegkepzodesTaposasMiatt();
                 break;
+                case 25:
+                    komplex();
+                    break;
             default:
                 System.out.println("[Nincs ilyen teszteset]");
         }
+    }
+
+    private  void komplex(){
+
+        tesztInditas("Komplex teszteset");
+
+        /// inicializalas
+        Utegyseg u1 = new Utegyseg();
+        Utegyseg startB = new Utegyseg();
+        Utegyseg startA1 = new Utegyseg();
+        Utegyseg startA2 = new Utegyseg();
+        Utegyseg startA3 = new Utegyseg();
+
+        Busz b = new Busz();
+        Auto a1 = new Auto();
+        Auto a2 = new Auto();
+        Auto a3 = new Auto();
+
+        a1.setUtegyseg(startA1);
+        startA1.setJarmu(a1);
+
+        a2.setUtegyseg(startA2);
+        startA2.setJarmu(a2);
+
+        a3.setUtegyseg(startA3);
+        startA3.setJarmu(a3);
+
+        b.setUtegyseg(startB);
+        startB.setJarmu(b);
+
+        /// busz letapossa a havat jeg lesz belole
+        hivas("b:Busz", "lep(u1)");
+
+        hivas("u1:Utegyseg", "ralep(this)");
+        hivas("u1:Utegyseg", "taposodas()");
+        visszater("u1:Utegyseg", "void");
+
+        if (igenNemBeker("Elérte a letaposottság a küszöböt?")) {
+            hivas("u1:Utegyseg", "jegesedes()");
+            visszater("u1:Utegyseg", "void");
+        }
+
+        visszater("u1:Utegyseg", "true");
+        visszater("b:Busz", "void");
+
+        u1.setJarmu(null); // levesszuk a buszt onnan, hogy az auto oda tujdon lepni
+
+        /// a1 auto lepese megcsuszasa és baleset
+        hivas("a1:Auto", "lep(u1)");
+        hivas("u1:Utegyseg", "ralep(this)");
+
+
+        if (igenNemBeker("Megcsúszik-e az a1 jármű? (I/N)")) {
+            hivas("a1:Auto", "csuszik()");
+            visszater("a1:Auto", "void");
+
+            hivas("u1:Utegyseg", "balesetetKeres()");
+
+            if (igenNemBeker("Van-e elérhető karambolpartner a közelben? (I/N)")) {
+                hivas("u1:Utegyseg", "KeresPartner() -> a2");
+                visszater("u1:Utegyseg", "a2");
+
+                hivas("a2:Auto", "baleset()");
+                kiirBehuzva("    [Megjegyzés: A baleset blokkolja a sávot.]");
+                visszater("u1:Utegyseg", "baleset rögzítve");
+
+            }
+            else{  visszater("u1:Utegyseg", "void");}
+
+
+            visszater("a1:Auto", "void");
+
+
+        }
+        visszater("u1:Utegyseg", "void");
+        visszater("a1:Auto", "void");
+
+        u1.setJarmu(null); // itt is ugyanezt tesszuk
+
+        hivas("a3:Auto", "lep(u1)");
+
+        hivas("u1:Utegyseg", "getBlokkolt()");
+        visszater("u1:Utegyseg", "true");
+        if (!igenNemBeker("Van szabad szomszédos sáv? (I/N)")) {
+            kiirBehuzva("    [Megjegyzés: a3 megáll, torlódás alakul ki]");
+        } else {
+            kiirBehuzva("    [Megjegyzés: a3 sikeresen sávot váltott.]");
+        }
+
+        visszater("a3:Auto", "void");
+
+        tesztLezaras("Naplózás (teszt lefutott)");
+
+
     }
 
     private void hoesesEgyUtegysegre() {
