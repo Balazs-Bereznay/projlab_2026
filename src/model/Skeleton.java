@@ -1423,6 +1423,7 @@ public class Skeleton {
         ueKov.setJarmu(new Auto());
         hivas("a:Auto", "lep()");
         a.lep();
+        visszater("a:Auto", "void"); // lep vége
 
         hivas("ueKov:Utegyseg", "ralep(a)");
         ueKov.ralep(a);
@@ -1448,7 +1449,6 @@ public class Skeleton {
             visszater("a:Auto", "void"); // sikeresLepes vége
             visszater("a:Auto", "void"); // savValtas vége
 
-            visszater("a:Auto", "void"); // lep vége
             tesztLezaras("Sikeres, a sávváltás megtörtént, így az autó a jobb oldali sávba ment át.");
 
         } else {
@@ -1462,8 +1462,8 @@ public class Skeleton {
             visszater("a:Auto", "void");
 
             visszater("a:Auto", "void"); // savValtas vége
-            visszater("a:Auto", "void"); // lep vége
-            tesztLezaras("Sikertelen, a sávváltás nem sikerült, így az autó az akadály előtt maradt és elakadt.");
+
+            tesztLezaras("Sikertelen, a sávváltás nem sikerült, így az autó20 elakadt.");
         }
     }
 
@@ -1489,16 +1489,20 @@ public class Skeleton {
         s2.setElsoUtegyseg(ueJobb);
         s3.setElsoUtegyseg(ueBal);
         ueAkt.setKovetkezoUtegyseg(ueKov);
-        ueAkt.setJobbUtegyseg(ueJobb);
-        ueAkt.setBalUtegyseg(ueBal);
+        ueKov.setJobbUtegyseg(ueJobb);
+        ueKov.setBalUtegyseg(ueBal);
         ueAkt.setJarmu(b);
         b.setUtegyseg(ueAkt);
 
         hivas("b:Busz", "lep()");
         b.lep();
+        visszater("b:Busz", "void");
+
+        System.out.println("A hó elakadás küszöbe: " + ueKov.getHoElakadasKuszob());
 
         if(igenNemBeker("Elérte a hómagasság a küszöböt a következő útegységen?")){
             ueKov.setHoMagassag(20);
+            System.out.println("A hómagasság most: " + ueKov.getHoMagassag());
 
             hivas("ueKov:Utegyseg", "ralep(b)");
             ueKov.ralep(b);
@@ -1509,34 +1513,25 @@ public class Skeleton {
                 ueJobb.setJarmu(null);
 
                 hivas("b:Busz", "savValtas()");
-
-                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
-                visszater("ueAkt:Utegyseg", "ueJobb");
-
-                hivas("b:Busz", "sikeresLepes(ueJobb)");
+                b.savValtas();
                 visszater("b:Busz", "void");
 
-                visszater("b:Busz", "void");
-                tesztLezaras("Sikeres, a busz elakadt az eredeti sávban, de sikeresen sávot váltott a jobboldalira.");
+                tesztLezaras("Sikertelen, a busz elakadt az eredeti sávban, de sávot váltott a jobboldalira.");
 
             }else{
                 ueJobb.setBlokkolt(true);
                 ueBal.setBlokkolt(true);
 
                 hivas("b:Busz", "savValtas()");
-
-                hivas("ueAkt:Utegyseg", "getJobbUtegyseg()");
-                visszater("ueAkt:Utegyseg", "ueJobb");
-                hivas("ueAkt:Utegyseg", "getBalUtegyseg()");
-                visszater("ueAkt:Utegyseg", "ueBal");
-
+                b.savValtas();
                 visszater("b:Busz", "void");
 
-                tesztLezaras("Sikertelen, a busz mély hóba futott és nem tudott sávot váltani, mert a szomszédok is blokkoltak.");
+                tesztLezaras("Sikeres, a busz mély hóba futott és nem tudott sávot váltani, mert a szomszédok is blokkoltak.");
             }
 
         }else{
             ueKov.setHoMagassag(5);
+            System.out.println("A hómagasság most: " + ueKov.getHoMagassag());
 
             hivas("ueKov:Utegyseg", "ralep(b)");
             ueKov.ralep(b);
@@ -1546,7 +1541,7 @@ public class Skeleton {
             b.sikeresLepes(ueKov);
             visszater("b:Busz", "void");
 
-            tesztLezaras("Sikeres, a hó nem volt elég mély az elakadáshoz, a busz továbbhaladt.");
+            tesztLezaras("Sikertelen, a hó nem volt elég mély az elakadáshoz, a busz továbbhaladt.");
         }
     }
 
@@ -1593,6 +1588,7 @@ public class Skeleton {
 
         hivas("b:Busz", "lep()");
         b.lep();
+        visszater("b:Busz","void");
 
         hivas("ueKov:Utegyseg", "ralep(b)");
         ueUtolso.ralep(b);
@@ -1600,6 +1596,7 @@ public class Skeleton {
 
         if(igenNemBeker("A csomópont egy megálló?")){
             bm.setBuszmegallo(true);
+
             hivas("bm:Csomopont", "jarmuErkezik(b)");
             bm.jarmuErkezik(b);
 
@@ -1608,16 +1605,17 @@ public class Skeleton {
             visszater("b:Busz", "void");
 
             visszater("bm:Csomopont", "void");
-            visszater("b:Busz","void");
 
             tesztLezaras("Sikeres, a busz megállót érintett");
         }else{
+            hivas("bm:Csomopont", "jarmuErkezik(b)");
+            bm.jarmuErkezik(b);
+
             hivas("b:Busz", "megalloErintese(null)");
             b.megalloErintese(null);
             visszater("b:Busz", "void");
 
             visszater("bm:Csomopont", "void");
-            visszater("b:Busz","void");
 
             tesztLezaras("Sikertelen, a busz nem érintett megállót");
         }
@@ -1640,28 +1638,38 @@ public class Skeleton {
         ueAkt.setKovetkezoUtegyseg(ueKov);
         ueAkt.setJarmu(b);
         b.setUtegyseg(ueAkt);
+        ueKov.setHoMagassag(10);
 
         hivas("b:Busz", "lep()");
         b.lep();
+        visszater("b:Busz","void");
 
         hivas("ueKov:Utegyseg", "ralep(b)");
         ueKov.ralep(b);
-        visszater("ueKov:Utegyseg","true");
+
+        System.out.println("A letaposottság küszöbe: " + ueKov.getLetaposottsagKuszob());
+        System.out.println("A letaposottság most: " + ueKov.getLetaposottsag());
 
         if(igenNemBeker("Elérte a letaposottság a küszöböt?")){
-            hivas("ueKov","taposodas(10)");
+            hivas("ueKov:Utegyseg","taposodas(10)");
+
             ueKov.taposodas(10);
-            visszater("ueKov","void");
+            visszater("ueKov:Utegyseg","void");
+            visszater("ueKov:Utegyseg","true");
 
-            visszater("b:Busz","void");
+            System.out.println("A jég magassága: " + ueKov.getJegMagassag());
+
             tesztLezaras("Sikeres, jeges lett az útegység");
-        }else{}
-            hivas("ueKov","taposodas(1)");
+        }else{
+            hivas("ueKov:Utegyseg","taposodas(1)");
             ueKov.taposodas(1);
-            visszater("ueKov","void");
+            visszater("ueKov:Utegyseg","void");
+            visszater("ueKov:Utegyseg","true");
 
-            visszater("b:Busz","void");
+            System.out.println("A jég magassága " + ueKov.getJegMagassag());
+
             tesztLezaras("Sikertelen, nem lett jeges az útegység");
+        }
     }
 
     /**

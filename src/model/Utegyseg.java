@@ -41,6 +41,14 @@ public class Utegyseg {
     }
 
     /// Getterek és setterek
+    public int getHoElakadasKuszob(){
+        return HO_ELAKADAS_KUSZOB;
+    }
+
+    public int getLetaposottsagKuszob(){
+        return LETAPOSOTTSAG_KUSZOB;
+    }
+
     public int getLetaposottsag() {
         return letaposottsag;
     }
@@ -253,8 +261,6 @@ public class Utegyseg {
      * false, ha a rálépés meghiúsult (mert a sáv foglalt vagy blokkolva van).
      */
     public boolean ralep(Jarmu jarmu) {
-        System.out.println("-> Utegyseg.ralep(" + jarmu.getClass().getSimpleName() + ") meghívva");
-
         /// Ha a sáv már blokkolva van, vagy fizikailag áll rajta egy másik jármű,
         /// senki nem léphet rá (még a hókotró sem mehet "át" rajta).
         if (this.blokkolt || this.jarmu != null) {
