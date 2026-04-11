@@ -120,6 +120,8 @@ public class Busz extends Jarmu implements Iranyithato {
         return bevetel;
     }
 
+    public void setBevetel(int bevetel) {this.bevetel = bevetel;}
+
     @Override
     public String toString() {
         return super.toString()

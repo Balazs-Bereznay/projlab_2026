@@ -21,7 +21,7 @@ public class Tapadasfejlesztes extends Buszfejlesztes {
         if(busz == null){
             return;
         }
-        busz.setSebesseg(busz.getTapadas() + novelesMerteke);
+        busz.setTapadas(busz.getTapadas() + novelesMerteke);
         busz.nyilvantarto.penzLevon(ar);
     }
 }

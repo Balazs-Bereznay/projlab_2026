@@ -21,7 +21,7 @@ public class Hozamfejlesztes extends Buszfejlesztes {
         if(busz == null){
             return;
         }
-        busz.setSebesseg(busz.getBevetel() + novelesMerteke);
+        busz.setBevetel(busz.getBevetel() + novelesMerteke);
         busz.nyilvantarto.penzLevon(ar);
     }
 }
