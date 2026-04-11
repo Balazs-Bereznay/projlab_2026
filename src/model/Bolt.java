@@ -12,8 +12,15 @@ public class Bolt {
     private  int soAr;
     /// a megvasarolható biokerozin egységára
     private  int biokerozinAr;
+
+    private int hokotroAr;
+
+    private int fejlesztAr;
+
     /// a nyilvantarto amiben majd eltaroljuk hogy az egyes nyersanyagokbol mennyi all rednelkezesre
     private Nyilvantarto nyilvantarto;
+
+
 
     public Bolt(int soAr, int biokerozinAr) {
         this.soAr = soAr;
@@ -23,8 +30,12 @@ public class Bolt {
     /**
      * A játékos megvásárol egy új hokotrót
      */
-    public void hokotroVasarol(){
+    public void hokotroVasarol(Jatekos jatekos){
+        Fej sopro = new Sopro();
+        jatekos.getFlotta().add(new Hokotro(sopro));
+        nyilvantarto.penzLevon(hokotroAr);
         System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
+
     }
 
     /**
@@ -32,6 +43,9 @@ public class Bolt {
      * @param mennyiseg annak a mennyisége, hogy mennyi sót  akarunk vásárolni.
      */
     public void soVasarol(int mennyiseg){
+
+        nyilvantarto.soNovel(mennyiseg);
+        nyilvantarto.penzLevon(soAr);
         System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
     }
 
@@ -40,19 +54,24 @@ public class Bolt {
      * @param mennyiseg annak a mennyisége, hogy mennyi biokerozint  akarunk vásárolni.
      */
     public void setBiokerozinVasarol(int mennyiseg){
+        nyilvantarto.biokerozinNovel(mennyiseg);
+        nyilvantarto.penzLevon(biokerozinAr);
         System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
     }
 
     public void sebessegFejlesztes(Busz busz){
-        nyilvantarto.penzLevon(10);
+        Sebessegfejlesztes sebesseg = new Sebessegfejlesztes(fejlesztAr,1);
+        sebesseg.fejleszt(busz);
         System.out.println("A busz sebessége fejlesztve lett!");
     }
     public void tapadasFejlesztes(Busz busz){
-        nyilvantarto.penzLevon(10);
+        Tapadasfejlesztes tapadasfejlesztes = new Tapadasfejlesztes(fejlesztAr,1);
+        tapadasfejlesztes.fejleszt(busz);
         System.out.println("A busz tapadasa fejlesztve lett!");
     }
     public void hozamFejlesztes(Busz busz){
-        nyilvantarto.penzLevon(10);
+        Hozamfejlesztes hozamfejlesztes = new Hozamfejlesztes(fejlesztAr,100);
+        hozamfejlesztes.fejleszt(busz);
         System.out.println("A busz hozama fejlesztve lett!");
     }
 
@@ -61,6 +80,9 @@ public class Bolt {
      * @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void seproVasarol(Hokotro hokotro){
+        Fej sepro = new Sopro();
+        hokotro.setFej(sepro);
+        nyilvantarto.penzLevon(sepro.ertek);
         System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -69,6 +91,9 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void hanyoVasarol(Hokotro hokotro){
+        Fej hanyo = new Hanyo();
+        hokotro.setFej(hanyo);
+        nyilvantarto.penzLevon(hanyo.ertek);
         System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -77,6 +102,9 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void jegtoroVasarol(Hokotro hokotro){
+        Fej jegt = new Jegtoro();
+        hokotro.setFej(jegt);
+        nyilvantarto.penzLevon(jegt.ertek);
         System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -85,6 +113,9 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void soszoroVasarol(Hokotro hokotro){
+        Fej sSz = new Soszoro(nyilvantarto);
+        hokotro.setFej(sSz);
+        nyilvantarto.penzLevon(sSz.ertek);
         System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -93,6 +124,9 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public  void sarkanyVasarol(Hokotro hokotro){
+        Fej srkny = new Sarkany(nyilvantarto);
+        hokotro.setFej(srkny);
+        nyilvantarto.penzLevon(srkny.ertek);
         System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -138,4 +172,22 @@ public class Bolt {
         System.out.println("uj nyilvantarto lett beallitva");
 
     }
+
+    public int gethokotroAr(int mennyiseg){
+
+        return hokotroAr;
+    }
+     public void sethokotroAr(int mennyiseg)
+     {
+        hokotroAr = mennyiseg;
+     }
+
+     public int getFejlesztAr(int mennyiseg){
+        return fejlesztAr;
+     }
+     public void setFejlesztAr(int menny){
+        fejlesztAr = menny;
+     }
+
+
 }
