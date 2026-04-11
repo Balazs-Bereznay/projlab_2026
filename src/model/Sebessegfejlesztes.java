@@ -6,6 +6,11 @@ package model;
  */
 public class Sebessegfejlesztes extends Buszfejlesztes {
 
+     public Sebessegfejlesztes(int ar, int novelesMerteke) {
+         this.ar = ar;
+        this.novelesMerteke = novelesMerteke;
+    }
+
     /**
      * Megnöveli a buszoknak a haladási sebességét, így az 
      * gyorsabban teljesítheti a köreit.
@@ -13,6 +18,10 @@ public class Sebessegfejlesztes extends Buszfejlesztes {
     @Override
     public void fejleszt() {
         System.out.println("Sebességfejlesztés alkalmazva.");
-        // TODO:
+        if(busz == null){
+            return;
+        }
+        busz.setSebesseg(busz.getSebesseg() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(ar);
     }
 }

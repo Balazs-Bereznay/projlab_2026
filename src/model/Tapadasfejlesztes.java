@@ -6,6 +6,11 @@ package model;
  */
 public class Tapadasfejlesztes extends Buszfejlesztes {
 
+    public Tapadasfejlesztes(int ar, int novelesMerteke) {
+        this.ar = ar;
+        this.novelesMerteke = novelesMerteke;
+    }
+
     /**
      * Megnöveli a busz tapadását, így amikor jeges útegységen 
      * halad át, kisebb eséllyel fog megcsúszni, elkerülve az összecsúszást (balesetet).
@@ -13,6 +18,10 @@ public class Tapadasfejlesztes extends Buszfejlesztes {
     @Override
     public void fejleszt() {
         System.out.println("Tapadásfejlesztés alkalmazva.");
-        // TODO:
+        if(busz == null){
+            return;
+        }
+        busz.setSebesseg(busz.getTapadas() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(ar);
     }
 }

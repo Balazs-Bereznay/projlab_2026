@@ -6,6 +6,11 @@ package model;
  */
 public class Hozamfejlesztes extends Buszfejlesztes {
 
+    public Hozamfejlesztes(int ar, int novelesMerteke) {
+        this.ar = ar;
+        this.novelesMerteke = novelesMerteke;
+    }
+
     /**
      * Megnöveli a busz által teljesített körökért megszerezhető 
      * maximális bevétel értékét.
@@ -13,6 +18,10 @@ public class Hozamfejlesztes extends Buszfejlesztes {
     @Override
     public void fejleszt() {
         System.out.println("Hozamfejlesztés alkalmazva.");
-        // TODO:
+        if(busz == null){
+            return;
+        }
+        busz.setSebesseg(busz.getBevetel() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(ar);
     }
 }

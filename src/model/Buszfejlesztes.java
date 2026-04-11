@@ -7,9 +7,19 @@ package model;
 public abstract class Buszfejlesztes {
 
     /**
+     * A fejlesztés által érintett busz, amelynek a paramétereit javítja.
+     */
+    protected Busz busz;
+
+    /**
      * A fejlesztés bolti ára.
      */
     protected int ar;
+
+    /** A buszok sebességének növelésének mértéke, amennyivel a buszok
+     * gyorsabban haladhatnak a fejlesztés alkalmazása után.
+     */
+    protected int novelesMerteke;
 
     public int getAr() {
         System.out.println("Lekérdezték a buszfejlesztés árát.");

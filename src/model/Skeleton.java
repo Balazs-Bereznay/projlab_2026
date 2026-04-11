@@ -1033,7 +1033,7 @@ public class Skeleton {
         b.setNyilvantarto(ny);
 
         Busz busz = new Busz();
-        Sebessegfejlesztes sf = new Sebessegfejlesztes();
+        Sebessegfejlesztes sf = new Sebessegfejlesztes(5, 5);
 
 
         hivas("b:Bolt", "sebessegFejlesztes(busz)");
