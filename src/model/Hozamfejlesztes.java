@@ -16,7 +16,7 @@ public class Hozamfejlesztes extends Buszfejlesztes {
      * maximális bevétel értékét.
      */
     @Override
-    public void fejleszt() {
+    public void fejleszt(Busz busz) {
         System.out.println("Hozamfejlesztés alkalmazva.");
         if(busz == null){
             return;

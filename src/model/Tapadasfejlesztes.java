@@ -16,7 +16,7 @@ public class Tapadasfejlesztes extends Buszfejlesztes {
      * halad át, kisebb eséllyel fog megcsúszni, elkerülve az összecsúszást (balesetet).
      */
     @Override
-    public void fejleszt() {
+    public void fejleszt(Busz busz) {
         System.out.println("Tapadásfejlesztés alkalmazva.");
         if(busz == null){
             return;

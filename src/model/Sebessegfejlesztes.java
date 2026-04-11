@@ -16,7 +16,7 @@ public class Sebessegfejlesztes extends Buszfejlesztes {
      * gyorsabban teljesítheti a köreit.
      */
     @Override
-    public void fejleszt() {
+    public void fejleszt(Busz busz) {
         System.out.println("Sebességfejlesztés alkalmazva.");
         if(busz == null){
             return;

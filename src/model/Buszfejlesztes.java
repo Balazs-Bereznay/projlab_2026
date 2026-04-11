@@ -7,11 +7,6 @@ package model;
 public abstract class Buszfejlesztes {
 
     /**
-     * A fejlesztés által érintett busz, amelynek a paramétereit javítja.
-     */
-    protected Busz busz;
-
-    /**
      * A fejlesztés bolti ára.
      */
     protected int ar;
@@ -34,5 +29,5 @@ public abstract class Buszfejlesztes {
     /**
      * Végrehajtja a fejlesztésnek a paraméterváltozásait a beruházó buszra.
      */
-    public abstract void fejleszt();
+    public abstract void fejleszt(Busz busz);
 }

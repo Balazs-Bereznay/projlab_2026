@@ -1050,7 +1050,7 @@ public class Skeleton {
             visszater("ny:Nyilvantarto", "true");
 
             hivas("sf:Sebessegfejlesztes", "fejleszt()");
-            sf.fejleszt();
+            sf.fejleszt(busz);
 
             hivas("busz:Busz", "setSebesseg(megnoveltErtek)");
             busz.setSebesseg(0);
