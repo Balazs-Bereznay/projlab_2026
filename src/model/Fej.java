@@ -7,11 +7,7 @@ package model;
  */
 public abstract class Fej {
     /// Megadja, hogy mennyiért lehet megvásárolni a fejet
-    protected int ertek;
-
-    public Fej(int ertek) {
-        this.ertek = ertek;
-    }
+    /// protected int ertek;
 
     /**
      * Végrehajtja a hókotróra szerelt fejhez tartozó takarítási logikát
@@ -20,11 +16,11 @@ public abstract class Fej {
      */
     public abstract boolean hasznal(Utegyseg utegyseg);
 
-    public int getErtek() {
+    /*public int getErtek() {
         return ertek;
     }
 
     public void setErtek(int ertek) {
         this.ertek = ertek;
-    }
+    }*/
 }

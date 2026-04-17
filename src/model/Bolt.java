@@ -17,10 +17,15 @@ public class Bolt {
 
     private int fejlesztAr;
 
+    private int seproAr;
+    private int hanyoAr;
+    private int jegtoroAr;
+    private int soszoroAr;
+    private int sarkanyAr;
+    private int zuzalekAr;
+
     /// a nyilvantarto amiben majd eltaroljuk hogy az egyes nyersanyagokbol mennyi all rednelkezesre
     private Nyilvantarto nyilvantarto;
-
-
 
     public Bolt(int soAr, int biokerozinAr) {
         this.soAr = soAr;
@@ -82,7 +87,7 @@ public class Bolt {
     public void seproVasarol(Hokotro hokotro){
         Fej sepro = new Sopro();
         hokotro.setFej(sepro);
-        nyilvantarto.penzLevon(sepro.ertek);
+        nyilvantarto.penzLevon(seproAr);
         System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -93,7 +98,7 @@ public class Bolt {
     public void hanyoVasarol(Hokotro hokotro){
         Fej hanyo = new Hanyo();
         hokotro.setFej(hanyo);
-        nyilvantarto.penzLevon(hanyo.ertek);
+        nyilvantarto.penzLevon(hanyoAr);
         System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -104,7 +109,7 @@ public class Bolt {
     public void jegtoroVasarol(Hokotro hokotro){
         Fej jegt = new Jegtoro();
         hokotro.setFej(jegt);
-        nyilvantarto.penzLevon(jegt.ertek);
+        nyilvantarto.penzLevon(jegtoroAr);
         System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -115,7 +120,7 @@ public class Bolt {
     public void soszoroVasarol(Hokotro hokotro){
         Fej sSz = new Soszoro(nyilvantarto);
         hokotro.setFej(sSz);
-        nyilvantarto.penzLevon(sSz.ertek);
+        nyilvantarto.penzLevon(soszoroAr);
         System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -126,7 +131,7 @@ public class Bolt {
     public  void sarkanyVasarol(Hokotro hokotro){
         Fej srkny = new Sarkany(nyilvantarto);
         hokotro.setFej(srkny);
-        nyilvantarto.penzLevon(srkny.ertek);
+        nyilvantarto.penzLevon(sarkanyAr);
         System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -189,5 +194,45 @@ public class Bolt {
         fejlesztAr = menny;
      }
 
+    public int getSeproAr(int mennyiseg){
+        return seproAr;
+    }
+    public void setSeproAr(int mennyiseg){
+        seproAr = mennyiseg;
+    }
 
+    public int getHanyoAr(int mennyiseg){
+        return hanyoAr;
+    }
+    public void setHanyoAr(int mennyiseg){
+        hanyoAr = mennyiseg;
+    }
+
+    public int getJegtoroAr(int mennyiseg){
+        return jegtoroAr;
+    }
+    public void setJegtoroAr(int mennyiseg){
+        jegtoroAr = mennyiseg;
+    }
+
+    public int getSoszoroAr(int mennyiseg){
+        return soszoroAr;
+    }
+    public void setSoszoroAr(int mennyiseg){
+        soszoroAr = mennyiseg;
+    }
+
+    public int getSarkanyAr(int mennyiseg){
+        return sarkanyAr;
+    }
+    public void setSarkanyAr(int mennyiseg){
+        sarkanyAr = mennyiseg;
+    }
+
+    public int getZuzalekAr(int mennyiseg){
+        return zuzalekAr;
+    }
+    public void setZuzalekAr(int mennyiseg){
+        zuzalekAr = mennyiseg;
+    }
 }
