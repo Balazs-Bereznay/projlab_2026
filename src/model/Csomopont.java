@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Az úthálózat szakaszait (Ut) összekötő csatlakozási pontok. Kezeli a járművek be és
@@ -43,27 +44,79 @@ public class Csomopont {
 
     ///További metódusok
     /**
-     * Feljegyzi egy jármű belépését a csomópontba az előző  útszakaszról.
-     * @param jarmu Az a jármű, ami megérkezett a csomópontba.
+     * Kezeli a csomópontra érkező jármű eseményét.
+     * Ha a csomópont buszmegálló és a jármű egy Busz, értesíti a járművet.
+     * * @param jarmu A csomóponthoz érkező jármű objektum.
      */
-    public void jarmuErkezik (Jarmu jarmu){
-        System.out.println("Jármű érkezett a csomópontba.");
-        if(jarmu.getClass().getSimpleName().equals("Auto") && celpont){
-            System.out.println("Ez a célpontja az autónak.");
+    public void jarmuErkezik(Jarmu jarmu) {
+        if (jarmu == null) {
+            return;
+        }
 
-        }else if(jarmu.getClass().getSimpleName().equals("Busz") && buszmegallo)
-            System.out.println("Ez egy megállója a busznak.");
-        else{
-            System.out.println("Ez egy sima kereszteződés.");
+        // Ellenőrizzük a csomópont állapotát és a jármű típusát
+        if (this.buszmegallo && jarmu instanceof Busz) {
+            Busz busz = (Busz) jarmu;
+
+            // Meghívjuk a busz metódusát, átadva az aktuális csomópontot (this)
+            busz.megalloErintese(this);
         }
     }
 
     /**
-     * Kezeli egy jármű kilépését a csomópontból és áthelyezi a következő útszakaszra.
-     * @param jarmu Az a jármű, ami tovább megy, átlépi a csomópontot.
+     * Kezeli a jármű távozását a csomópontból a tervezett útvonala alapján.
+     * Megkeresi a következő utat, majd megpróbálja ráhelyezni a járművet egy szabad sávra.
+     * * @param jarmu A távozni kívánó jármű.
      */
-    public void jarmuTavozik(Jarmu jarmu){
-        System.out.println("Jármű áttéve a következő útegységre.");
+    public void jarmuTavozik(Jarmu jarmu) {
+        if (jarmu == null) {
+            return;
+        }
+
+        List<Ut> utvonal = jarmu.getKijeloltUtvonal();
+
+        if (utvonal == null) {
+            return;
+        }
+
+        Ut kovetkezoUt = null;
+
+        // A következő út megkeresése az útvonalban.
+        // Olyan út-párt keresünk, ahol mindkét út ehhez a csomóponthoz csatlakozik.
+        for (int i = 0; i <= utvonal.size() - 2; i++) {
+            Ut aktualisUt = utvonal.get(i);
+            Ut utanaKovetkezoUt = utvonal.get(i + 1);
+
+            boolean aktualisKapcsolodik = (aktualisUt.getVegpont1() == this || aktualisUt.getVegpont2() == this);
+            boolean kovetkezoKapcsolodik = (utanaKovetkezoUt.getVegpont1() == this || utanaKovetkezoUt.getVegpont2() == this);
+
+            // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
+            if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
+                kovetkezoUt = utanaKovetkezoUt;
+                break;
+            }
+        }
+
+        // Ha nem találtunk érvényes következő utat, a jármű nem tud továbbmenni
+        if (kovetkezoUt == null) {
+            return;
+        }
+
+        // Próbálunk egy szabad sávot keresni a következő úton
+        for (Sav sav : kovetkezoUt.getSavok()) {
+            Utegyseg cel = sav.getElsoUtegyseg();
+
+            // Ha a sávnak van kezdő útegysége
+            if (cel != null) {
+                // Megpróbálunk rálépni
+                boolean sikeres = cel.ralep(jarmu);
+
+                // Ha sikerült rálépni az első útegységre, a távozás sikeres
+                if (sikeres) {
+                    return;
+                }
+            }
+        }
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 /**
  * A pálya legkisebb, hálószerűen összekapcsolt felépítési egysége.
  * Felelős az időjárás hatására rajta keletkező és eltűnő természeti hatások
@@ -8,8 +10,10 @@ package model;
 public class Utegyseg {
     private static final int HO_ELAKADAS_KUSZOB = 15;
     private static final int LETAPOSOTTSAG_KUSZOB = 5;
+    private static final int BEFEDES_KUSZOB = 5;
 
     private int letaposottsag;
+    private int befedettseg;
     private double megcsuszasEsely;
     private Jarmu jarmu;
     private Utegyseg kovetkezoUtegyseg;
@@ -19,6 +23,8 @@ public class Utegyseg {
     private int jegMagassag;
     private boolean blokkolt;
     private int soMennyiseg;
+    private boolean zuzalek;
+    private boolean jeges;
 
     /// Konstruktorok
     public Utegyseg(int letaposottsag, double megcsuszasEsely, Jarmu jarmu,
@@ -41,12 +47,25 @@ public class Utegyseg {
     }
 
     /// Getterek és setterek
-    public int getHoElakadasKuszob(){
+    /**
+     * Visszatér a hoElakadasKuszob statikus tagváltozó értékével.
+     */
+    public static int getHoElakadasKuszob() {
         return HO_ELAKADAS_KUSZOB;
     }
 
-    public int getLetaposottsagKuszob(){
+    /**
+     * Visszatér a letaposottsagKuszob statikus tagváltozó értékével.
+     */
+    public static int getLetaposottsagKuszob() {
         return LETAPOSOTTSAG_KUSZOB;
+    }
+
+    /**
+     * Visszatér a befedesKuszob statikus tagváltozó értékével.
+     */
+    public static int getBefedesKuszob() {
+        return BEFEDES_KUSZOB;
     }
 
     public int getLetaposottsag() {
@@ -130,6 +149,34 @@ public class Utegyseg {
         this.soMennyiseg = soMennyiseg;
     }
 
+    /**
+     * Visszatér a zuzalek tagváltozó értékével.
+     */
+    public boolean getZuzalek() {
+        return zuzalek;
+    }
+
+    /**
+     * A zuzalek nevű tagváltozónak az értékét beállítja a paraméterül kapott értékre.
+     */
+    public void setZuzalek(boolean zuzalek) {
+        this.zuzalek = zuzalek;
+    }
+
+    /**
+     * Visszatér a jeges tagváltozó értékével.
+     */
+    public boolean getJeges() {
+        return jeges;
+    }
+
+    /**
+     * A jeges nevű tagváltozónak az értékét beállítja a paraméterül kapott értékre.
+     */
+    public void setJeges(boolean jeges) {
+        this.jeges = jeges;
+    }
+
     ///További metódusok
     /**
      * Növeli a hóréteg vastagságát a mezőn a szimulált időjárás hatására.
@@ -137,13 +184,29 @@ public class Utegyseg {
      * @param mennyiseg Az a hómennyiség, amivel nő az útegységen lévő hóréteg.
      */
     public void havazas(int mennyiseg) {
-        System.out.println("Hómagasság növelése az útegységen " + mennyiseg + " mennyiségű hóval.");
-        ///Ha nincs só az úton, ami olvasztaná a havat
+        //Ha nincs só az úton, ami olvasztaná a havat
         if (soMennyiseg == 0) {
-            if (jegMagassag > 0)
-                jegesedes(mennyiseg);
-            else {
-                hoMagassag += mennyiseg;
+            if (this.jeges) {
+                // Ha jeges az út, a jégmagasság nő
+                this.jegMagassag += mennyiseg;
+            } else {
+                // Ha nem jeges, a hómagasság nő
+                this.hoMagassag += mennyiseg;
+
+                if (hoMagassag >= HO_ELAKADAS_KUSZOB) {
+                    blokkolt = true;
+                }
+
+                // Ha van kint zúzalék, vizsgálni kell a befedettséget
+                if (this.zuzalek) {
+                    this.befedettseg += mennyiseg;
+
+                    // Ha a befedettség eléri vagy meghaladja a statikus küszöbértéket
+                    if (this.befedettseg >= BEFEDES_KUSZOB) {
+                        this.zuzalek = false;
+                        this.befedettseg = 0;
+                    }
+                }
             }
         }
     }
@@ -154,40 +217,40 @@ public class Utegyseg {
      * @param mennyiseg Az a sómennyiség, amivel nő az útegységen lévő sóréteg.
      */
     public void sozas(int mennyiseg) {
-        System.out.println("Sómennyiség növelése az útegységen " + mennyiseg + " mennyiségű sóval.");
         soMennyiseg += mennyiseg;
     }
 
     /**
-     * Növeli a jégréteg vastagságát ha  a letaposottság értéke elér
-     * egy adott értéket, illetve ha további hó esik a jégre.
-     *
-     * @param mennyiseg Ennyivel nő meg a jégréteg az útegységen.
+     * A hó jéggé alakulását szimuláló metódus.
+     * A meglévő havat jéggé alakítja, és ha nincs zúzalék, jegesnek jelöli az utat.
      */
-    public void jegesedes(int mennyiseg) {
-        if (soMennyiseg == 0) {
-            jegMagassag += mennyiseg;
-            ///Ha már nincs hó, akkor nem kell újra nullává állítani a szintjét
-            if (hoMagassag != 0)
-                hoMagassag = 0;
-            System.out.println("Jegesedés: " + mennyiseg + " mennyiségű jéggel nőtt meg a jégmagasság.");
-            System.out.println("A hómagasság 0.");
+    public void jegesedes() {
+        // A meglévő hómagasságot hozzáadjuk a jégmagassághoz
+        this.jegMagassag += this.hoMagassag;
+
+        // A hómagasságot és a letaposottságot nullázzuk
+        this.hoMagassag = 0;
+        this.letaposottsag = 0;
+
+        // Ha nincs zúzalék az úton, akkor az útfelület jeges állapotba kerül
+        if (!this.zuzalek) {
+            this.jeges = true;
         }
     }
 
     /**
      * A járművek áthaladása tömöríti a havat, ami később jégréteg kialakulásához vezethet.
      */
-    public void taposodas(int mertek) {
-        if (hoMagassag > 0) {
-            letaposottsag += mertek;
-            System.out.println("Taposás: " + mertek + " mértékkel lett letaposva az út.");
-            if (letaposottsag >= LETAPOSOTTSAG_KUSZOB) {
-                ///Ha taposás miatt lesz jég, akkor olyan nagy lesz, mint az ott lévő letaposott hó
-                System.out.println("Elérte a küszöböt a letaposottság mértéke.");
-                jegesedes(hoMagassag);
-                letaposottsag = 0;
+    public void taposodas() {
+        if (this.hoMagassag > 0) {
+            this.letaposottsag++;
+
+            if (this.letaposottsag == LETAPOSOTTSAG_KUSZOB) {
+                jegesedes();
             }
+        } else {
+            // Ha nincs hó a számláló nullázódik
+            this.letaposottsag = 0;
         }
     }
 
@@ -196,35 +259,31 @@ public class Utegyseg {
      * útegységen és a modell szerint "hó" ként fog viselkedni.
      */
     public void jegtores() {
-        hoMagassag = jegMagassag;
-        jegMagassag = 0;
-        if (hoMagassag < HO_ELAKADAS_KUSZOB) {
-            System.out.println("A jégből kevés hó lett.");
-        } else {
-            System.out.println("A jégből mély hó lett.");
+        this.hoMagassag += this.jegMagassag;
+
+        if (hoMagassag > HO_ELAKADAS_KUSZOB) {
             blokkolt = true;
         }
 
+        this.jegMagassag = 0;
+
+        this.jeges = false;
     }
 
     /**
      * A só hatására csökkenti a hó vagy jégvastagság méretét.
      */
     public void soOlvasztas() {
-        if (soMennyiseg > 0) {
-            soMennyiseg--;
-            System.out.println("Sómennyiség csökken.");
-            if (hoMagassag > 0) {
-                hoMagassag--;
-                System.out.println("Hómagasság csökken.");
-            } else if (jegMagassag > 0) {
-                jegMagassag--;
-                System.out.println("Jégmagasság csökken.");
-            }
+        if (this.hoMagassag > 0) {
+            this.hoMagassag--;
+        } else if (this.jegMagassag > 0) {
+            this.jegMagassag--;
         }
-        if (hoMagassag < HO_ELAKADAS_KUSZOB && jegMagassag < HO_ELAKADAS_KUSZOB) {
+
+        this.soMennyiseg--;
+
+        if (hoMagassag < HO_ELAKADAS_KUSZOB) {
             blokkolt = false;
-            System.out.println("Nincs blokkolva az úttest.");
         }
     }
 
@@ -232,66 +291,61 @@ public class Utegyseg {
      * A hókotró munkájának eredményeként eltávolítja a csapadékot a mezőről.
      */
     public void tisztulas() {
-        hoMagassag = 0;
-        jegMagassag = 0;
+        this.hoMagassag = 0;
+        this.zuzalek = false;
         blokkolt = false;
-        System.out.println("Az útegység tiszta lett.");
+
+        // Ha maradt jég az úton, az útfelületet jegesnek jelöljük
+        if (this.jegMagassag > 0) {
+            this.jeges = true;
+        }
     }
 
     /**
-     * Visszaadja, hogy jeges útegység esetén a jármű megcsúszott-e vagy sem.
-     *
-     * @return Visszaadja, hogy megcsúszott-e az útegységen lévő jármű.
+     * Kiszámítja és eldönti, hogy a jármű megcsúszik-e az útegységen.
+     * A döntés a jegesedéstől, az út alap esélyétől és a jármű tapadásától függ.
+     * @return igaz, ha bekövetkezik a megcsúszás, egyébként hamis.
      */
     public boolean megcsuszas() {
-        if (jegMagassag > 0 && (Math.random() < megcsuszasEsely)) {
-            System.out.println("A jármű megcsúszott.");
-            return true;
-        }
-        System.out.println("A jármű nem csúszott meg.");
-        return false;
-    }
-
-    /**
-     * Regisztrálja, hogy egy jármű megérkezett egy adott útegységre, kiválasztva
-     * az esetleges interakciókat (megcsúszás, elakadás).
-     *
-     * @param jarmu Az a jármű, ami rálép az útegységre.
-     * @return true, ha a jármű sikeresen rálépett az útegységre,
-     * false, ha a rálépés meghiúsult (mert a sáv foglalt vagy blokkolva van).
-     */
-    public boolean ralep(Jarmu jarmu) {
-        /// Ha a sáv már blokkolva van, vagy fizikailag áll rajta egy másik jármű,
-        /// senki nem léphet rá (még a hókotró sem mehet "át" rajta).
-        if (this.blokkolt || this.jarmu != null) {
-            System.out.println("A rálépés sikertelen: az útegység foglalt vagy blokkolva van.");
+        if (!this.jeges) {
             return false;
         }
 
-        /// A jármű fizikailag rálép az útegységre (lefoglalja a referenciát)
-        jarmu.sikeresLepes(this);
-        System.out.println("Az útegység referenciája frissítve, a járművet fogadta.");
+        // Feltételezzük, hogy a 'jarmu' változó létezik és nem null
+        int t = this.jarmu.getTapadas();
 
-        /// A Hókotrókra nem vonatkoznak az időjárás negatív hatásai
-        if (!jarmu.getClass().getSimpleName().equals("Hokotro")) {
+        // A (100 - t) / 100.0 biztosítja, hogy lebegőpontos osztást végezzünk
+        double aktualisEsely = this.megcsuszasEsely * (100 - t) / 100.0;
 
-            /// Elakadás vizsgálata: Ha a hóréteg eléri a kritikus szintet
-            if (this.hoMagassag >= HO_ELAKADAS_KUSZOB || this.jegMagassag >= HO_ELAKADAS_KUSZOB) {
+        Random rand = new Random();
+        int veletlenSzam = rand.nextInt(101);
 
-                /// A jármű ráhajtott a mély hóra, ezért elakad, és a sáv blokkolt lesz
-                this.blokkolt = true;
-                jarmu.elakad();
-                System.out.println("A jármű mély hóra/jégre futott és elakadt. A sáv blokkolttá vált.");
-                return true;
-            }
+        return veletlenSzam < aktualisEsely;
+    }
 
-            /// Megcsúszás vizsgálata jeges úton (Ha nem akadt el)
-            if (this.jegMagassag > 0 && megcsuszas()) {
-                System.out.println("A jármű megcsúszott a jégen!");
-                jarmu.csuszik();
-            }
+    /**
+     * Kezeli a jármű útegységre történő rálépését.
+     * @param j A belépni kívánó jármű.
+     * @return Igaz, ha a jármű sikeresen rálépett az egységre, hamis ha az egység blokkolt.
+     */
+    public boolean ralep(Jarmu j) {
+        if (j == null) {return false;}
+
+        if (this.blokkolt) {
+            j.elakad(); // Jelezzük a járműnek, hogy nem tud továbbhaladni
+            return false;
         }
-        // Itt majd meghívja a taposodast
+
+        this.jarmu = j;
+
+        // A járműnek átadjuk a 'this' referenciát, hogy tudja, melyik útegységen áll
+        j.sikeresLepes(this);
+
+        if (this.megcsuszas()) {
+            j.csuszik();
+        }
+
+        // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út
         return true;
     }
 }

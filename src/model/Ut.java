@@ -39,10 +39,35 @@ public class Ut {
 
     ///További metódusok
     /**
-     * Végigiterál az út egyégein, megcsúszott járművet keresve.
+     * Végigjárja az út összes sávját és útegységét,
+     * baleseti helyzeteket keresve a megcsúszott járművek között.
      */
-    public void balesetetKeres(){
-        System.out.println("Baleset keresése.");
+    public void balesetetKeres() {
+        // Végigjárjuk az út összes sávját
+        for (Sav sav : savok) {
+            // Minden sávban lekérjük az első útegységet
+            Utegyseg aktualis = sav.getElsoUtegyseg();
+
+            // Bejárjuk a sávot az útegységek láncolatán keresztül
+            while (aktualis != null) {
+                Jarmu jarmu = aktualis.getJarmu();
+
+                // Ellenőrizzük, hogy van-e ott jármű, és az megcsúszott-e
+                if (jarmu != null && jarmu.isMegcsuszott()) {
+                    // Megpróbálunk baleseti partnert keresni
+                    Jarmu partner = jarmu.KeresPartner();
+
+                    // Ha találtunk partnert, mindkettőnél kiváltjuk a baleset eseményt
+                    if (partner != null) {
+                        jarmu.baleset();
+                        partner.baleset();
+                    }
+                }
+
+                // Továbblépünk a következő útegységre
+                aktualis = aktualis.getKovetkezoUtegyseg();
+            }
+        }
     }
 
     /**
