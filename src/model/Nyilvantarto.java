@@ -24,6 +24,10 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      */
     private int nemBeertAutokSzama;
 
+    private boolean jatekVege;
+
+    private int nemBeertAutokLimit;
+
     public Nyilvantarto(int p, int s, int b, int n){
         this.penz = p;
         this.so = s;
@@ -35,7 +39,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      * Megvizsgálja, hogy a munkahelyükre be nem ért autók száma meghalad-e egy előre meghatározott határt, ami a játék végét jelenti.
      */
     public boolean ellenorizJatekVege(){
-        if(nemBeertAutokSzama > 15){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
+        if(nemBeertAutokSzama > nemBeertAutokLimit){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
             System.out.println("A játék végetért: Túl sok ember nem ért be időben a munkahelyére:  " + this.nemBeertAutokSzama+"autó akadt el");
             return true;
         }
@@ -201,4 +205,9 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
         System.out.println("A be nem ért autók számlálója felülírva, az új érték: " + this.nemBeertAutokSzama);
     }
 
+    public boolean isJatekVege() {return jatekVege;}
+    public void setJatekVege(boolean ertek) { jatekVege = ertek; }
+
+    public int getNemBeertAutokLimit() {return nemBeertAutokLimit;}
+    public void setNemBeertAutokLimit(int nem) { nemBeertAutokLimit = nem; }
 }

@@ -1037,7 +1037,7 @@ public class Skeleton {
 
 
         hivas("b:Bolt", "sebessegFejlesztes(busz)");
-        b.sebessegFejlesztes(busz);
+        b.sebessegFejlesztes(busz, 1); // itt odaraktam a mértékét : DAVID
 
         hivas("sf:Sebessegfejlesztes", "getAr()");
         sf.getAr();

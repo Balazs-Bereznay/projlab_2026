@@ -12,18 +12,17 @@ public class Bolt {
     private  int soAr;
     /// a megvasarolható biokerozin egységára
     private  int biokerozinAr;
-
     private int hokotroAr;
-
-    private int fejlesztAr;
-
-    private int seproAr;
+    private int soproAr;
     private int hanyoAr;
     private int jegtoroAr;
     private int soszoroAr;
     private int sarkanyAr;
     private int zuzalekAr;
-
+    private int zuzalekszoroAr;
+    private int sebessegfejlesztesAr;
+    private int tapadasfejlesztesAr;
+    private int hozamfejlesztesAr;
     /// a nyilvantarto amiben majd eltaroljuk hogy az egyes nyersanyagokbol mennyi all rednelkezesre
     private Nyilvantarto nyilvantarto;
 
@@ -64,19 +63,40 @@ public class Bolt {
         System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
     }
 
-    public void sebessegFejlesztes(Busz busz){
-        Sebessegfejlesztes sebesseg = new Sebessegfejlesztes(fejlesztAr,1);
-        sebesseg.fejleszt(busz);
-        System.out.println("A busz sebessége fejlesztve lett!");
+    public void sebessegFejlesztes(Busz busz, int novelesMerteke){
+       // Sebessegfejlesztes sebesseg = new Sebessegfejlesztes(fejlesztAr,1);
+       // sebesseg.fejleszt(busz);
+        System.out.println("Sebességfejlesztés alkalmazva.");
+        if(busz == null){
+            return;
+        }
+        busz.setSebesseg(busz.getSebesseg() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(sebessegfejlesztesAr);
+
+       System.out.println("A busz sebessége fejlesztve lett!");
     }
-    public void tapadasFejlesztes(Busz busz){
-        Tapadasfejlesztes tapadasfejlesztes = new Tapadasfejlesztes(fejlesztAr,1);
-        tapadasfejlesztes.fejleszt(busz);
+    public void tapadasFejlesztes(Busz busz,  int novelesMerteke){
+      //  Tapadasfejlesztes tapadasfejlesztes = new Tapadasfejlesztes(fejlesztAr,1);
+      //  tapadasfejlesztes.fejleszt(busz);
+        System.out.println("Tapadásfejlesztés alkalmazva.");
+        if(busz == null){
+            return;
+        }
+        busz.setTapadas(busz.getTapadas() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(tapadasfejlesztesAr);
+
         System.out.println("A busz tapadasa fejlesztve lett!");
     }
-    public void hozamFejlesztes(Busz busz){
-        Hozamfejlesztes hozamfejlesztes = new Hozamfejlesztes(fejlesztAr,100);
-        hozamfejlesztes.fejleszt(busz);
+    public void hozamFejlesztes(Busz busz, int  novelesMerteke){
+        //Hozamfejlesztes hozamfejlesztes = new Hozamfejlesztes(fejlesztAr,100);
+        //  hozamfejlesztes.fejleszt(busz);
+        System.out.println("Hozamfejlesztés alkalmazva.");
+        if(busz == null){
+            return;
+        }
+        busz.setBevetel(busz.getBevetel() + novelesMerteke);
+        busz.nyilvantarto.penzLevon(sebessegfejlesztesAr);
+
         System.out.println("A busz hozama fejlesztve lett!");
     }
 
@@ -87,7 +107,7 @@ public class Bolt {
     public void seproVasarol(Hokotro hokotro){
         Fej sepro = new Sopro();
         hokotro.setFej(sepro);
-        nyilvantarto.penzLevon(seproAr);
+        nyilvantarto.penzLevon(soproAr);
         System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
@@ -178,61 +198,63 @@ public class Bolt {
 
     }
 
-    public int gethokotroAr(int mennyiseg){
-
-        return hokotroAr;
-    }
+    public int gethokotroAr(){return hokotroAr;}
      public void sethokotroAr(int mennyiseg)
      {
         hokotroAr = mennyiseg;
      }
 
-     public int getFejlesztAr(int mennyiseg){
-        return fejlesztAr;
-     }
-     public void setFejlesztAr(int menny){
-        fejlesztAr = menny;
-     }
-
-    public int getSeproAr(int mennyiseg){
-        return seproAr;
+    public int getSeproAr(){
+        return soproAr;
     }
     public void setSeproAr(int mennyiseg){
-        seproAr = mennyiseg;
+        soproAr = mennyiseg;
     }
 
-    public int getHanyoAr(int mennyiseg){
+    public int getHanyoAr(){
         return hanyoAr;
     }
     public void setHanyoAr(int mennyiseg){
         hanyoAr = mennyiseg;
     }
 
-    public int getJegtoroAr(int mennyiseg){
+    public int getJegtoroAr(){
         return jegtoroAr;
     }
     public void setJegtoroAr(int mennyiseg){
         jegtoroAr = mennyiseg;
     }
 
-    public int getSoszoroAr(int mennyiseg){
+    public int getSoszoroAr(){
         return soszoroAr;
     }
     public void setSoszoroAr(int mennyiseg){
         soszoroAr = mennyiseg;
     }
 
-    public int getSarkanyAr(int mennyiseg){
+    public int getSarkanyAr(){
         return sarkanyAr;
     }
     public void setSarkanyAr(int mennyiseg){
         sarkanyAr = mennyiseg;
     }
 
-    public int getZuzalekAr(int mennyiseg){
+    public int getZuzalekAr(){
         return zuzalekAr;
     }
     public void setZuzalekAr(int mennyiseg){
         zuzalekAr = mennyiseg;
     }
+
+    public int getZuzalekszoroAr(){ return zuzalekszoroAr; }
+    public void setZuzalekszoroAr(int mennyiseg){   zuzalekszoroAr = mennyiseg; }
+
+    public int getSebessegfejlesztesAr(){return sebessegfejlesztesAr;}
+    public void setSebessegfejlesztesAr(int mennyiseg){sebessegfejlesztesAr = mennyiseg; }
+
+    public int getTapadasfejlesztesAr(){ return tapadasfejlesztesAr; }
+    public void setTapadasfejlesztesAr(int mennyiseg){tapadasfejlesztesAr = mennyiseg; }
+
+    public int getHozamfejlesztesAr(){ return hozamfejlesztesAr; }
+    public void setHozamfejlesztesAr(int mennyiseg){hozamfejlesztesAr = mennyiseg; }
 }
