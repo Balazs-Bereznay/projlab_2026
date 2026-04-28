@@ -2,23 +2,32 @@ package model;
 
 /**
  * Tisztítófej, amely a haladási iránynak megfelelően jobbra lévő útegységre
- * söpri a havat a hókotró sávjából.
+ * söpri a havat (vagy a zúzalékot, ha van rajta) a hókotró sávjából.
  */
 public class Sopro extends Fej {
-    public Sopro() {
-        super(100);
-    }
-
     /**
-     * Jobbra lévő útegységre söpri át a vékonyabb hóréteget.
-     * Ha nincs ilyen sáv, a havat az út szélére túrja.
-     * @param utegyseg Az aktuális útegység, ahonnan a hó elkerül.
-     * @return Igaz, ha az útegység megtisztul a metódus meghívása után, egyébként hamis.
+     * Jobbra lévő útegységre söpri át a vékonyabb hóréteget (vagy a zúzalékot, ha van rajta).
+     * Ha nincs ilyen sáv, a havat (illetve zúzalékot) az út szélére túrja.
+     * @param utegyseg Az aktuális útegység, ahonnan a hó (illetve zúzalék) elkerül.
+     * @return Igaz, ha sikeres volt a hó elsöprése, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
-        System.out.println("A hókotró használja a söprő fejet.");
-
+        if(utegyseg.getZuzalek()) {
+            utegyseg.setZuzalek(false);
+            if(utegyseg.getJobbUtegyseg() != null) {
+                utegyseg.getJobbUtegyseg().setZuzalek(true);
+            }
+        }
+        if(utegyseg.getHoMagassag() > 0) {
+            if(utegyseg.getJobbUtegyseg() != null) {
+                utegyseg.getJobbUtegyseg().havazas(utegyseg.getHoMagassag());
+            }
+            utegyseg.tisztulas();
+            System.out.println("A hókotró sikeresen használta a söprő fejet.");
+            return true;
+        }
+        System.out.println("Nem volt sikeres a söprő fej használata.");
         return false;
     }
 }

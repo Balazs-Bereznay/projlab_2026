@@ -1,22 +1,25 @@
 package model;
 
 /**
- * A kotrófejek egyik fajtája, amely a havat elhányja az útról.
+ * Egy tisztítófej a hókotróhoz, ami a havat (vagy a zúzalékot, ha van rajta) elhányja az útról.
  */
 public class Hanyo extends Fej {
-    public Hanyo() {
-        super(200);
-    }
-
     /**
-     * A havat a hókotró az út szélére hányja attól függetlenül, hogy az út hány sávos.
+     * A havat (illetve zúzalékot) a hókotró az út szélére hányja attól függetlenül, hogy az út hány sávos.
      * @param utegyseg A tisztítandó útegység.
-     * @return Igaz, ha az útegység megtisztul a metódus meghívása után, egyébként hamis.
+     * @return Igaz, ha sikeres volt a hó eltakarítása, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
-        System.out.println("A hókotró használja a hányó fejet.");
-
+        if(utegyseg.getZuzalek()){
+            utegyseg.setZuzalek(false);
+        }
+        if (utegyseg.getHoMagassag() > 0){
+            utegyseg.tisztulas();
+            System.out.println("A hókotró sikeresen használta a hányó fejet.");
+            return true;
+        }
+        System.out.println("Nem volt sikeres a hányó fej használata.");
         return false;
     }
 }

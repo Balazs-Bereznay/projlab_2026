@@ -6,8 +6,6 @@ package model;
  * és milyen módon befolyásolja az útviszonyokat.
  */
 public abstract class Fej {
-    /// Megadja, hogy mennyiért lehet megvásárolni a fejet
-    /// protected int ertek;
 
     /**
      * Végrehajtja a hókotróra szerelt fejhez tartozó takarítási logikát
@@ -15,12 +13,4 @@ public abstract class Fej {
      * @param utegyseg Az aktuális útszakasz egysége, amelyen a takarítás történik.
      */
     public abstract boolean hasznal(Utegyseg utegyseg);
-
-    /*public int getErtek() {
-        return ertek;
-    }
-
-    public void setErtek(int ertek) {
-        this.ertek = ertek;
-    }*/
 }
