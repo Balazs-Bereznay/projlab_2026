@@ -9,7 +9,7 @@ public class Sopro extends Fej {
      * Jobbra lévő útegységre söpri át a vékonyabb hóréteget (vagy a zúzalékot, ha van rajta).
      * Ha nincs ilyen sáv, a havat (illetve zúzalékot) az út szélére túrja.
      * @param utegyseg Az aktuális útegység, ahonnan a hó (illetve zúzalék) elkerül.
-     * @return Igaz, ha sikeres volt a hó elsöprése, egyébként hamis.
+     * @return Igaz, ha hó (is) el lett söpörve, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {

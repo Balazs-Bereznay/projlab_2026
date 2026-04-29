@@ -7,7 +7,7 @@ public class Hanyo extends Fej {
     /**
      * A havat (illetve zúzalékot) a hókotró az út szélére hányja attól függetlenül, hogy az út hány sávos.
      * @param utegyseg A tisztítandó útegység.
-     * @return Igaz, ha sikeres volt a hó eltakarítása, egyébként hamis.
+     * @return Igaz, ha hó (is) el lett takarítva, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {

@@ -9,7 +9,7 @@ public class Jegtoro extends Fej {
      * Feltöri a jeget az adott útegységen, hogy az utána már
      * takaríthatóvá váljon más fejekkel.
      * @param utegyseg A jeges útegység.
-     * @return Igaz, ha sikeres volt a jég feltörése, egyébként hamis.
+     * @return Igaz, ha volt jég az útegységen, amit fel lehetett törni, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {

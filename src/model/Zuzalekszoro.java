@@ -17,14 +17,19 @@ public class Zuzalekszoro extends Fej {
     /**
      * Ha a szükséges zúzalék mennyiség rendelkezésre áll, akkor azt kiszórja az útegységre.
      * @param utegyseg Az aktuális útszakasz egysége, amelyre kiszórja a zúzalékot.
-     * @return Igaz, ha volt elég zúzalék, egyébként hamis.
+     * @return Igaz, ha volt elég zúzalék és céljának megfelelően, jeges útegységen lett használva a fej, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
-        if(utegyseg.getJarmu().zuzalekLevon(ZUZALEK_ADAG)){
+        Hokotro hokotro = (Hokotro)utegyseg.getJarmu();
+        if(hokotro.zuzalekLevon(ZUZALEK_ADAG)){
             utegyseg.setZuzalek(true);
-            System.out.println("A hókotró sikeresen használta a zúzalékszóró fejet.");
-            return true;
+            utegyseg.setLetaposottsag(0);
+            if(utegyseg.getJeges()) {
+                utegyseg.setJeges(false);
+                System.out.println("A hókotró sikeresen használta a zúzalékszóró fejet.");
+                return true;
+            }
         }
         System.out.println("Nem volt sikeres a zúzalékszóró fej használata.");
         return false;

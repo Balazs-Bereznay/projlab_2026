@@ -19,15 +19,17 @@ public class Sarkany extends Fej {
      * és a havat egy adott útegységről.
      * A tisztítás csak akkor megy végbe, ha az erőforrás-levonás sikeres.
      * @param utegyseg Az aktuális útegység, amelyet meg kell tisztítani.
-     * @return Igaz, ha volt elég biokerozin, egyébként hamis.
+     * @return Igaz, ha volt elég biokerozin és céljának megfelelően, havas vagy jeges útegységen lett használva a fej, egyébként hamis.
      */
     @Override
     public boolean hasznal(Utegyseg utegyseg) {
         if(nyilvantarto.biokerozinLevon(BIOKEROZIN_ADAG)){
-            utegyseg.jegtores();
-            utegyseg.tisztulas();   ///igaz, hogy a sárkány fej nem hat a zúzalékra, de ha már nincs se alatta se fölötte semmi, akkor nincs értelme a zúzaléknak, "egybeolvad" az úttal
-            System.out.println("A hókotró sikeresen használta a sárkány fejet.");
-            return true;
+            if(utegyseg.getHoMagassag() > 0 || utegyseg.getJegMagassag() > 0){
+                utegyseg.jegtores();
+                utegyseg.tisztulas();   ///igaz, hogy a sárkány fej nem hat a zúzalékra, de ha már nincs se alatta se fölötte semmi, akkor nincs értelme a zúzaléknak, "egybeolvad" az úttal
+                System.out.println("A hókotró sikeresen használta a sárkány fejet.");
+                return true;
+            }
         }
         System.out.println("Nem volt sikeres a sárkány fej használata.");
         return false;
