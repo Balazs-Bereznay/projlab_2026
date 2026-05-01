@@ -113,11 +113,14 @@ public class Prototipus {
                 // --- Egyedi entitás parancsok (2 paraméteres overload) ---
                 // ! Minden az ProtoEntitas két paraméteres parancsFeldolgoz-t hívó esetnek ugyan az lenne a törzse,
                 // ! ezért a set, move stb. esetek végén nincs break és így közülük bármelyik következik be
-                // ! a purshe-nál megírt törzs fog lefutni. (Nem kell azokhoz semmit írni.)
+                // ! a purchase-nál megírt törzs fog lefutni. (Nem kell azokhoz semmit írni.)
                 case "set":
                 case "move":
                 case "clean":
                 case "add_condition":
+                case "list_shop":
+                case "add":
+                case "info":
                 case "purchase":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
