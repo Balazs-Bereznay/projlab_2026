@@ -165,6 +165,28 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
         }
     }
 
+    /**
+     * Feldolgozza az autora erkezo, masik prototipus-entitast is hasznalo
+     * parancsokat.
+     *
+     * <p>A cel objektum tipusat nem az Auto vizsgalja. A double dispatch
+     * mukodes szerint a cel objektum kapja meg az autot, es a sajat
+     * {@code parancsFeldolgozAutoval} metodusaban donti el, mit jelent vele az
+     * adott parancs.</p>
+     *
+     * @param parancs a feldolgozando parancs neve
+     * @param cel a parancs masik erintett objektuma
+     * @param args a parancs tovabbi parameterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        if (parancs == null || cel == null) {
+            return;
+        }
+
+        cel.parancsFeldolgozAutoval(parancs, this, args);
+    }
+
      /**
      * Visszaadja az auto kezdopontjat.
      *

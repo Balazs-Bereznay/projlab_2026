@@ -204,6 +204,28 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
     }
 
     /**
+     * Feldolgozza a buszra erkezo, masik prototipus-entitast is hasznalo
+     * parancsokat.
+     *
+     * <p>A cel objektum tipusat nem a Busz vizsgalja. A double dispatch
+     * mukodes szerint a cel objektum kapja meg a buszt, es a sajat
+     * {@code parancsFeldolgozBusszal} metodusaban donti el, mit jelent vele az
+     * adott parancs.</p>
+     *
+     * @param parancs a feldolgozando parancs neve
+     * @param cel a parancs masik erintett objektuma
+     * @param args a parancs tovabbi parameterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        if (parancs == null || cel == null) {
+            return;
+        }
+
+        cel.parancsFeldolgozBusszal(parancs, this, args);
+    }
+
+    /**
      * Visszaadja az elso vegallomast.
      *
      * @return az elso vegallomas

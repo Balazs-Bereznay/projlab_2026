@@ -1,13 +1,14 @@
 package model;
 
 /**
- * Azokat az objektumokat jelölő interfész, amelyeket a rendszer irányít.
+ * Azokat az objektumokat jelolo interfesz, amelyeket a rendszer iranyit.
  */
 public interface RendszerIranyitott {
 
     /**
-     * Útvonalat keres a megadott térképen.
-     * @param terkep A térkép, amelyen az útvonal keresése történik.
+     * Utvonalat keres a megadott terkepen.
+     *
+     * @param terkep a terkep, amelyen az utvonal keresese tortenik
      */
     void utvonalKeres(Terkep terkep);
 }
