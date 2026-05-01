@@ -9,7 +9,7 @@ import java.util.List;
  * A takarítással bevételt termel a közös kasszába,
  * valamint csökkenti a balesetek számát az utakon.
  */
-public class Hokotro extends Jarmu implements Iranyithato {
+public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
     private static int BEVETEL = 10;
     private Fej fej;
     private int zuzalekMennyiseg;
@@ -20,6 +20,17 @@ public class Hokotro extends Jarmu implements Iranyithato {
         super();
         this.fej = fej;
     }
+
+    // 1. Fogadja a Fejet
+    @Override
+    public void parancsFeldolgoz(String parancs, Fej fej, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.setFej(fej);
+            System.out.println("Fej sikeresen a hókotróra szerelve.");
+        }
+    }
+
+
 
     /**
      * A hókotróra felszerelt fej használatával takarítja a jármű alatti útegységet.

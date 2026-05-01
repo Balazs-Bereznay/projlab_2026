@@ -2,10 +2,7 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Prototipus {
     // A központi nyilvántartó, ahol minden objektum lakik
@@ -29,6 +26,44 @@ public class Prototipus {
         } catch (IOException e) {
             System.err.println("Hiba a fájl beolvasásakor: " + e.getMessage());
         }
+    }
+
+    public void entitasLetrehoz(String osztaly, String id)
+    {
+        ProtoEntitas ujEntitas = null;
+
+        switch (osztaly)
+        {
+            case "Utegyseg" : ujEntitas = new Utegyseg();   break;
+            case "Csomopont" : ujEntitas = new Csomopont(); break;
+            case "Ut" : ujEntitas = new Ut(); break;
+            case "Sav" : ujEntitas = new Sav(); break;
+
+            case "Hokotro" : ujEntitas = new Hokotro(); break;
+            case "Auto" : ujEntitas = new Auto(); break;
+            case "Busz" : ujEntitas = new Busz(); break;
+
+            case "Zuzalekszoro" : ujEntitas = new Zuzalekszoro(); break;
+            case "Sopro" : ujEntitas = new Sopro(); break;
+            case "Jegtoro" : ujEntitas = new Jegtoro(); break;
+            case "Sarkany" : ujEntitas = new Sarkany(); break;
+            case "Soszoro" : ujEntitas = new Soszoro(); break;
+            case "Hanyo" : ujEntitas = new Hanyo(); break;
+
+            case "Nyilvantarto" : ujEntitas = new Nyilvantarto(); break;
+            case "Jatekos" : ujEntitas = new Jatekos(); break;
+            case "Bolt" : ujEntitas = new Bolt(); break;
+
+            default:
+                System.out.println("Ismeretlen entitas tipus:" + osztaly);
+                return;
+
+        }
+        katalogus.hozzaad(id, ujEntitas);
+    }
+
+    public void EntitasTorol(String id){
+        katalogus.torol(id);
     }
 
     private List<String> parametereketVag(String[] darabok, int honnan) {
@@ -60,6 +95,9 @@ public class Prototipus {
                 case "create":
                     entitasLetrehoz(szavak[1], szavak[2]);
                     break;
+                 case "delete":
+                     entitasTorol(szavak[1]);
+                     break;
                 case "list":
                     listazasKezelo(szavak);
                     break;
@@ -89,6 +127,13 @@ public class Prototipus {
 
                 // --- Kapcsolati parancsok (3 paraméteres overload) ---
                 case "assign":
+                    ProtoEntitas gazdi = katalogus.keres(szavak[1]);
+                    ProtoEntitas destionation = katalogus.keres(szavak[2]);
+                    if (gazdi != null && destionation != null) {
+                        gazdi.parancsFeldolgoz(cmd, destionation, parametereketVag(szavak, 3));
+                    }
+                    break;
+                    
                 case "remove":
                     ProtoEntitas gazda = katalogus.keres(szavak[1]);
                     ProtoEntitas cel = katalogus.keres(szavak[2]);

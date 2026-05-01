@@ -7,7 +7,7 @@ import java.util.List;
  * Az úthálózat szakaszait (Ut) összekötő csatlakozási pontok. Kezeli a járművek be és
  * kilépését a csomópontba és a hozzá csatlakozó utakra.
  */
-public class Csomopont {
+public class Csomopont  implements ProtoEntitas {
     private ArrayList<Ut> utLista;
     private boolean celpont;
     private boolean buszmegallo;
@@ -27,6 +27,26 @@ public class Csomopont {
 
     public Csomopont(){
         this(new ArrayList<>(), false, false);
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, Ut ut, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.addUt(ut);
+            //ott allitjuk be ami meg nem volt beallitva
+            if(ut.getVegpont1() == null){
+                ut.setVegpont1(this);
+            }
+            if(ut.getVegpont1() != null &&  ut.getVegpont2() == null){
+                ut.setVegpont2(this);
+            }
+            System.out.println("Út sikeresen a csomóponthoz rendelve.");
+        } else if (parancs.equals("remove")) {
+            this.removeUt(ut);
+            System.out.println("Út sikeresen eltávolítva a csomópontról.");
+        } else {
+            ProtoEntitas.super.parancsFeldolgoz(parancs, ut, args);
+        }
     }
 
     ///Getterek és setterek
@@ -126,6 +146,11 @@ public class Csomopont {
     public void addUt(Ut ut) {
         if (ut != null && !utLista.contains(ut)) {
             utLista.add(ut);
+        }
+    }
+    public void removeUt(Ut ut) {
+        if (utLista.contains(ut)) {
+            utLista.remove(ut);
         }
     }
 }

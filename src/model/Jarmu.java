@@ -12,7 +12,7 @@ import java.util.List;
  * osztalybol szarmaztatva hasznaljak a kozos mozgasi es allapotkezelesi
  * muveleteket.</p>
  */
-public abstract class Jarmu {
+public abstract class Jarmu implements ProtoEntitas {
 
     /**
      * A jatek kozos nyilvantartoja. Elsosorban az NPC autok elakadasanak
@@ -64,7 +64,24 @@ public abstract class Jarmu {
      * alapjan meghatarozza a kovetkezo utegyseget, majd a tenyleges belepest a
      * cel {@link Utegyseg#ralep(Jarmu)} metodusara bizza. Sikertelen ralepes
      * eseten a jarmu helyben marad.</p>
+     *
      */
+    @Override
+    public void parancsFeldolgoz(String parancs, Utegyseg u, List<String> arg){
+        if (parancs.equals("assign")) {
+            this.utegyseg = u;
+            u.setJarmu(this);
+            System.out.println("Jármű sikeresen az útegységre helyezve.");
+        }
+    }
+    @Override
+    public void parancsFeldolgoz(String parancs, Nyilvantarto ny1, List<String> arg){
+        if (parancs.equals("assign")) {
+            this.setNyilvantarto(ny1);
+            System.out.println("Jármű sikeresen beallitva a nyilvantarto.");
+        }
+    }
+
     public void lep() {
         if (elakadt || baleset) {
             return;
@@ -236,5 +253,13 @@ public abstract class Jarmu {
      */
     public void setTapadas(int tapadas) {
         this.tapadas = tapadas;
+    }
+
+    public void setNyilvantarto(Nyilvantarto nyilvantarto) {
+        this.nyilvantarto = nyilvantarto;
+    }
+
+    public Nyilvantarto getNyilvantarto() {
+        return nyilvantarto;
     }
 }
