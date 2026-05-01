@@ -1,12 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Két csomópontot összekötő több sávból álló útszakasz, nyilvántartja ha
  * az útszakaszon baleset történt, illetve, ha alagútról lenne szó.
  */
-public class Ut {
+public class Ut implements ProtoEntitas {
     private Csomopont vegpont1;
     private Csomopont vegpont2;
     private ArrayList<Sav> savok;
@@ -36,6 +37,18 @@ public class Ut {
 
     public ArrayList<Sav> getSavok(){ return savok; }
     public void setSavok(ArrayList<Sav> savok){ this.savok = savok; };
+
+
+    @Override
+    public void parancsFeldolgoz(String parancs, Sav sav, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.addSav(sav); // Az út listájába felvesszük a sávot
+           // sav.setElsoUtegyseg(this);  // A sávnak is beállítjuk, hogy melyik úthoz tartozik
+            System.out.println("Sáv sikeresen az úthoz rendelve.");
+        }
+    }
+
+
 
     ///További metódusok
     /**

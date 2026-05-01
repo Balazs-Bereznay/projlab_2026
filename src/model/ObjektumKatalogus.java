@@ -20,6 +20,19 @@ class ObjektumKatalogus {
                 .put(id, entitas);
     }
 
+    public boolean torol(String id) {
+        for(Map<String, ProtoEntitas> map : kontener.values()){
+
+            if(map.containsKey(id)){
+
+                map.remove(id);
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     /**
      * Globális keresés ID alapján.
      * Mivel az ID-k egyediek, végigfésüljük a típus-csoportokat.
