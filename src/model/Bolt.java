@@ -1,12 +1,14 @@
 package model;
 
 
+import java.util.List;
+
 /**
  * A játék gazdasági központja, ahol a játékosok a megszerzett pénzből új eszközöket, nyersanyagokat vásárolhatnak,
  * van lehetőség a hókotrófejek cseréjére, valamint a buszok fejlesztésére is. Az áruk listázása is az ő felelőssége.
  */
 
-public class Bolt {
+public class Bolt implements ProtoEntitas {
 
     /// a megvasarolható sónak az egységára
     private  int soAr;
@@ -29,6 +31,83 @@ public class Bolt {
     public Bolt(int soAr, int biokerozinAr) {
         this.soAr = soAr;
         this.biokerozinAr = biokerozinAr;
+    }
+
+    /**
+     * Feldolgozza a boltra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+        if (nyilvantarto == null) {
+            System.out.println("Hiba: A rendszer nincs inicializálva (hiányzik a nyilvántartó)!");
+            return;
+        }
+
+        switch (parancs) {
+            case "list_shop":
+                String kinalat = """
+                    Bolt kínálata:
+        
+                    Vásárolható erőforrások:
+                    - Só ára: %d
+                    - Biokerozin ára: %d
+                    - Zúzalék ára: %d
+        
+                    Vásárolható fejek:
+                    - Söprő fej ára: %d
+                    - Hányó fej ára: %d
+                    - Jégtörő fej ára: %d
+                    - Sószóró fej ára: %d
+                    - Sárkány fej ára: %d
+                    - Zúzalékszóró fej ára: %d
+        
+                    Egyéb eszközök:
+                    - Hókotró ára: %d
+        
+                    Fejlesztések buszokra:
+                    - Sebességfejlesztés ára: %d
+                    - Tapadásfejlesztés ára: %d
+                    - Hozamfejlesztés ára: %d
+                    
+                    Jelenleg a nyilvántartóban rendelkezésre álló erőforrások mennyisége:
+                    - pénz:
+                    - só:
+                    - biokerozin:
+                    """.formatted(
+                        soAr, biokerozinAr, zuzalekAr,
+                        soproAr, hanyoAr, jegtoroAr, soszoroAr, sarkanyAr, zuzalekszoroAr,
+                        hokotroAr,
+                        sebessegfejlesztesAr, tapadasfejlesztesAr, hozamfejlesztesAr,
+                        nyilvantarto.getPenz(), nyilvantarto.getSo(), nyilvantarto.getBiokerozin()
+                );
+                break;
+            case "load":
+            case "save":
+            case "set_random":
+            case "tick":
+            case "create":
+            case "delete":
+            case "assign":
+            case "remove":
+            case "add_condition":
+            case "set":
+            case "move":
+            case "clean":
+            case "purchase":
+            case "list":
+            case "info":
+            case "help":
+            case "add":
+                break;
+            default:
+                break;
+        }
     }
 
     /**

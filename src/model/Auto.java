@@ -158,6 +158,7 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
 
             case "clean":
             case "add_condition":
+            case "list_shop":
             case "purchase":
                 break;
             default:

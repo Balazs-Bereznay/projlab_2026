@@ -196,6 +196,7 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
                 break;
             case "clean":
             case "add_condition":
+            case "list_shop":
             case "purchase":
                 break;
             default:
