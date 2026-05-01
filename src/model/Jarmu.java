@@ -1,235 +1,240 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A játékban szereplő járművek absztrakt ősosztálya.
- * Tartalmazza a közös tulajdonságokat és alapvető működéseket.
+ * A kozlekedo jarmuvek kozos absztrakt ososztalya.
+ *
+ * <p>A Jarmu felel a jarmu aktualis helyzetenek, kijelolt utvonalanak,
+ * mozgasi tulajdonsagainak es kozlekedesi allapotainak nyilvantartasaert.
+ * A konkret jarmutipusok, peldaul a Hokotro, a Busz es az Auto, ebbol az
+ * osztalybol szarmaztatva hasznaljak a kozos mozgasi es allapotkezelesi
+ * muveleteket.</p>
  */
 public abstract class Jarmu {
 
-    protected Nyilvantarto nyilvantarto; /// DAVID rakta hozzá mert a kritikus vereseghez kellene hogy ha az auto balesetezik akkor a nyivlantartonak tudja noveni a nembeertatuos erteket.
+    /**
+     * A jatek kozos nyilvantartoja. Elsosorban az NPC autok elakadasanak
+     * jelentesehez hasznalhato, ha a jarmuhoz hozza van rendelve.
+     */
+    protected Nyilvantarto nyilvantarto;
+
+    /**
+     * A jarmu mozgasi sebessege.
+     */
     protected int sebesseg;
+
+    /**
+     * Az az utegyseg, amelyen a jarmu aktualisan all.
+     */
     protected Utegyseg utegyseg;
-    protected ArrayList<Ut> kijeloltUtvonal;
+
+    /**
+     * A jarmu altal kovetendo, utakbol allo kijelolt utvonal.
+     */
+    protected List<Ut> kijeloltUtvonal = new ArrayList<>();
+
+    /**
+     * A jarmu tapadasi erteke, amely a jeges uton torteno megcsuszas eselyet
+     * befolyasolja.
+     */
     protected int tapadas;
+
+    /**
+     * Igaz, ha a jarmu mely ho vagy mas akadaly miatt nem kepes tovabbhaladni.
+     */
     protected boolean elakadt;
+
+    /**
+     * Igaz, ha a jarmu balesetben erintett.
+     */
     protected boolean baleset;
+
+    /**
+     * Igaz, ha a jarmu megcsuszott egy jeges utegysegen.
+     */
     protected boolean megcsuszott;
 
-    public Jarmu() {
-        this.sebesseg = 1;
-        this.utegyseg = null;
-        this.kijeloltUtvonal = new ArrayList<>();
-        this.tapadas = 1;
-        this.elakadt = false;
-        this.baleset = false;
-        this.megcsuszott = false;
-    }
-
-    public Jarmu(int sebesseg, Utegyseg utegyseg, int tapadas) {
-        this.sebesseg = sebesseg;
-        this.utegyseg = utegyseg;
-        this.kijeloltUtvonal = new ArrayList<>();
-        this.tapadas = tapadas;
-        this.elakadt = false;
-        this.baleset = false;
-        this.megcsuszott = false;
-    }
-
     /**
-     * A jármű megpróbál egyet lépni a kijelölt útvonalon.
+     * A jarmu alapveto elorehaladasi muvelete.
+     *
+     * <p>Ha a jarmu elakadt vagy balesetben erintett, akkor a metodus nem
+     * hajt vegre mozgast. Egyebkent az aktualis utegyseg es a kijelolt utvonal
+     * alapjan meghatarozza a kovetkezo utegyseget, majd a tenyleges belepest a
+     * cel {@link Utegyseg#ralep(Jarmu)} metodusara bizza. Sikertelen ralepes
+     * eseten a jarmu helyben marad.</p>
      */
     public void lep() {
-        System.out.println(getClass().getSimpleName() + " lep() meghivva.");
-
-        if (baleset) {
-            System.out.println("A jarmu balesetet szenvedett, nem tud lepni.");
+        if (elakadt || baleset) {
             return;
         }
 
-        if (elakadt) {
-            System.out.println("A jarmu elakadt, nem tud lepni.");
+        Utegyseg kovetkezo = null;
+        if (utegyseg != null) {
+            kovetkezo = utegyseg.getKovetkezoUtegyseg();
+        }
+
+        if (kovetkezo == null) {
             return;
         }
 
-        if (utegyseg == null) {
-            System.out.println("A jarmu nincs utegysegen.");
-            return;
-        }
-
-        System.out.println("A jarmu megprobal tovabblepni a kijelolt utvonalon.");
+        kovetkezo.ralep(this);
     }
 
     /**
-     * A jármű megcsúszását modellezi.
+     * Rogziti a jarmu megcsuszasat.
+     *
+     * <p>A metodus nem donti el, hogy a csuszas bekovetkezik-e, nem keres
+     * baleseti partnert, es nem modosit mas jarmuvet. Ezek kulon folyamatok
+     * felelossegei.</p>
      */
     public void csuszik() {
         this.megcsuszott = true;
-        System.out.println(getClass().getSimpleName() + " megcsuszott.");
     }
 
     /**
-     * A jármű balesetét modellezi.
+     * Rogziti, hogy a jarmu balesetben erintett.
+     *
+     * <p>A metodus csak a jarmu sajat baleseti allapotat allitja be. Nem keresi
+     * meg a baleset masik resztvevojet, es nem dont arrol, hogy a baleset
+     * bekovetkezik-e.</p>
      */
     public void baleset() {
         this.baleset = true;
-        if (utegyseg != null) {
-            utegyseg.setBlokkolt(true);
-        }
-        System.out.println(getClass().getSimpleName() + " balesetet szenvedett.");
     }
 
     /**
-     * A jármű elakadását modellezi.
+     * Rogziti a jarmu elakadasat.
+     *
+     * <p>A metodus csak a jarmu sajat elakadt allapotat allitja be. A legfrissebb
+     * reszletes terv szerint az utegyseg blokkolasanak felelossege nem a Jarmu
+     * osztalye, hanem az elakadast kivalto palyaelem vagy ralepesi folyamat
+     * dolga.</p>
      */
     public void elakad() {
         this.elakadt = true;
-        if (utegyseg != null) {
-            utegyseg.setBlokkolt(true);
-        }
-        System.out.println(getClass().getSimpleName() + " elakadt.");
     }
 
     /**
-     * Frissíti a jármű helyzetét egy sikeres lépés után.
-     * @param ujUtegyseg Az útegység, amelyre a jármű sikeresen rálépett.
+     * Frissiti a jarmu aktualis helyzetet egy sikeres ralepes utan.
+     *
+     * <p>A metodus nem donti el, hogy a lepes sikeres-e, nem ellenorzi az
+     * utegyseg foglaltsagat, es nem allitja be az {@link Utegyseg} jarmu
+     * referenciajat. Ezek az {@link Utegyseg#ralep(Jarmu)} felelossegei.</p>
+     *
+     * @param ujUtegyseg az utegyseg, amelyre a jarmu sikeresen ralepett
      */
     public void sikeresLepes(Utegyseg ujUtegyseg) {
         if (ujUtegyseg == null) {
-            System.out.println("Nincs megadott uj utegyseg.");
             return;
-        }
-
-        if (this.utegyseg != null) {
-            this.utegyseg.setJarmu(null);
         }
 
         this.utegyseg = ujUtegyseg;
-        this.utegyseg.setJarmu(this);
-
-        System.out.println(getClass().getSimpleName() + " sikeresen atlepett egy uj utegysegre.");
     }
 
     /**
-     * A jármű megpróbál sávot váltani egy szomszédos útegységre.
-     * Először a jobb, majd a bal oldali szomszédot vizsgálja.
+     * Konkret iranyba torteno savvaltasi kiserletet hajt vegre.
+     *
+     * <p>Az irany parameter megengedett ertekei: {@code "bal"}, {@code "jobb"},
+     * {@code "-l"} es {@code "-r"}. A metodus nem valaszt automatikusan masik
+     * iranyt, nem modositja a kijelolt utvonalat, es nem hivodik meg
+     * automatikusan a {@link #lep()} metodusbol. Sikeres savvaltas eseten
+     * {@code true}, sikertelen vagy ervenytelen irany eseten {@code false}
+     * ertekkel ter vissza.</p>
+     *
+     * @param irany a savvaltas iranya
+     * @return igaz, ha a savvaltas sikeresen megtortent
      */
-    public void savValtas() {
-        if (utegyseg == null) {
-            System.out.println("A jarmu nincs utegysegen, nem tud savot valtani.");
-            return;
+    public boolean savValtas(String irany) {
+        if (elakadt || baleset || utegyseg == null || irany == null) {
+            return false;
         }
 
-        Utegyseg cel = null;
-
-        if (utegyseg.getJobbUtegyseg() != null
-                && utegyseg.getJobbUtegyseg().getJarmu() == null
-                && !utegyseg.getJobbUtegyseg().getBlokkolt()) {
+        Utegyseg cel;
+        if ("jobb".equalsIgnoreCase(irany) || "-r".equalsIgnoreCase(irany)) {
             cel = utegyseg.getJobbUtegyseg();
-        } else if (utegyseg.getBalUtegyseg() != null
-                && utegyseg.getBalUtegyseg().getJarmu() == null
-                && !utegyseg.getBalUtegyseg().getBlokkolt()) {
+        } else if ("bal".equalsIgnoreCase(irany) || "-l".equalsIgnoreCase(irany)) {
             cel = utegyseg.getBalUtegyseg();
+        } else {
+            return false;
         }
 
-        if (cel == null) {
-            System.out.println("Nincs szabad szomszedos sav, a savvaltas sikertelen.");
-            return;
-        }
-
-        sikeresLepes(cel);
-        System.out.println(getClass().getSimpleName() + " sikeresen savot valtott.");
+        return cel != null && cel.ralep(this);
     }
 
     /**
-     * Megpróbál karambolpartnert keresni a jármű közvetlen környezetében.
-     * Skeleton szinten a következő, jobb és bal szomszédos útegységeken álló járművet vizsgálja.
+     * Megcsuszas utan megkeresi a kozelben allo baleseti partnert.
+     *
+     * <p>A kereses determinisztikus sorrendben tortenik: eloszor a kovetkezo,
+     * majd a jobb, vegul a bal szomszedos utegyseg kerul ellenorzesre. A metodus
+     * nem modositja sem a sajat, sem a partner allapotat, nem hivja meg a
+     * {@link #baleset()} metodust, es nem blokkol utegyseget.</p>
+     *
+     * @return a megtalalt partnerjarmu, vagy {@code null}, ha nincs ilyen
      */
-    public void KeresPartner() {
-        if (utegyseg == null) {
-            System.out.println("A jarmu nincs utegysegen, nem tud karambolpartnert keresni.");
-            return;
+    public Jarmu keresPartner() {
+        if (!megcsuszott || utegyseg == null) {
+            return null;
         }
 
-        Jarmu partner = null;
+        Utegyseg[] szomszedok = {
+                utegyseg.getKovetkezoUtegyseg(),
+                utegyseg.getJobbUtegyseg(),
+                utegyseg.getBalUtegyseg()
+        };
 
-        if (utegyseg.getKovetkezoUtegyseg() != null && utegyseg.getKovetkezoUtegyseg().getJarmu() != null) {
-            partner = utegyseg.getKovetkezoUtegyseg().getJarmu();
-        } else if (utegyseg.getJobbUtegyseg() != null && utegyseg.getJobbUtegyseg().getJarmu() != null) {
-            partner = utegyseg.getJobbUtegyseg().getJarmu();
-        } else if (utegyseg.getBalUtegyseg() != null && utegyseg.getBalUtegyseg().getJarmu() != null) {
-            partner = utegyseg.getBalUtegyseg().getJarmu();
+        for (Utegyseg szomszed : szomszedok) {
+            if (szomszed != null && szomszed.getJarmu() != null) {
+                return szomszed.getJarmu();
+            }
         }
 
-        if (partner == null) {
-            System.out.println("Nem talalhato karambolpartner a kozelben.");
-            return;
-        }
-
-        System.out.println(getClass().getSimpleName() + " karambolpartnert talalt: "
-                + partner.getClass().getSimpleName());
-
-        this.baleset();
-        partner.baleset();
+        return null;
     }
 
-    public void setKijeloltUtvonal(ArrayList<Ut> kijeloltUtvonal) {
-        this.kijeloltUtvonal = kijeloltUtvonal;
-    }
-
-    public ArrayList<Ut> getKijeloltUtvonal() {
+    /**
+     * Visszaadja a jarmu kijelolt utvonalat.
+     *
+     * @return az utakbol allo kijelolt utvonal
+     */
+    public List<Ut> getKijeloltUtvonal() {
         return kijeloltUtvonal;
     }
 
+    /**
+     * Visszaadja a jarmu sebesseget.
+     *
+     * @return a jarmu sebessege
+     */
     public int getSebesseg() {
         return sebesseg;
     }
 
+    /**
+     * Beallitja a jarmu sebesseget.
+     *
+     * @param sebesseg az uj sebesseg
+     */
     public void setSebesseg(int sebesseg) {
         this.sebesseg = sebesseg;
     }
 
-    public Utegyseg getUtegyseg() {
-        return utegyseg;
-    }
-
-    public void setUtegyseg(Utegyseg utegyseg) {
-        this.utegyseg = utegyseg;
-    }
-
+    /**
+     * Visszaadja a jarmu tapadasi erteket.
+     *
+     * @return a tapadasi ertek
+     */
     public int getTapadas() {
         return tapadas;
     }
 
+    /**
+     * Beallitja a jarmu tapadasi erteket.
+     *
+     * @param tapadas az uj tapadasi ertek
+     */
     public void setTapadas(int tapadas) {
         this.tapadas = tapadas;
-    }
-
-    public boolean isElakadt() {
-        return elakadt;
-    }
-
-    public boolean isBaleset() {
-        return baleset;
-    }
-
-    public boolean isMegcsuszott() {
-        return megcsuszott;
-    }
-
-    public void setNyilvantarto(Nyilvantarto nyilvantarto) { /// Ezi is DAVID irta hozza
-        this.nyilvantarto = nyilvantarto;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName()
-                + "{sebesseg=" + sebesseg
-                + ", tapadas=" + tapadas
-                + ", elakadt=" + elakadt
-                + ", baleset=" + baleset
-                + ", megcsuszott=" + megcsuszott
-                + "}";
     }
 }
