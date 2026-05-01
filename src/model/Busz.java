@@ -86,22 +86,13 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
      *
      * @param utegysegLista a busz altal kovetendo utegysegek listaja
      */
+    @Override
     public void setKijeloltUtegysegek(List<Utegyseg> utegysegLista) {
         if (utegysegLista == null) {
             this.tervezettUtvonal = new ArrayList<>();
         } else {
             this.tervezettUtvonal = new ArrayList<>(utegysegLista);
         }
-    }
-
-    /**
-     * A jelenlegi Iranyithato interfesz altal elvart utvonalvalaszto muvelet.
-     *
-     * @param utegysegLista a busz altal kovetendo utegysegek listaja
-     */
-    @Override
-    public void utvonalatValaszt(ArrayList<Utegyseg> utegysegLista) {
-        setKijeloltUtegysegek(utegysegLista);
     }
 
     /**

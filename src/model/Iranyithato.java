@@ -1,15 +1,16 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Azokat az objektumokat jelölő interfész, amelyeket a játékos irányít.
+ * Azokat az objektumokat jelolo interfesz, amelyeket a jatekos iranyit.
  */
 public interface Iranyithato {
 
     /**
-     * Beállítja az objektum által követett útvonalat.
-     * @param utegysegLista A kiválasztott útvonal útegységei.
+     * Beallitja az objektum altal kovetendo utegysegeket.
+     *
+     * @param utegysegLista a kivalasztott utvonal utegysegei
      */
-    void utvonalatValaszt(ArrayList<Utegyseg> utegysegLista);
+    void setKijeloltUtegysegek(List<Utegyseg> utegysegLista);
 }
