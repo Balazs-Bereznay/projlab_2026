@@ -96,9 +96,9 @@ public class Ut implements ProtoEntitas {
                 Jarmu jarmu = aktualis.getJarmu();
 
                 // Ellenőrizzük, hogy van-e ott jármű, és az megcsúszott-e
-                if (jarmu != null && jarmu.isMegcsuszott()) {
+                if (jarmu != null && jarmu.getMegcsuszott()) {
                     // Megpróbálunk baleseti partnert keresni
-                    Jarmu partner = jarmu.KeresPartner();
+                    Jarmu partner = jarmu.keresPartner();
 
                     // Ha találtunk partnert, mindkettőnél kiváltjuk a baleset eseményt
                     if (partner != null) {

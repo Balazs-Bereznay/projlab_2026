@@ -269,6 +269,14 @@ public abstract class Jarmu implements ProtoEntitas {
         return utegyseg;
     }
 
+    public boolean getMegcsuszott() {
+        return megcsuszott;
+    }
+
+    public void setMegcsuszott(boolean b) {
+        this.megcsuszott = b;
+    }
+
     public void setNyilvantarto(Nyilvantarto nyilvantarto) {
         this.nyilvantarto = nyilvantarto;
     }
