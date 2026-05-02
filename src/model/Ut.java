@@ -45,7 +45,7 @@ public class Ut implements ProtoEntitas {
      * @param args a parancs további paraméterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {
+    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
         if (parancs == null) {
             return;
         }

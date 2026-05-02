@@ -205,62 +205,22 @@ public class Prototipus {
                 case "clean":
                 case "add_condition":
                 case "list_shop":
-                case "add": {
+                case "add":
+                case "purchase":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
-                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
+                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
                     }
                     break;
-                }
                 /// Az info parancsnál kell a kiíráshoz is az entitás azonosítója
-                case "info": {
-                    ProtoEntitas celpont = katalogus.keres(szavak[1]);
-                    if (celpont != null) {
-                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 1));
-                    } else {
+                case "info":
+                    ProtoEntitas celponttt = katalogus.keres(szavak[1]);
+                    if (celponttt != null) {
+                        celponttt.parancsFeldolgoz(cmd, parametereketVag(szavak, 1), this.katalogus);
+                    }else{
                         System.out.println("Entity not found!");
                     }
                     break;
-                }
-
-                case "purchase": {
-                    // eset: purchase <id> <valami> [mennyiseg]
-                    // legalább 3 hosszúnak kell lennie a tömbnek
-                    if (szavak.length < 3) {
-                        break;
-                    }
-
-                    String gazdaId = szavak[1];
-                    String itemTipus = szavak[2];
-
-                    ProtoEntitas gazda = katalogus.keres(gazdaId);
-                    if (gazda == null) {
-                        break;
-                    }
-
-                    // só vagy biokerozin (ilyenkor nem kell megadni másik referenciát)
-                    if (itemTipus.equalsIgnoreCase("so") || itemTipus.equalsIgnoreCase("biokerozin")) {
-                        // Meghívjuk a kétparaméteres változatot
-                        gazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
-                    }
-                    else {
-                        // purchase <id> <valami> <masik id> [id]
-                        if (szavak.length < 4) {
-                            break;
-                        }
-
-                        ProtoEntitas cel = katalogus.keres(szavak[3]);
-
-                        if (cel == null) {
-                            break;
-                        }
-
-                        // Meghívjuk a háromparaméteres változatot
-                        // cmd = "purchase", cel = a cél objektum, args = [item, celId, ...]
-                        gazda.parancsFeldolgoz(cmd, cel, parametereketVag(szavak, 2));
-                    }
-                    break;
-                }
 
                 // --- Kapcsolati parancsok (3 paraméteres overload) ---
                 case "assign":
