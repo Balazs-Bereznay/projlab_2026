@@ -284,4 +284,19 @@ public abstract class Jarmu implements ProtoEntitas {
     public Nyilvantarto getNyilvantarto() {
         return nyilvantarto;
     }
+
+    /**
+     * Hozzáfűz egy Ut típusú objektumot az kijeloltUtvonal végére.
+     * @param ut Az az út, ami bekerül az kijeloltUtvonal listába.
+     */
+    public void addKijeloltUt(Ut ut) {
+        if (ut != null && !kijeloltUtvonal.contains(ut)) {
+            kijeloltUtvonal.add(ut);
+        }
+    }
+    public void removeKijeloltUt(Ut ut) {
+        if (kijeloltUtvonal.contains(ut)) {
+            kijeloltUtvonal.remove(ut);
+        }
+    }
 }

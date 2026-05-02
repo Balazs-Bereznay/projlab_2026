@@ -268,6 +268,33 @@ public class Prototipus {
                     }
                     break;
                 }
+                case "add":
+                    if (szavak.length < 4) {
+                        break;
+                    }
+
+                    String addGazdaId = szavak[1];
+                    String item = szavak[2];
+
+                    ProtoEntitas addGazda = katalogus.keres(addGazdaId);
+                    if (addGazda == null) {
+                        break;
+                    }
+
+                    if(item.equalsIgnoreCase("penz")){
+                        // Kétparaméteres változat
+                        addGazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
+                    }else{
+                        ProtoEntitas hozzaadni = katalogus.keres(szavak[3]);
+
+                        if (hozzaadni == null) {
+                            break;
+                        }
+
+                        // Háromparaméteres változatot
+                        addGazda.parancsFeldolgoz(cmd, hozzaadni, parametereketVag(szavak, 2));
+                    }
+                    break;
 
                 // --- Kapcsolati parancsok (3 paraméteres overload) ---
                 case "assign":

@@ -263,4 +263,19 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
     public void setZuzalekLimit(int zuzalekLimit) {
         this.zuzalekLimit = zuzalekLimit;
     }
+
+    /**
+     * Hozzáfűz egy Utegyseg típusú objektumot a tervezettUtvonal végére.
+     * @param ue Az az útegység, ami bekerül a tervezettUtvonal listába.
+     */
+    public void addTervezettUtegyseg(Utegyseg ue) {
+        if (ue != null && !tervezettUtvonal.contains(ue)) {
+            tervezettUtvonal.add(ue);
+        }
+    }
+    public void removeTervezettUtegyseg(Utegyseg ue) {
+        if (tervezettUtvonal.contains(ue)) {
+            tervezettUtvonal.remove(ue);
+        }
+    }
 }

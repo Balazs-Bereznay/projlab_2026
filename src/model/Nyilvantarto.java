@@ -69,6 +69,59 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
     }
 
     @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "add":
+                if ( args.size() < 2) {
+                    return;
+                }
+
+                String item = args.get(0);
+                String value = args.get(1);
+
+                switch (item){
+                    case ("penz"):
+                        try {
+                            this.penzNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("so"):
+                        try {
+                            this.soNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("biokerozin"):
+                        try {
+                            this.biokerozinNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("nemBeertAutok"):
+                        try {
+                            this.nemBeertAutokNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
         masik.parancsFeldolgozNyilvantartoval(parancs, this, args);
     }

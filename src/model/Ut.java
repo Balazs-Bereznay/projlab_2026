@@ -82,6 +82,9 @@ public class Ut implements ProtoEntitas {
         } else if ("remove".equals(parancs)) {
             csomopont.removeUt(this);
             System.out.println("Út eltávolítva a csomópontból.");
+        } else if("add".equals(parancs) && args.get(0).equals("utLista")){    // Kb. ugyanazt csinálja, mint az assign (?)
+            csomopont.addUt(this);
+            System.out.println("Út sikeresen a csomópont út listájához hozzáadva.");
         }
     }
 
@@ -105,7 +108,13 @@ public class Ut implements ProtoEntitas {
         }
     }
 
-
+    @Override
+    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+        if (parancs.equals("add") && args.get(0).equals("kijeloltUtvonal")) {
+            busz.addKijeloltUt(this);
+            System.out.println("Út sikeresen hozzáadva a busz kijelölt útvonalához.");
+        }
+    }
 
     ///További metódusok
     /**

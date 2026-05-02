@@ -212,6 +212,13 @@ public class Utegyseg implements ProtoEntitas{
         }
     }
 
+    @Override
+    public void parancsFeldolgozHokotroval(String parancs, Hokotro hokotro, List<String> args) {
+        if ("add".equals(parancs) && args.get(0).equals("tervezettUtvonal")) {
+            hokotro.addTervezettUtegyseg(this);
+        }
+    }
+
     ///További metódusok
     /**
      * Növeli a hóréteg vastagságát a mezőn a szimulált időjárás hatására.
