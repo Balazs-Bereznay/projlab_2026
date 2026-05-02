@@ -7,7 +7,7 @@ import java.util.Random;
  * Felelős az időjárás hatására rajta keletkező és eltűnő természeti hatások
  * feljegyzésére (hó, jég), illetve a rajta álló járművek, és a környező egységek nyilvántartására.
  */
-public class Utegyseg {
+public class Utegyseg implements ProtoEntitas{
     private static final int HO_ELAKADAS_KUSZOB = 15;
     private static final int LETAPOSOTTSAG_KUSZOB = 5;
     private static final int BEFEDES_KUSZOB = 5;

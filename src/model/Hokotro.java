@@ -25,12 +25,37 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         this(null);
     }
 
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if ("move".equals(parancs)) {
+            if (args.isEmpty()) return;
+            String irany = args.get(0);
+            if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
+                lep();
+            } else {
+                savValtas(irany);
+            }
+        } else if ("clean".equals(parancs)) {
+            takarit();
+        }
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozHokotroval(parancs, this, args);
+    }
+
     // 1. Fogadja a Fejet
     @Override
     public void parancsFeldolgoz(String parancs, Fej fej, List<String> args) {
         if (parancs.equals("assign")) {
             this.setFej(fej);
             System.out.println("Fej sikeresen a hókotróra szerelve.");
+        } else if (parancs.equals("remove")) {
+            if (this.fej == fej) {
+                this.fej = null;
+                System.out.println("Fej eltávolítva a hókotróról.");
+            }
         }
     }
 

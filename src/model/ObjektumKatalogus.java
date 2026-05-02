@@ -47,6 +47,16 @@ class ObjektumKatalogus {
     }
 
     /**
+     * Visszaadja az adott típusú összes entitást.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends ProtoEntitas> java.util.List<T> osszesOfType(Class<T> type) {
+        Map<String, ProtoEntitas> alcsoport = kontener.get(type);
+        if (alcsoport == null) return new java.util.ArrayList<>();
+        return new java.util.ArrayList<>((java.util.Collection<T>) (java.util.Collection<?>) alcsoport.values());
+    }
+
+    /**
      * Kiüríti a külső Map-et, így minden referencia megszűnik
      */
     public void alaphelyzet() {
