@@ -1,5 +1,6 @@
 package model;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -347,6 +348,74 @@ public class Utegyseg implements ProtoEntitas{
 
         // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út
         return true;
+    }
+
+    /**
+     * Feldolgozza az útegységre érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "add_condition":
+                if (args.size() < 2) {
+                    return;
+                }
+
+                if(!args.get(0).equals("snow") && !args.get(0).equals("ice")) {
+                    return;
+                }
+
+                String type = args.get(0);
+                String amount = args.get(1);
+
+                switch (type){
+                    case "snow":
+                        try {
+                            setHoMagassag(Integer.parseInt(amount));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case "ice":
+                        try {
+                            setHoMagassag(Integer.parseInt(amount));
+                            jegesedes();
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            case "list_shop":
+            case "load":
+            case "save":
+            case "set_random":
+            case "tick":
+            case "create":
+            case "delete":
+            case "assign":
+            case "remove":
+            case "set":
+            case "move":
+            case "clean":
+            case "purchase":
+            case "list":
+            case "info":
+            case "help":
+            case "add":
+                break;
+            default:
+                break;
+        }
     }
 }
 
