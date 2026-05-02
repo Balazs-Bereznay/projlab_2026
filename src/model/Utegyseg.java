@@ -368,7 +368,7 @@ public class Utegyseg implements ProtoEntitas{
                     return;
                 }
 
-                if(!args.get(0).equals("hó") && !args.get(0).equals("jég")) {
+                if(!args.get(0).equals("ho") && !args.get(0).equals("jeg")) {
                     return;
                 }
 
@@ -376,14 +376,14 @@ public class Utegyseg implements ProtoEntitas{
                 String amount = args.get(1);
 
                 switch (type){
-                    case "hó":
+                    case "ho":
                         try {
                             setHoMagassag(Integer.parseInt(amount));
                         } catch (NumberFormatException ignored) {
                             return;
                         }
                         break;
-                    case "jég":
+                    case "jeg":
                         try {
                             setHoMagassag(Integer.parseInt(amount));
                             jegesedes();

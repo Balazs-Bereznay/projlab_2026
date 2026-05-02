@@ -29,6 +29,49 @@ public class Csomopont  implements ProtoEntitas {
         this(new ArrayList<>(), false, false);
     }
 
+    /**
+     * Feldolgozza a csomópontra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+
+                String utListaTartalom = (this.utLista == null || this.utLista.isEmpty())
+                        ? ""
+                        : String.join(", ", this.utLista.stream().map(Object::toString).toList());
+                String utListaStr = "{ " + utListaTartalom + (utListaTartalom.isEmpty() ? "" : " ") + "}";
+
+                String infoKimenet = """
+                        %s:
+                        celpont: %b
+                        buszmegallo: %b
+                        azonosito: %s
+                        utLista: %s
+                        """.formatted(
+                        currentId,
+                        this.celpont,
+                        this.buszmegallo,
+                        this.azonosito,
+                        utListaStr
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void parancsFeldolgoz(String parancs, Ut ut, List<String> args) {
         if (parancs.equals("assign")) {

@@ -38,6 +38,52 @@ public class Ut implements ProtoEntitas {
     public ArrayList<Sav> getSavok(){ return savok; }
     public void setSavok(ArrayList<Sav> savok){ this.savok = savok; };
 
+    /**
+     * Feldolgozza a útra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+
+                String v1Str = (this.vegpont1 != null) ? this.vegpont1.toString() : "null";
+                String v2Str = (this.vegpont2 != null) ? this.vegpont2.toString() : "null";
+
+                String savokTartalom = (this.savok == null || this.savok.isEmpty())
+                        ? ""
+                        : String.join(", ", this.savok.stream().map(Object::toString).toList());
+                String savokStr = "{ " + savokTartalom + (savokTartalom.isEmpty() ? "" : " ") + "}";
+
+                String infoKimenet = """
+                    %s:
+                    vegpont1: %s
+                    vegpont2: %s
+                    savok: %s
+                    alagut: %b
+                    """.formatted(
+                        currentId,
+                        v1Str,
+                        v2Str,
+                        savokStr,
+                        this.alagut
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+
+            default:
+                break;
+        }
+    }
 
     @Override
     public void parancsFeldolgoz(String parancs, Sav sav, List<String> args) {

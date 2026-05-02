@@ -199,6 +199,67 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
             case "list_shop":
             case "purchase":
                 break;
+            case "info":
+                String currentId = args.get(0);
+
+                String utegysegStr = (this.getUtegyseg() != null) ? this.getUtegyseg().toString() : "null";
+                String nyStr = (this.getNyilvantarto() != null) ? this.getNyilvantarto().toString() : "null";
+                String v1Str = (this.vegallomas1 != null) ? this.vegallomas1.toString() : "null";
+                String v2Str = (this.vegallomas2 != null) ? this.vegallomas2.toString() : "null";
+
+                // kijeloltUtvonal formázása
+                String utvonalTartalom = (this.kijeloltUtvonal == null || this.kijeloltUtvonal.isEmpty())
+                        ? ""
+                        : String.join(", ", this.kijeloltUtvonal.stream().map(Object::toString).toList());
+                String utvonalStr = "{ " + utvonalTartalom + (utvonalTartalom.isEmpty() ? "" : " ") + "}";
+
+                // megallokLista formázása
+                String megallokTartalom = (this.megallokLista == null || this.megallokLista.isEmpty())
+                        ? ""
+                        : String.join(", ", this.megallokLista.stream().map(Object::toString).toList());
+                String megallokStr = "{ " + megallokTartalom + (megallokTartalom.isEmpty() ? "" : " ") + "}";
+
+                // erintettLista formázása
+                String erintettTartalom = (this.erintettLista == null || this.erintettLista.isEmpty())
+                        ? ""
+                        : String.join(", ", this.erintettLista.stream().map(Object::toString).toList());
+                String erintettStr = "{ " + erintettTartalom + (erintettTartalom.isEmpty() ? "" : " ") + "}";
+
+                String infoKimenet = """
+                    %s:
+                    sebesseg: %d
+                    utegyseg: %s
+                    tapadas: %d
+                    elakadt: %b
+                    baleset: %b
+                    megcsuszott: %b
+                    nyilvantarto: %s
+                    kijeloltUtvonal: %s
+                    vegallomas1: %s
+                    vegallomas2: %s
+                    megallokLista: %s
+                    erintettLista: %s
+                    bevetel: %d
+                    """.formatted(
+                        currentId,
+                        this.getSebesseg(),
+                        utegysegStr,
+                        this.getTapadas(),
+                        this.elakadt,
+                        this.baleset,
+                        this.megcsuszott,
+                        nyStr,
+                        utvonalStr,
+                        v1Str,
+                        v2Str,
+                        megallokStr,
+                        erintettStr,
+                        this.bevetel
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
             default:
                 break;
         }

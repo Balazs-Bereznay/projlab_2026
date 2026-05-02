@@ -23,6 +23,41 @@ public class Sav implements ProtoEntitas {
 
         this(null);
     }
+
+    /**
+     * Feldolgozza a sávra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+                String euStr = (this.elsoUtegyseg != null) ? this.elsoUtegyseg.toString() : "null";
+
+                String infoKimenet = """
+                    %s:
+                    elsoUtegyseg: %s
+                    """.formatted(
+                        currentId,
+                        euStr
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+
+            default:
+                break;
+        }
+    }
+
     @Override
     public void parancsFeldolgoz(String parancs, Utegyseg utegyseg, List<String> args) {
         if (parancs.equals("assign")) {

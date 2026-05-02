@@ -152,16 +152,15 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                     default:
                         break;
                 }
-
-
-                break;
             case "info":
                 String currentId = args.get(0);
 
                 String utegysegStr = (this.getUtegyseg() != null) ? this.getUtegyseg().toString() : "null";
                 String kezdopontStr = (this.kezdopont != null) ? this.kezdopont.toString() : "null";
                 String celpontStr = (this.celpont != null) ? this.celpont.toString() : "null";
+                String nyStr = (this.getNyilvantarto() != null) ? this.getNyilvantarto().toString() : "null";
 
+                // Útvonal lista összefűzése: ha üres "{ }", ha nem "{ ut1, ut2 }"
                 String utvonalTartalom = (this.kijeloltUtvonal == null || this.kijeloltUtvonal.isEmpty())
                         ? ""
                         : String.join(", ", this.kijeloltUtvonal.stream().map(Object::toString).toList());
@@ -175,6 +174,7 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                     elakadt: %b
                     baleset: %b
                     megcsuszott: %b
+                    nyilvantarto: %s
                     kijeloltUtvonal: %s
                     kezdopont: %s
                     celpont: %s
@@ -187,6 +187,7 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                         this.elakadt,
                         this.baleset,
                         this.megcsuszott,
+                        nyStr,
                         utvonalStr,
                         kezdopontStr,
                         celpontStr,
@@ -194,11 +195,6 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                 );
                 System.out.print(infoKimenet);
                 System.out.println("Info displayed");
-                break;
-            case "clean":
-            case "add_condition":
-            case "list_shop":
-            case "purchase":
                 break;
             default:
                 break;

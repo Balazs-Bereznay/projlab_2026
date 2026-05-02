@@ -1,10 +1,12 @@
 package model;
 
+import java.util.List;
+
 /**
  * Egy tisztíıtófej, ami képes egy útegységre zúzalékot kiszórni, hogy meggátolja annak
  * csúszósságát.
  */
-public class Zuzalekszoro extends Fej {
+public class Zuzalekszoro extends Fej implements ProtoEntitas{
     ///A játékban lévő közös nyilvántartó.
     private Nyilvantarto nyilvantarto;
     /// Egy használattal egyszerre ekkora adag zúzalékot tud kiszórni az adott útegységre.
@@ -12,6 +14,42 @@ public class Zuzalekszoro extends Fej {
 
     public Zuzalekszoro(Nyilvantarto ny) {
         this.nyilvantarto = ny;
+    }
+
+    /**
+     * Feldolgozza a zúzalékszóró fejre érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+                String nyStr = (this.nyilvantarto != null) ? this.nyilvantarto.toString() : "null";
+
+                String infoKimenet = """
+                    %s:
+                    zuzalekAdag: %d
+                    nyilvantarto: %s
+                    """.formatted(
+                        currentId,
+                        ZUZALEK_ADAG,
+                        nyStr
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+
+            default:
+                break;
+        }
     }
 
     /**
