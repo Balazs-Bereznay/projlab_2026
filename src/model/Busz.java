@@ -44,6 +44,8 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
      */
     private List<Utegyseg> tervezettUtvonal = new ArrayList<>();
 
+
+
     /**
      * Rogziti, hogy a busz erintett egy ervenyes megallot.
      *

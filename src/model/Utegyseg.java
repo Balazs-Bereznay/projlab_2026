@@ -47,6 +47,12 @@ public class Utegyseg implements ProtoEntitas{
         this(0, 0.0, null, null, null, null, 0, 0, false, 0);
     }
 
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozUtegyseggel(parancs, this, args);
+    }
+
+
     /// Getterek és setterek
     /**
      * Visszatér a hoElakadasKuszob statikus tagváltozó értékével.
@@ -176,6 +182,34 @@ public class Utegyseg implements ProtoEntitas{
      */
     public void setJeges(boolean jeges) {
         this.jeges = jeges;
+    }
+
+    @Override
+    public void parancsFeldolgozJarmuvel(String parancs, Jarmu jarmu, List<String> args) {
+        if ("assign".equals(parancs)) {
+            this.jarmu = jarmu;
+            jarmu.utegyseg = this;
+            System.out.println("Jármű sikeresen az útegységre helyezve.");
+        } else if ("remove".equals(parancs)) {
+            if (this.jarmu == jarmu) {
+                jarmu.utegyseg = null;
+                this.jarmu = null;
+                System.out.println("Jármű eltávolítva az útegységről.");
+            }
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args) {
+        if ("assign".equals(parancs)) {
+            sav.setElsoUtegyseg(this);
+            System.out.println("Útegység sikeresen a sávhoz rendelve.");
+        } else if ("remove".equals(parancs)) {
+            if (sav.getElsoUtegyseg() == this) {
+                sav.setElsoUtegyseg(null);
+                System.out.println("Útegység eltávolítva a sávból.");
+            }
+        }
     }
 
     ///További metódusok

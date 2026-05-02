@@ -17,6 +17,11 @@ public class Prototipus {
     // A FIFO sor, ami a feldolgozandó parancsokat tárolja
     private final Queue<String> parancsSor = new ArrayDeque<>();
 
+    /**
+     * A test mappából beolvashatunk egy teszthez tartozó fájlt.
+     * A metódus feldolgozza a fájlban felsorolt parancsokat és továbbítja azokat a parancsSor FIFO-ba
+     * @param fajlnev
+     */
     public void beolvasFajlbol(String fajlnev) {
         try (BufferedReader br = new BufferedReader(new FileReader(fajlnev))) {
             String sor;
@@ -34,6 +39,11 @@ public class Prototipus {
         }
     }
 
+    /**
+     * Az out mappába kimenti a napló aktuális tartalmát.
+     * A naplóba az info <id> paranccsal lehet kiiratni egy objektum aktuális állapotát.
+     * @param fajlnev
+     */
     public void allapotMentese(String fajlnev) {
         File forras = new File("temp.txt");
         if (!forras.exists()) {
@@ -58,6 +68,9 @@ public class Prototipus {
         }
     }
 
+    /**
+     * Törli a korábban létrehozott objektumokat és az ideiglenes naplófájlt is
+     */
     public void tesztKornyezetAlaphelyzet() {
         // 1. Memória ürítése (ObjektumKatalógus)
         katalogus.alaphelyzet();
@@ -66,6 +79,35 @@ public class Prototipus {
         File tempFile = new File("temp.txt");
         if (tempFile.exists()) {
             tempFile.delete();
+        }
+    }
+
+    /**
+     * Ha null-t kap paraméternek, akkor kilistázza az összes objektumot.
+     * Ha paraméterként egy típus nevét kapja, akkor csak az adott típus összes objektumát listázza ki.
+     * @param szavak
+     */
+    public void listazasKezelo(String[] szavak) {
+        List<String> idLista;
+
+        // Ellenőrizzük, hogy van-e megadva típus (pl. "list Auto" -> szavak[1] = "Auto")
+        // Ha a szavak tömb null, vagy nincs benne paraméter, null-t küldünk a katalógusnak
+        if (szavak == null) {
+            idLista = katalogus.osszesIdLeker(null);
+            System.out.println("Osszes objektum listaja:");
+        } else {
+            String tipus = szavak[1];
+            idLista = katalogus.osszesIdLeker(tipus);
+            System.out.println(tipus + " tipusu objektumok listaja:");
+        }
+
+        // Eredmény megjelenítése
+        if (idLista.isEmpty()) {
+            System.out.println(" ");
+        } else {
+            for (String id : idLista) {
+                System.out.println("- " + id);
+            }
         }
     }
 

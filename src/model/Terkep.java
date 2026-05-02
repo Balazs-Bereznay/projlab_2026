@@ -5,11 +5,34 @@ import java.util.*;
 /** Számontartja az összes csomópontot és az összes utat,
  *  valamint útvonalat generál az autók számára.
  */
-public class Terkep implements ProtoEntitas{
+public class Terkep  implements ProtoEntitas{
     /// A játékban lévő összes út listája.
     private ArrayList<Ut> elLista;
     /// A játékban lévő összes csomópont listája.
     private ArrayList<Csomopont> csomopontLista;
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozTerkeppel(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozUttal(String parancs, Ut ut, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.elLista.add(ut);
+            System.out.println("Út a térképhez adva.");
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozCsomoponttal(String parancs, Csomopont cs, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.csomopontLista.add(cs);
+            System.out.println("Csomópont a térképhez adva.");
+        }
+    }
+
+
 
     ///Konstruktorok
     public Terkep(ArrayList<Ut> elLista, ArrayList<Csomopont> csomopontLista){
@@ -17,54 +40,11 @@ public class Terkep implements ProtoEntitas{
         this.csomopontLista = (csomopontLista != null) ? new ArrayList<>(csomopontLista) : new ArrayList<>();
     }
 
+
+
     public Terkep(){
 
         this(new ArrayList<>(), new ArrayList<>());
-    }
-
-    /**
-     * Feldolgozza a térképre érkező, egyszerű prototípus-parancsokat.
-     *
-     * @param parancs a feldolgozandó parancs neve
-     * @param args a parancs további paraméterei
-     */
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {
-        if (parancs == null) {
-            return;
-        }
-
-        switch (parancs) {
-            case "info":
-                String currentId = args.get(0);
-
-                String elTartalom = (this.elLista == null || this.elLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.elLista.stream().map(Object::toString).toList());
-                String elStr = "{ " + elTartalom + (elTartalom.isEmpty() ? "" : " ") + "}";
-
-                String csomopontTartalom = (this.csomopontLista == null || this.csomopontLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.csomopontLista.stream().map(Object::toString).toList());
-                String csomopontStr = "{ " + csomopontTartalom + (csomopontTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                    %s:
-                    elLista: %s
-                    csomopontLista: %s
-                    """.formatted(
-                        currentId,
-                        elStr,
-                        csomopontStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-
-            default:
-                break;
-        }
     }
 
     ///Getterek és setterek

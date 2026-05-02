@@ -1,7 +1,6 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A prototípus ezt az osztályt fogja használni a játék során létrehozott objektumok struktúrált kezelésére.
@@ -11,6 +10,26 @@ import java.util.Map;
 class ObjektumKatalogus {
     // Típusonként csoportosított belső térképek: Class -> (ID -> ProtoEntitas)
     private final Map<Class<?>, Map<String, ProtoEntitas>> kontener = new HashMap<>();
+
+    // A típus-fordító Map
+    private final Map<String, Class<? extends ProtoEntitas>> tipusTerkepe = Map.ofEntries(
+            Map.entry("Utegyseg", Utegyseg.class),
+            Map.entry("Csomopont", Csomopont.class),
+            Map.entry("Ut", Ut.class),
+            Map.entry("Sav", Sav.class),
+            Map.entry("Hokotro", Hokotro.class),
+            Map.entry("Auto", Auto.class),
+            Map.entry("Busz", Busz.class),
+            Map.entry("Zuzalekszoro", Zuzalekszoro.class),
+            Map.entry("Sopro", Sopro.class),
+            Map.entry("Jegtoro", Jegtoro.class),
+            Map.entry("Sarkany", Sarkany.class),
+            Map.entry("Soszoro", Soszoro.class),
+            Map.entry("Hanyo", Hanyo.class),
+            Map.entry("Nyilvantarto", Nyilvantarto.class),
+            Map.entry("Jatekos", Jatekos.class),
+            Map.entry("Bolt", Bolt.class)
+    );
 
     /**
      * Entitás hozzáadása. Csak olyan objektumot fogad el, ami ProtoEntitas.
@@ -65,4 +84,27 @@ class ObjektumKatalogus {
         //System.out.println("Az objektum katalógus tartalmát töröltem.");
     }
 
+    /**
+     * Ha a tipusNev null, az összes létező objektum ID-ját visszaadja.
+     * Ha van típus megadva, csak az adott típushoz tartozókat.
+     */
+    public List<String> osszesIdLeker(String tipusNev) {
+        List<String> eredmeny = new ArrayList<>();
+
+        if (tipusNev == null) {
+            // Végigmegyünk az összes típuson (összes belső Map-en)
+            for (Map<String, ProtoEntitas> alcsoport : kontener.values()) {
+                eredmeny.addAll(alcsoport.keySet());
+            }
+        } else {
+            Class<? extends ProtoEntitas> osztaly = tipusTerkepe.get(tipusNev);
+
+            if (osztaly != null && kontener.containsKey(osztaly)) {
+                eredmeny.addAll(kontener.get(osztaly).keySet());
+            }
+        }
+
+        Collections.sort(eredmeny); // Mindig legyen rendezett a lista
+        return eredmeny;
+    }
 }
