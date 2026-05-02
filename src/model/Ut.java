@@ -70,6 +70,38 @@ public class Ut implements ProtoEntitas {
     }
 
     @Override
+        public void parancsFeldolgoz(String parancs, List<String> args) {
+            if (parancs == null || args == null) {
+                return;
+            }
+
+            switch (parancs) {
+                case "set":
+                    if (args.size() < 2) return;
+                    String tulajdonsag = args.get(0).toLowerCase();
+                    String ertek = args.get(1);
+
+                    try {
+                        switch (tulajdonsag) {
+                            case "alagut":
+                                this.alagut = Boolean.parseBoolean(ertek);
+                                break;
+
+                            default:
+                                break;
+                        }
+                    } catch (NumberFormatException e) {
+                        // Itt kapjuk el, ha a parseInt vagy parseDouble elszállt
+                        System.out.println("Hiba: Ervenytelen szamformatum!");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+    @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
         cel.parancsFeldolgozUttal(parancs, this, args);
     }

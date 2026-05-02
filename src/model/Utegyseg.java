@@ -436,6 +436,53 @@ public class Utegyseg implements ProtoEntitas{
                         break;
                 }
                 break;
+
+            case "set":
+                if (args.size() < 2) return;
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "letaposottsag":
+                            this.letaposottsag = Integer.parseInt(ertek);
+                            break;
+                        case "befedettseg":
+                            this.befedettseg = Integer.parseInt(ertek);
+                            break;
+                        case "homagassag":
+                            this.hoMagassag = Integer.parseInt(ertek);
+                            break;
+                        case "jegmagassag":
+                            this.jegMagassag = Integer.parseInt(ertek);
+                            break;
+                        case "somennyiseg":
+                            this.soMennyiseg = Integer.parseInt(ertek);
+                            break;
+
+                        case "megcsuszasesely":
+                            this.megcsuszasEsely = Double.parseDouble(ertek);
+                            break;
+
+                        case "blokkolt":
+                            this.blokkolt = Boolean.parseBoolean(ertek);
+                            break;
+                        case "zuzalek":
+                            this.zuzalek = Boolean.parseBoolean(ertek);
+                            break;
+                        case "jeges":
+                            this.jeges = Boolean.parseBoolean(ertek);
+                            break;
+
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                // Itt kapjuk el, ha a parseInt vagy parseDouble elszállt
+                System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+
             default:
                 break;
         }

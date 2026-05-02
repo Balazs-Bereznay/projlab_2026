@@ -156,7 +156,7 @@ public class Prototipus {
         katalogus.hozzaad(id, ujEntitas);
     }
 
-    public void EntitasTorol(String id){
+    public void entitasTorol(String id){
         katalogus.torol(id);
     }
 

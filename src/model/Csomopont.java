@@ -67,6 +67,46 @@ public class Csomopont  implements ProtoEntitas {
     }
 
     @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "set":
+                if (args.size() < 2) return;
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "celpont":
+                            this.celpont = Boolean.parseBoolean(ertek);
+                            break;
+
+                        case "buszmegallo":
+                            this.buszmegallo = Boolean.parseBoolean(ertek);
+                            break;
+
+                        case "azonosito":
+                            this.azonosito = ertek;
+                            break;
+
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    // Itt kapjuk el, ha a parseInt vagy parseDouble elszállt
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
         cel.parancsFeldolgozCsomoponttal(parancs, this, args);
     }
