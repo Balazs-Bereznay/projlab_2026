@@ -16,6 +16,10 @@ public class Zuzalekszoro extends Fej implements ProtoEntitas{
         this.nyilvantarto = ny;
     }
 
+    public Zuzalekszoro() {
+        this(null);
+    }
+
     /**
      * Feldolgozza a zúzalékszóró fejre érkező, egyszerű prototípus-parancsokat.
      *

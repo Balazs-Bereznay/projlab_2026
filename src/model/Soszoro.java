@@ -16,6 +16,9 @@ class Soszoro extends Fej implements ProtoEntitas {
     public Soszoro(Nyilvantarto ny) {
         this.nyilvantarto = ny;
     }
+    public Soszoro() {
+        this(null);
+    }
 
     /**
      * Feldolgozza a sószóró fejre érkező, egyszerű prototípus-parancsokat.

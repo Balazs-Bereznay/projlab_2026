@@ -33,6 +33,10 @@ public class Bolt implements ProtoEntitas {
         this.biokerozinAr = biokerozinAr;
     }
 
+    public Bolt() {
+        this(100, 200);
+    }
+
     /**
      * A játékos megvásárol egy új hokotrót
      */

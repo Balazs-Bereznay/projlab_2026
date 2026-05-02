@@ -16,6 +16,9 @@ public class Sarkany extends Fej implements ProtoEntitas {
         this.nyilvantarto = ny;
     }
 
+    public Sarkany() {
+        this(null);
+    }
     /**
      * Feldolgozza a sárkány fejre érkező, egyszerű prototípus-parancsokat.
      *

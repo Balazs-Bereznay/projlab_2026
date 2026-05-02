@@ -38,6 +38,10 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
         this.nemBeertAutokSzama = n;
     }
 
+    public Nyilvantarto() {
+        this(0, 0, 0, 0);
+    }
+
     /**
      * Feldolgozza a nyilvántartóra érkező, egyszerű prototípus-parancsokat.
      *
