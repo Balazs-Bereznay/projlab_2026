@@ -368,7 +368,7 @@ public class Utegyseg implements ProtoEntitas{
                     return;
                 }
 
-                if(!args.get(0).equals("snow") && !args.get(0).equals("ice")) {
+                if(!args.get(0).equals("hó") && !args.get(0).equals("jég")) {
                     return;
                 }
 
@@ -376,14 +376,14 @@ public class Utegyseg implements ProtoEntitas{
                 String amount = args.get(1);
 
                 switch (type){
-                    case "snow":
+                    case "hó":
                         try {
                             setHoMagassag(Integer.parseInt(amount));
                         } catch (NumberFormatException ignored) {
                             return;
                         }
                         break;
-                    case "ice":
+                    case "jég":
                         try {
                             setHoMagassag(Integer.parseInt(amount));
                             jegesedes();
@@ -394,7 +394,51 @@ public class Utegyseg implements ProtoEntitas{
                     default:
                         break;
                 }
+            case "info":
+                String currentId = args.get(0);
 
+                String jarmuStr = (this.jarmu != null) ? this.jarmu.toString() : "null";
+                String kovetkezoStr = (this.kovetkezoUtegyseg != null) ? this.kovetkezoUtegyseg.toString() : "null";
+                String balStr = (this.balUtegyseg != null) ? this.balUtegyseg.toString() : "null";
+                String jobbStr = (this.jobbUtegyseg != null) ? this.jobbUtegyseg.toString() : "null";
+
+                String infoKimenet = """
+                    %s:
+                    hoMagassag: %d
+                    jegMagassag: %d
+                    soMennyiseg: %d
+                    letaposottsag: %d
+                    megcsuszasEsely: %.1f
+                    blokkolt: %b
+                    zuzalek: %b
+                    jeges: %b
+                    befedesLimit: %d
+                    befedesSzamlalo: %d
+                    jarmu: %s
+                    kovetkezoUtegyseg: %s
+                    balUtegyseg: %s
+                    jobbUtegyseg: %s
+                    """.formatted(
+                        currentId,
+                        this.hoMagassag,
+                        this.jegMagassag,
+                        this.soMennyiseg,
+                        this.letaposottsag,
+                        this.megcsuszasEsely,
+                        this.blokkolt,
+                        this.zuzalek,
+                        this.jeges,
+                        getBefedesKuszob(),
+                        this.befedettseg,
+                        jarmuStr,
+                        kovetkezoStr,
+                        balStr,
+                        jobbStr
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
             case "list_shop":
             case "load":
             case "save":
@@ -409,7 +453,6 @@ public class Utegyseg implements ProtoEntitas{
             case "clean":
             case "purchase":
             case "list":
-            case "info":
             case "help":
             case "add":
                 break;

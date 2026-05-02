@@ -255,6 +255,14 @@ public abstract class Jarmu implements ProtoEntitas {
         this.tapadas = tapadas;
     }
 
+    public void setUtegyseg(Utegyseg u){
+        this.utegyseg = u;
+    }
+
+    public Utegyseg getUtegyseg(){
+        return utegyseg;
+    }
+
     public void setNyilvantarto(Nyilvantarto nyilvantarto) {
         this.nyilvantarto = nyilvantarto;
     }

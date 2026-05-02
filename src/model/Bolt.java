@@ -268,7 +268,7 @@ public class Bolt implements ProtoEntitas {
      */
     @Override
     public void parancsFeldolgoz(String parancs, List<String> args) {
-        if (parancs == null || args == null) {
+        if (parancs == null) {
             return;
         }
         if (nyilvantarto == null) {
@@ -313,6 +313,7 @@ public class Bolt implements ProtoEntitas {
                         sebessegfejlesztesAr, tapadasfejlesztesAr, hozamfejlesztesAr,
                         nyilvantarto.getPenz(), nyilvantarto.getSo(), nyilvantarto.getBiokerozin()
                 );
+                System.out.println(kinalat);
                 break;
             case "load":
             case "save":

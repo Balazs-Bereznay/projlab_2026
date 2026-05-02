@@ -161,23 +161,22 @@ public class Prototipus {
                 case "set":
                 case "move":
                 case "clean":
+                case "add_condition":
                 case "list_shop":
                 case "add":
-                case "info":
                 case "purchase":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
                         celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
                     }
                     break;
-                /// Ezt a parancs és az id közötti másik paraméter miatt kell külön kezelni
-                case "add_condition":
-                    ProtoEntitas celpontt = katalogus.keres(szavak[2]);
-                    if (celpontt != null) {
-                        List<String> condition = new ArrayList<>();
-                        condition.add(szavak[1]);
-                        condition.addAll(parametereketVag(szavak, 3));
-                        celpontt.parancsFeldolgoz(cmd, condition);
+                /// Az info parancsnál kell a kiíráshoz is az entitás azonosítója
+                case "info":
+                    ProtoEntitas celponttt = katalogus.keres(szavak[1]);
+                    if (celponttt != null) {
+                        celponttt.parancsFeldolgoz(cmd, parametereketVag(szavak, 1));
+                    }else{
+                        System.out.println("Entity not found!");
                     }
                     break;
 
