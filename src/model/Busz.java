@@ -44,7 +44,26 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
      */
     private List<Utegyseg> tervezettUtvonal = new ArrayList<>();
 
+    @Override
+    public void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
+        if (args.isEmpty()) return;
 
+        String item = args.get(0).toLowerCase(); // Az item neve a lista eleje
+
+        switch (item) {
+            case "sebessegfejlesztes":
+                Jatekos.getBolt().sebessegFejlesztes(this, 10);
+                break;
+            case "hozamfejlesztes":
+                Jatekos.getBolt().hozamFejlesztes(this, 10);
+                break;
+            case "tapadasfejlesztes":
+                Jatekos.getBolt().tapadasFejlesztes(this, 10);
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
      * Rogziti, hogy a busz erintett egy ervenyes megallot.

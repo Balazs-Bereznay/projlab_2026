@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Jatekos implements ProtoEntitas {
 
+    private static final Bolt bolt = new Bolt();
+
     /**
      * A játékoshoz tartozó irányítható járművek (hókotrók, buszok) listája.
      */
@@ -68,10 +70,36 @@ public class Jatekos implements ProtoEntitas {
                 System.out.println("Info displayed");
                 break;
 
+            case "purchase":
+                String item = args.get(0).toLowerCase();
+                int mennyiseg = args.size() >= 2 ? Integer.parseInt(args.get(1)) : 1;
+
+                switch (item) {
+                    case "so":
+                        bolt.soVasarol(mennyiseg);
+                        //System.out.println("Sikeres vasarlas: So hozzaadva a keszlethez.");
+                        break;
+
+                    case "biokerozin":
+                        bolt.biokerozinVasarol(mennyiseg);
+                        //System.out.println("Sikeres vasarlas: Biokerozin feltoltve.");
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
             default:
                 break;
         }
     }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozJatekossal(parancs, this, args);
+    }
+
 
     public List<Iranyithato> getFlotta() {
         System.out.println("Lekérdezték a játékos flottáját.");
@@ -91,5 +119,9 @@ public class Jatekos implements ProtoEntitas {
     public void setNyilvantarto(Nyilvantarto nyilvantarto) {
         System.out.println("Beállították a játékos nyilvántartóját.");
         this.nyilvantarto = nyilvantarto;
+    }
+
+    public static Bolt getBolt() {
+        return bolt;
     }
 }

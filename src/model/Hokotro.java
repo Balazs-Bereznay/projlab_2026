@@ -92,21 +92,47 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         cel.parancsFeldolgozHokotroval(parancs, this, args);
     }
 
-    // 1. Fogadja a Fejet
     @Override
-    public void parancsFeldolgoz(String parancs, Fej fej, List<String> args) {
-        if (parancs.equals("assign")) {
-            this.setFej(fej);
-            System.out.println("Fej sikeresen a hókotróra szerelve.");
-        } else if (parancs.equals("remove")) {
-            if (this.fej == fej) {
-                this.fej = null;
-                System.out.println("Fej eltávolítva a hókotróról.");
-            }
+    public void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
+        if (args.isEmpty()) return;
+
+        String item = args.get(0).toLowerCase(); // Az item neve a lista eleje
+
+        switch (item) {
+            case "hokotro":
+                Jatekos.getBolt().hokotroVasarol(jatekos, this);
+                break;
+            case "soszoro":
+                Jatekos.getBolt().soszoroVasarol(this);
+                break;
+            case "jegtoro":
+                Jatekos.getBolt().jegtoroVasarol(this);
+                break;
+            case "zuzalekszoro":
+                Jatekos.getBolt().zuzalekszoroVasarol(this);
+                break;
+            case "sarkany":
+                Jatekos.getBolt().sarkanyVasarol(this);
+                break;
+            case "sopro":
+                Jatekos.getBolt().soproVasarol(this);
+                break;
+            case "hanyo":
+                Jatekos.getBolt().hanyoVasarol(this);
+                break;
+            case "zuzalek":
+                int mennyiseg = 1;
+                try {
+                    mennyiseg = args.size() >= 3 ? Integer.parseInt(args.get(2)) : 1;
+                } catch (NumberFormatException e) {
+                }
+
+                Jatekos.getBolt().zuzalekVasarol(this, mennyiseg);
+                break;
+            default:
+                break;
         }
     }
-
-
 
     /**
      * A hókotróra felszerelt fej használatával takarítja a jármű alatti útegységet.
@@ -144,17 +170,17 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
      * @param mennyiseg A hozzáadni kívánt mennyiség.
      * @return Igaz, ha történt módosítás, hamis egyébként.
      */
-    public boolean zuzalekNovel(int mennyiseg) {
+    public int zuzalekNovel(int mennyiseg) {
         // Ha a paraméterként kapott mennyiseg nem pozitív
         if (mennyiseg <= 0) {
-            return false;
+            return 0;
         }
 
         int szabadKapacitas = zuzalekLimit - zuzalekMennyiseg;
 
         // Ha a tartály már elérte a zuzalekLimit értékét (nincs szabad hely)
         if (szabadKapacitas <= 0) {
-            return false;
+            return 0;
         }
 
         int hozzaadando = mennyiseg;
@@ -165,7 +191,7 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         }
 
         this.zuzalekMennyiseg += hozzaadando;
-        return true;
+        return hozzaadando;
     }
 
     /**

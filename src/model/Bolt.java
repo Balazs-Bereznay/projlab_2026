@@ -40,9 +40,10 @@ public class Bolt implements ProtoEntitas {
     /**
      * A játékos megvásárol egy új hokotrót
      */
-    public void hokotroVasarol(Jatekos jatekos){
+    public void hokotroVasarol(Jatekos jatekos, Hokotro hokotro){
         Fej sopro = new Sopro();
-        jatekos.getFlotta().add(new Hokotro(sopro));
+        hokotro.setFej(sopro);
+        jatekos.getFlotta().add(hokotro);
         nyilvantarto.penzLevon(hokotroAr);
         System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
 
@@ -55,17 +56,21 @@ public class Bolt implements ProtoEntitas {
     public void soVasarol(int mennyiseg){
 
         nyilvantarto.soNovel(mennyiseg);
-        nyilvantarto.penzLevon(soAr);
+        nyilvantarto.penzLevon(mennyiseg * soAr);
         System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
+    }
+
+    public void zuzalekVasarol(Hokotro hokotro, int mennyiseg) {
+        nyilvantarto.penzLevon(hokotro.zuzalekNovel(mennyiseg) * zuzalekAr);
     }
 
     /**
      * "Egy játékos által vásárolt adott mennyiségű biokerozint hozzáadja a Nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi biokerozint  akarunk vásárolni.
      */
-    public void setBiokerozinVasarol(int mennyiseg){
+    public void biokerozinVasarol(int mennyiseg){
         nyilvantarto.biokerozinNovel(mennyiseg);
-        nyilvantarto.penzLevon(biokerozinAr);
+        nyilvantarto.penzLevon(mennyiseg * biokerozinAr);
         System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
     }
 
@@ -110,7 +115,7 @@ public class Bolt implements ProtoEntitas {
      * A jatékos megvásárol egy seprőfejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      * @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void seproVasarol(Hokotro hokotro){
+    public void soproVasarol(Hokotro hokotro){
         Fej sepro = new Sopro();
         hokotro.setFej(sepro);
         nyilvantarto.penzLevon(soproAr);
@@ -158,6 +163,13 @@ public class Bolt implements ProtoEntitas {
         Fej srkny = new Sarkany(nyilvantarto);
         hokotro.setFej(srkny);
         nyilvantarto.penzLevon(sarkanyAr);
+        System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+    }
+
+    public  void zuzalekszoroVasarol(Hokotro hokotro){
+        Fej zsz = new Zuzalekszoro(nyilvantarto);
+        hokotro.setFej(zsz);
+        nyilvantarto.penzLevon(zuzalekszoroAr);
         System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
     }
 
