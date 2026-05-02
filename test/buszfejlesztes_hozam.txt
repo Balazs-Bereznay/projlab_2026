@@ -1,0 +1,13 @@
+create Jatekos j1
+create Nyilvantarto ny1
+create Bolt b1
+create Busz bsz1
+create Hozamfejlesztes hf1
+assign j1 ny1
+set bsz1 bevetel 0
+set b1 hozamFejlesztesAr 5
+set ny1 penz 5
+add b1 fejlesztesLista hf1
+purchase j1 hozamfejlesztes bsz1
+info bsz1
+info ny1

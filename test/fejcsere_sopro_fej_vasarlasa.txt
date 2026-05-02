@@ -1,0 +1,12 @@
+create Jatekos j1
+create Nyilvantarto ny1
+create Bolt b1
+create Hokotro hk1
+create Sopro s1
+assign j1 ny1
+set b1 soproFejAr 10
+set ny1 penz 10
+add b1 fejlesztesLista s1
+purchase j1 soprofej hk1
+info hk1
+info ny1

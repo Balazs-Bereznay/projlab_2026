@@ -1,0 +1,12 @@
+create Utegyseg ue1 
+create Utegyseg ue2
+create Auto a1
+create Hokotro hk
+assign hk ue1
+assign a1 ue2
+set ue1 balUtegyseg ue2
+set ue2 jobbUtegyseg ue1
+move hk -l
+info ue1
+info ue2
+info hk

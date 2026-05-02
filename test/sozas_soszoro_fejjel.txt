@@ -1,0 +1,14 @@
+create Utegyseg ue1
+create Hokotro hk1
+create SosZoro so1
+create Nyilvantarto ny1
+assign ue1 hk1
+add_condition ice ue1 1
+set hk1 fej so1
+set hk1 nyilvantarto ny1
+set ny1 soMennyiseg 5
+clean hk1
+tick 1
+info ue1
+info hk1
+info ny1

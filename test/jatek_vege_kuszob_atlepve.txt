@@ -1,0 +1,4 @@
+create Nyilvantarto ny1
+set ny1 nemBeertAutokSzama 10
+tick 1
+info ny1

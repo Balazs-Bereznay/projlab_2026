@@ -1,0 +1,14 @@
+create Utegyseg ue1
+create Hokotro hk1
+create Sopro sp1
+create Nyilvantarto ny1
+create Jatekos j1
+assign j1 hk1
+assign ue1 hk1
+add_condition snow ue1 1
+set hk1 fej sp1
+set j1 nyilvantarto ny1
+set hk1 nyilvantarto ny1
+clean hk1
+info ue1
+info ny1

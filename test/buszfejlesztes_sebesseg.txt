@@ -1,0 +1,13 @@
+create Jatekos j1
+create Nyilvantarto ny1
+create Bolt b1
+create Busz bsz1
+create Sebessegfejlesztes sf1
+assign j1 ny1
+set bsz1 sebesseg 0
+set b1 sebessegFejlesztesAr 5
+set ny1 penz 5
+add b1 fejlesztesLista sf1
+purchase j1 speed_upgrade bsz1
+info bsz1
+info ny1
