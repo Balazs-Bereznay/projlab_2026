@@ -178,6 +178,34 @@ public class Utegyseg implements ProtoEntitas{
         this.jeges = jeges;
     }
 
+    @Override
+    public void parancsFeldolgozJarmuvel(String parancs, Jarmu jarmu, List<String> args) {
+        if ("assign".equals(parancs)) {
+            this.jarmu = jarmu;
+            jarmu.utegyseg = this;
+            System.out.println("Jármű sikeresen az útegységre helyezve.");
+        } else if ("remove".equals(parancs)) {
+            if (this.jarmu == jarmu) {
+                jarmu.utegyseg = null;
+                this.jarmu = null;
+                System.out.println("Jármű eltávolítva az útegységről.");
+            }
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args) {
+        if ("assign".equals(parancs)) {
+            sav.setElsoUtegyseg(this);
+            System.out.println("Útegység sikeresen a sávhoz rendelve.");
+        } else if ("remove".equals(parancs)) {
+            if (sav.getElsoUtegyseg() == this) {
+                sav.setElsoUtegyseg(null);
+                System.out.println("Útegység eltávolítva a sávból.");
+            }
+        }
+    }
+
     ///További metódusok
     /**
      * Növeli a hóréteg vastagságát a mezőn a szimulált időjárás hatására.

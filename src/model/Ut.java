@@ -40,6 +40,36 @@ public class Ut implements ProtoEntitas {
 
 
     @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {}
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozUttal(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozCsomoponttal(String parancs, Csomopont csomopont, List<String> args) {
+        if ("assign".equals(parancs)) {
+            csomopont.addUt(this);
+            System.out.println("Út sikeresen a csomóponthoz rendelve.");
+        } else if ("remove".equals(parancs)) {
+            csomopont.removeUt(this);
+            System.out.println("Út eltávolítva a csomópontból.");
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozAutoval(String parancs, Auto auto, List<String> args) {
+        if ("assign".equals(parancs)) {
+            auto.getKijeloltUtvonal().add(this);
+            System.out.println("Út sikeresen hozzáadva az autó útvonalához.");
+        } else if ("remove".equals(parancs)) {
+            auto.getKijeloltUtvonal().remove(this);
+            System.out.println("Út eltávolítva az autó útvonalából.");
+        }
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, Sav sav, List<String> args) {
         if (parancs.equals("assign")) {
             this.addSav(sav); // Az út listájába felvesszük a sávot

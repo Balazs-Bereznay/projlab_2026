@@ -30,6 +30,25 @@ public class Csomopont  implements ProtoEntitas {
     }
 
     @Override
+    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+        if ("assign".equals(parancs)) {
+            busz.getMegallokLista().add(this);
+            System.out.println("Megálló sikeresen hozzáadva a busz útvonalához.");
+        } else if ("remove".equals(parancs)) {
+            busz.getMegallokLista().remove(this);
+            System.out.println("Megálló eltávolítva a busz útvonalából.");
+        }
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {}
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozCsomoponttal(parancs, this, args);
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, Ut ut, List<String> args) {
         if (parancs.equals("assign")) {
             this.addUt(ut);
