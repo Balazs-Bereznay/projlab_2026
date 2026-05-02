@@ -1,13 +1,7 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 public class Prototipus {
@@ -65,6 +59,23 @@ public class Prototipus {
             System.out.println("Állapot sikeresen mentve: " + celUtvonal.toString());
         } catch (IOException e) {
             System.err.println("Hiba a mentés során: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Kiírja a temp.txt-be a paraméterként kapott string-et
+     * @param uzenet
+     */
+    public void naplozas(String uzenet) {
+        // A 'true' paraméter a FileWriter-nél jelenti az 'append' módot
+        try (FileWriter fw = new FileWriter("temp.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            out.println(uzenet);
+
+        } catch (IOException e) {
+            System.err.println("Nem sikerült a temp.txt-be írni: " + e.getMessage());
         }
     }
 
