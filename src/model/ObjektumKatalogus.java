@@ -46,4 +46,13 @@ class ObjektumKatalogus {
         return null;
     }
 
+    /**
+     * Kiüríti a külső Map-et, így minden referencia megszűnik
+     */
+    public void alaphelyzet() {
+        kontener.clear();
+
+        //System.out.println("Az objektum katalógus tartalmát töröltem.");
+    }
+
 }

@@ -1,7 +1,13 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class Prototipus {
@@ -25,6 +31,41 @@ public class Prototipus {
             System.out.println("Sikeres beolvasás: " + fajlnev);
         } catch (IOException e) {
             System.err.println("Hiba a fájl beolvasásakor: " + e.getMessage());
+        }
+    }
+
+    public void allapotMentese(String fajlnev) {
+        File forras = new File("temp.txt");
+        if (!forras.exists()) {
+            System.out.println("Nincs mit menteni (a temp.txt üres vagy nem létezik).");
+            return;
+        }
+
+        // Cél útvonal összeállítása (out mappa + fájlnév)
+        File celMappa = new File("out");
+        if (!celMappa.exists()) {
+            celMappa.mkdirs(); // Létrehozzuk az out mappát, ha még nincs
+        }
+
+        Path celUtvonal = Paths.get("out", fajlnev);
+
+        try {
+            // Átmásoljuk a temp.txt-t a célhelyre, felülírva ha már létezik
+            Files.copy(forras.toPath(), celUtvonal, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Állapot sikeresen mentve: " + celUtvonal.toString());
+        } catch (IOException e) {
+            System.err.println("Hiba a mentés során: " + e.getMessage());
+        }
+    }
+
+    public void tesztKornyezetAlaphelyzet() {
+        // 1. Memória ürítése (ObjektumKatalógus)
+        katalogus.alaphelyzet();
+
+        // 2. Ideiglenes naplófájl törlése (temp.txt)
+        File tempFile = new File("temp.txt");
+        if (tempFile.exists()) {
+            tempFile.delete();
         }
     }
 
@@ -92,6 +133,9 @@ public class Prototipus {
                 case "save":
                     allapotMentese(szavak[1]);
                     break;
+                case "reset":
+                    tesztKornyezetAlaphelyzet();
+                    break;
                 case "create":
                     entitasLetrehoz(szavak[1], szavak[2]);
                     break;
@@ -151,6 +195,26 @@ public class Prototipus {
         }
     }
 
+    public void futtat() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("> ");
+            if (!scanner.hasNextLine()) break;
+
+            String sor = scanner.nextLine().trim();
+            if (sor.isEmpty()) continue;
+            if (sor.equalsIgnoreCase("exit")) break;
+
+            // Berakjuk a FIFO végére
+            parancsSor.add(sor);
+
+            // Meghívjuk a feldolgozót, ami addig megy, amíg a FIFO ki nem ürül
+            parancsSorFeldolgoz();
+        }
+        scanner.close();
+    }
+
     /**
      * Kiirja a prototipus bemeneti nyelvenek rovid, strukturalt leirasat.
      *
@@ -180,6 +244,9 @@ public class Prototipus {
                 "",
                 "  save <fajlnev>",
                 "      Elmenti az aktualis prototipus-allapotot a megadott fajlba.",
+                "",
+                "  reset",
+                "      Tiszta lapot nyit egy új tesztesetnek: az eddigi objektumok elvesznek.",
                 "",
                 "  create <osztaly> <id>",
                 "      Letrehoz egy objektumot, es eltarolja a megadott id alatt.",
@@ -245,5 +312,11 @@ public class Prototipus {
                 "",
                 "==========================================================",
                 ""));
+    }
+
+    public static void main(String[] args) {
+        Prototipus proto = new Prototipus();
+
+        proto.futtat();
     }
 }
