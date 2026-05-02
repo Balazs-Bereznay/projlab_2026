@@ -40,8 +40,6 @@ public class Csomopont  implements ProtoEntitas {
         }
     }
 */
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {}
 
     /**
      * Feldolgozza a csomópontra érkező, egyszerű prototípus-parancsokat.

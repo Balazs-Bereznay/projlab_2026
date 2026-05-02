@@ -86,9 +86,6 @@ public class Ut implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {}
-
-    @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
         cel.parancsFeldolgozUttal(parancs, this, args);
     }
