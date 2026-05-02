@@ -21,39 +21,24 @@ public class Zuzalekszoro extends Fej implements ProtoEntitas{
     }
 
     /**
-     * Feldolgozza a zúzalékszóró fejre érkező, egyszerű prototípus-parancsokat.
-     *
-     * @param parancs a feldolgozandó parancs neve
-     * @param args a parancs további paraméterei
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
      */
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
-        if (parancs == null) {
-            return;
-        }
+    public String info(String id, ObjektumKatalogus katalogus){
+        String nyStr = katalogus.getId(this.nyilvantarto);
 
-        switch (parancs) {
-            case "info":
-                String currentId = args.get(0);
-                String nyStr = (this.nyilvantarto != null) ? this.nyilvantarto.toString() : "null";
-
-                String infoKimenet = """
-                    %s:
-                    zuzalekAdag: %d
-                    nyilvantarto: %s
-                    """.formatted(
-                        currentId,
-                        ZUZALEK_ADAG,
-                        nyStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-
-            default:
-                break;
-        }
+        String infoKimenet = """
+            %s:
+            zuzalekAdag: %d
+            nyilvantarto: %s
+            """.formatted(
+                id,
+                ZUZALEK_ADAG,
+                nyStr
+        );
+        return infoKimenet;
     }
 
     /**

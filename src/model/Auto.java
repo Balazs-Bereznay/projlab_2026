@@ -78,7 +78,7 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
      * @param args a parancs tovabbi parameterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
+    public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null || args == null) {
             return;
         }
@@ -154,53 +154,53 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                     default:
                         break;
                 }
-            case "info":
-                String currentId = args.get(0);
-
-                String utegysegStr = (this.getUtegyseg() != null) ? this.getUtegyseg().toString() : "null";
-                String kezdopontStr = (this.kezdopont != null) ? this.kezdopont.toString() : "null";
-                String celpontStr = (this.celpont != null) ? this.celpont.toString() : "null";
-                String nyStr = (this.getNyilvantarto() != null) ? this.getNyilvantarto().toString() : "null";
-
-                // Útvonal lista összefűzése: ha üres "{ }", ha nem "{ ut1, ut2 }"
-                String utvonalTartalom = (this.kijeloltUtvonal == null || this.kijeloltUtvonal.isEmpty())
-                        ? ""
-                        : String.join(", ", this.kijeloltUtvonal.stream().map(Object::toString).toList());
-                String utvonalStr = "{ " + utvonalTartalom + (utvonalTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                    %s:
-                    sebesseg: %d
-                    utegyseg: %s
-                    tapadas: %d
-                    elakadt: %b
-                    baleset: %b
-                    megcsuszott: %b
-                    nyilvantarto: %s
-                    kijeloltUtvonal: %s
-                    kezdopont: %s
-                    celpont: %s
-                    utonToltottIdo: %d
-                    """.formatted(
-                        currentId,
-                        this.getSebesseg(),
-                        utegysegStr,
-                        this.getTapadas(),
-                        this.elakadt,
-                        this.baleset,
-                        this.megcsuszott,
-                        nyStr,
-                        utvonalStr,
-                        kezdopontStr,
-                        celpontStr,
-                        this.utonToltottIdo
-                );
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utegysegId = katalogus.getId(this.getUtegyseg());
+        String nyId = katalogus.getId(this.getNyilvantarto());
+        String kezdopontId = katalogus.getId(this.kezdopont);
+        String celpontId = katalogus.getId(this.celpont);
+
+        // Kijelölt útvonal (Utak listája) feloldása
+        String utvonalStr = "{ " + String.join(", ", this.kijeloltUtvonal.stream().map(katalogus::getId).toList()) + " }";
+
+        return """
+                %s:
+                sebesseg: %d
+                utegyseg: %s
+                tapadas: %d
+                elakadt: %b
+                baleset: %b
+                megcsuszott: %b
+                nyilvantarto: %s
+                kijeloltUtvonal: %s
+                kezdopont: %s
+                celpont: %s
+                utonToltottIdo: %d
+                """.formatted(
+                id,
+                this.getSebesseg(),
+                utegysegId,
+                this.getTapadas(),
+                this.elakadt,
+                this.baleset,
+                this.megcsuszott,
+                nyId,
+                utvonalStr,
+                kezdopontId,
+                celpontId,
+                this.utonToltottIdo
+        );
     }
 
     /**

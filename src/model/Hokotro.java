@@ -25,34 +25,22 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         this(null);
     }
 
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
-        if ("move".equals(parancs)) {
-            if (args.isEmpty()) return;
-            String irany = args.get(0);
-            if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
-                lep();
-            } else {
-                savValtas(irany);
-            }
-        } else if ("clean".equals(parancs)) {
-            takarit();
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója
+     * @param katalogus Az objektumkatalógus a hivatkozások feloldásához
+     * @return Az entitás adatai stringként
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utegysegId = katalogus.getId(this.getUtegyseg());
+        String nyId = katalogus.getId(this.getNyilvantarto());
+        String fejId = this.fej.getClass().getSimpleName();
 
-        } else if("info".equals(parancs)){
-            String currentId = args.get(0);
+        // Útvonal ID-k listázása (Jarmu-től örökölt kijeloltUtvonal használatával)
+        String utvonalTartalom = String.join(", ", this.kijeloltUtvonal.stream().map(katalogus::getId).toList());
+        String utvonalStr = "{ " + utvonalTartalom + (utvonalTartalom.isEmpty() ? "" : " ") + "}";
 
-            String utegysegStr = (this.getUtegyseg() != null) ? this.getUtegyseg().toString() : "null";
-            String nyStr = (this.getNyilvantarto() != null) ? this.getNyilvantarto().toString() : "null";
-
-            // A fej típusának (osztálynevének) lekérése, ha nem null
-            String fejStr = (this.fej != null) ? this.fej.getClass().getSimpleName() : "null";
-
-            String utvonalTartalom = (this.kijeloltUtvonal == null || this.kijeloltUtvonal.isEmpty())
-                    ? ""
-                    : String.join(", ", this.kijeloltUtvonal.stream().map(Object::toString).toList());
-            String utvonalStr = "{ " + utvonalTartalom + (utvonalTartalom.isEmpty() ? "" : " ") + "}";
-
-            String infoKimenet = """
+        return """
                 %s:
                 sebesseg: %d
                 utegyseg: %s
@@ -67,23 +55,34 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
                 zuzalekMennyiseg: %d
                 zuzalekLimit: %d
                 """.formatted(
-                    currentId,
-                    this.getSebesseg(),
-                    utegysegStr,
-                    this.getTapadas(),
-                    this.elakadt,
-                    this.baleset,
-                    this.megcsuszott,
-                    nyStr,
-                    utvonalStr,
-                    fejStr,
-                    Hokotro.getBevetel(), // A statikus BEVETEL lekérése
-                    this.zuzalekMennyiseg,
-                    this.zuzalekLimit
-            );
+                id,
+                this.getSebesseg(),
+                utegysegId,
+                this.getTapadas(),
+                this.elakadt,
+                this.baleset,
+                this.megcsuszott,
+                nyId,
+                utvonalStr,
+                fejId,
+                Hokotro.getBevetel(),
+                this.zuzalekMennyiseg,
+                this.zuzalekLimit
+        );
+    }
 
-            System.out.print(infoKimenet);
-            System.out.println("Info displayed");
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if ("move".equals(parancs)) {
+            if (args.isEmpty()) return;
+            String irany = args.get(0);
+            if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
+                lep();
+            } else {
+                savValtas(irany);
+            }
+        } else if ("clean".equals(parancs)) {
+            takarit();
         }
     }
 

@@ -35,41 +35,41 @@ public class Jatekos implements ProtoEntitas {
     }
 
     /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String nyId = katalogus.getId(this.nyilvantarto);
+
+        String flottaTartalom = String.join(", ", this.flotta.stream().map(katalogus::getId).toList());
+        String flottaStr = "{ " + flottaTartalom + (flottaTartalom.isEmpty() ? "" : " ") + "}";
+
+        return """
+                %s:
+                flotta: %s
+                nyilvantarto: %s
+                """.formatted(
+                id,
+                flottaStr,
+                nyId
+        );
+    }
+
+    /**
      * Feldolgozza a játékosra érkező, egyszerű prototípus-parancsokat.
      *
      * @param parancs a feldolgozandó parancs neve
      * @param args a parancs további paraméterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
+    public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null) {
             return;
         }
 
         switch (parancs) {
-            case "info":
-                String currentId = args.get(0);
-                String nyStr = (this.nyilvantarto != null) ? this.nyilvantarto.toString() : "null";
-
-                String flottaTartalom = (this.flotta == null || this.flotta.isEmpty())
-                        ? ""
-                        : String.join(", ", this.flotta.stream().map(Object::toString).toList());
-                String flottaStr = "{ " + flottaTartalom + (flottaTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                    %s:
-                    flotta: %s
-                    nyilvantarto: %s
-                    """.formatted(
-                        currentId,
-                        flottaStr,
-                        nyStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-
             case "purchase":
                 String item = args.get(0).toLowerCase();
                 int mennyiseg = args.size() >= 2 ? Integer.parseInt(args.get(1)) : 1;

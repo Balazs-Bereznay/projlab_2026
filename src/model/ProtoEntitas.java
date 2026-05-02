@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProtoEntitas {
 
     // Sima parancsok (set, move, clean, stb.)
-    default void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {}
+    default void parancsFeldolgoz(String parancs, List<String> args) {}
 
     /**
      * Feldolgozza azokat a parancsokat, amelyek egy masik prototipus-entitast
@@ -160,4 +160,12 @@ public interface ProtoEntitas {
                 + " nem tud mit kezdeni a(z) '" + masikTipus
                 + "' tipussal a(z) " + parancs + " parancs soran.");
     }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+     public String info(String id, ObjektumKatalogus katalogus);
 }

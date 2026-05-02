@@ -66,6 +66,55 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
     }
 
     /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utegysegId = katalogus.getId(this.getUtegyseg());
+        String nyId = katalogus.getId(this.getNyilvantarto());
+        String v1Id = katalogus.getId(this.vegallomas1);
+        String v2Id = katalogus.getId(this.vegallomas2);
+
+        String utvonalStr = "{ " + String.join(", ", this.kijeloltUtvonal.stream().map(katalogus::getId).toList()) + " }";
+        String megallokStr = "{ " + String.join(", ", this.megallokLista.stream().map(katalogus::getId).toList()) + " }";
+        String erintettStr = "{ " + String.join(", ", this.erintettLista.stream().map(katalogus::getId).toList()) + " }";
+
+        return """
+                %s:
+                sebesseg: %d
+                utegyseg: %s
+                tapadas: %d
+                elakadt: %b
+                baleset: %b
+                megcsuszott: %b
+                nyilvantarto: %s
+                kijeloltUtvonal: %s
+                vegallomas1: %s
+                vegallomas2: %s
+                megallokLista: %s
+                erintettLista: %s
+                bevetel: %d
+                """.formatted(
+                id,
+                this.getSebesseg(),
+                utegysegId,
+                this.getTapadas(),
+                this.elakadt,
+                this.baleset,
+                this.megcsuszott,
+                nyId,
+                utvonalStr,
+                v1Id,
+                v2Id,
+                megallokStr,
+                erintettStr,
+                this.bevetel
+        );
+    }
+
+    /**
      * Rogziti, hogy a busz erintett egy ervenyes megallot.
      *
      * <p>Ervenyes megallonak szamit a ket vegallomas, valamint a megallokLista
@@ -123,7 +172,7 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
      * @param args a parancs tovabbi parameterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
+    public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null || args == null) {
             return;
         }
@@ -219,67 +268,6 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
             case "add_condition":
             case "list_shop":
             case "purchase":
-                break;
-            case "info":
-                String currentId = args.get(0);
-
-                String utegysegStr = (this.getUtegyseg() != null) ? this.getUtegyseg().toString() : "null";
-                String nyStr = (this.getNyilvantarto() != null) ? this.getNyilvantarto().toString() : "null";
-                String v1Str = (this.vegallomas1 != null) ? this.vegallomas1.toString() : "null";
-                String v2Str = (this.vegallomas2 != null) ? this.vegallomas2.toString() : "null";
-
-                // kijeloltUtvonal formázása
-                String utvonalTartalom = (this.kijeloltUtvonal == null || this.kijeloltUtvonal.isEmpty())
-                        ? ""
-                        : String.join(", ", this.kijeloltUtvonal.stream().map(Object::toString).toList());
-                String utvonalStr = "{ " + utvonalTartalom + (utvonalTartalom.isEmpty() ? "" : " ") + "}";
-
-                // megallokLista formázása
-                String megallokTartalom = (this.megallokLista == null || this.megallokLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.megallokLista.stream().map(Object::toString).toList());
-                String megallokStr = "{ " + megallokTartalom + (megallokTartalom.isEmpty() ? "" : " ") + "}";
-
-                // erintettLista formázása
-                String erintettTartalom = (this.erintettLista == null || this.erintettLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.erintettLista.stream().map(Object::toString).toList());
-                String erintettStr = "{ " + erintettTartalom + (erintettTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                    %s:
-                    sebesseg: %d
-                    utegyseg: %s
-                    tapadas: %d
-                    elakadt: %b
-                    baleset: %b
-                    megcsuszott: %b
-                    nyilvantarto: %s
-                    kijeloltUtvonal: %s
-                    vegallomas1: %s
-                    vegallomas2: %s
-                    megallokLista: %s
-                    erintettLista: %s
-                    bevetel: %d
-                    """.formatted(
-                        currentId,
-                        this.getSebesseg(),
-                        utegysegStr,
-                        this.getTapadas(),
-                        this.elakadt,
-                        this.baleset,
-                        this.megcsuszott,
-                        nyStr,
-                        utvonalStr,
-                        v1Str,
-                        v2Str,
-                        megallokStr,
-                        erintettStr,
-                        this.bevetel
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
                 break;
             default:
                 break;

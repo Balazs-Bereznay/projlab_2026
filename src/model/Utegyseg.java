@@ -391,7 +391,7 @@ public class Utegyseg implements ProtoEntitas{
      * @param args a parancs további paraméterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
+    public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null || args == null) {
             return;
         }
@@ -428,15 +428,25 @@ public class Utegyseg implements ProtoEntitas{
                     default:
                         break;
                 }
-            case "info":
-                String currentId = args.get(0);
+                break;
+            default:
+                break;
+        }
+    }
 
-                String jarmuStr = (this.jarmu != null) ? this.jarmu.toString() : "null";
-                String kovetkezoStr = (this.kovetkezoUtegyseg != null) ? this.kovetkezoUtegyseg.toString() : "null";
-                String balStr = (this.balUtegyseg != null) ? this.balUtegyseg.toString() : "null";
-                String jobbStr = (this.jobbUtegyseg != null) ? this.jobbUtegyseg.toString() : "null";
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus){
+        String jarmuId = katalogus.getId(this.jarmu);
+        String kovetkezoId = katalogus.getId(this.kovetkezoUtegyseg);
+        String balId = katalogus.getId(this.balUtegyseg);
+        String jobbId = katalogus.getId(this.jobbUtegyseg);
 
-                String infoKimenet = """
+        String infoKimenet = """
                     %s:
                     hoMagassag: %d
                     jegMagassag: %d
@@ -453,46 +463,23 @@ public class Utegyseg implements ProtoEntitas{
                     balUtegyseg: %s
                     jobbUtegyseg: %s
                     """.formatted(
-                        currentId,
-                        this.hoMagassag,
-                        this.jegMagassag,
-                        this.soMennyiseg,
-                        this.letaposottsag,
-                        this.megcsuszasEsely,
-                        this.blokkolt,
-                        this.zuzalek,
-                        this.jeges,
-                        getBefedesKuszob(),
-                        this.befedettseg,
-                        jarmuStr,
-                        kovetkezoStr,
-                        balStr,
-                        jobbStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-            case "list_shop":
-            case "load":
-            case "save":
-            case "set_random":
-            case "tick":
-            case "create":
-            case "delete":
-            case "assign":
-            case "remove":
-            case "set":
-            case "move":
-            case "clean":
-            case "purchase":
-            case "list":
-            case "help":
-            case "add":
-                break;
-            default:
-                break;
-        }
+                id,
+                this.hoMagassag,
+                this.jegMagassag,
+                this.soMennyiseg,
+                this.letaposottsag,
+                this.megcsuszasEsely,
+                this.blokkolt,
+                this.zuzalek,
+                this.jeges,
+                getBefedesKuszob(),
+                this.befedettseg,
+                jarmuId,
+                kovetkezoId,
+                balId,
+                jobbId
+        );
+        return infoKimenet;
     }
 }
 

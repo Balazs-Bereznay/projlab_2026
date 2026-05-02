@@ -283,7 +283,7 @@ public class Bolt implements ProtoEntitas {
      * @param args a parancs további paraméterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
+    public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null) {
             return;
         }
@@ -331,49 +331,52 @@ public class Bolt implements ProtoEntitas {
                 );
                 System.out.println(kinalat);
                 break;
-            case "info":
-                String currentId = args.get(0);
-                String nyStr = (this.nyilvantarto != null) ? this.nyilvantarto.toString() : "null";
-
-                String infoKimenet = """
-                    %s:
-                    soAr: %d
-                    biokerozinAr: %d
-                    hokotroAr: %d
-                    soproAr: %d
-                    hanyoAr: %d
-                    jegtoroAr: %d
-                    soszoroAr: %d
-                    sarkanyAr: %d
-                    zuzalekAr: %d
-                    zuzalekszoroAr: %d
-                    sebessegfejlesztesAr: %d
-                    tapadasfejlesztesAr: %d
-                    hozamfejlesztesAr: %d
-                    nyilvantarto: %s
-                    """.formatted(
-                        currentId,
-                        this.soAr,
-                        this.biokerozinAr,
-                        this.hokotroAr,
-                        this.soproAr,
-                        this.hanyoAr,
-                        this.jegtoroAr,
-                        this.soszoroAr,
-                        this.sarkanyAr,
-                        this.zuzalekAr,
-                        this.zuzalekszoroAr,
-                        this.sebessegfejlesztesAr,
-                        this.tapadasfejlesztesAr,
-                        this.hozamfejlesztesAr,
-                        nyStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String nyId = katalogus.getId(this.nyilvantarto);
+
+        return """
+                %s:
+                soAr: %d
+                biokerozinAr: %d
+                hokotroAr: %d
+                soproAr: %d
+                hanyoAr: %d
+                jegtoroAr: %d
+                soszoroAr: %d
+                sarkanyAr: %d
+                zuzalekAr: %d
+                zuzalekszoroAr: %d
+                sebessegfejlesztesAr: %d
+                tapadasfejlesztesAr: %d
+                hozamfejlesztesAr: %d
+                nyilvantarto: %s
+                """.formatted(
+                id,
+                this.soAr,
+                this.biokerozinAr,
+                this.hokotroAr,
+                this.soproAr,
+                this.hanyoAr,
+                this.jegtoroAr,
+                this.soszoroAr,
+                this.sarkanyAr,
+                this.zuzalekAr,
+                this.zuzalekszoroAr,
+                this.sebessegfejlesztesAr,
+                this.tapadasfejlesztesAr,
+                this.hozamfejlesztesAr,
+                nyId
+        );
     }
 }

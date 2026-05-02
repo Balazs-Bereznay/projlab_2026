@@ -12,48 +12,24 @@ public class Terkep  implements ProtoEntitas{
     private ArrayList<Csomopont> csomopontLista;
 
     /**
-     * Feldolgozza a sószóró fejre érkező, egyszerű prototípus-parancsokat.
-     *
-     * @param parancs a feldolgozandó parancs neve
-     * @param args a parancs további paraméterei
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
      */
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
-        if (parancs == null) {
-            return;
-        }
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String elIdk = "{ " + String.join(", ", this.elLista.stream().map(katalogus::getId).toList()) + " }";
+        String cpIdk = "{ " + String.join(", ", this.csomopontLista.stream().map(katalogus::getId).toList()) + " }";
 
-        switch (parancs) {
-            case "info":
-                String currentId = args.get(0);
-
-                String elTartalom = (this.elLista == null || this.elLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.elLista.stream().map(Object::toString).toList());
-                String elStr = "{ " + elTartalom + (elTartalom.isEmpty() ? "" : " ") + "}";
-
-                String csomopontTartalom = (this.csomopontLista == null || this.csomopontLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.csomopontLista.stream().map(Object::toString).toList());
-                String csomopontStr = "{ " + csomopontTartalom + (csomopontTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                    %s:
-                    elLista: %s
-                    csomopontLista: %s
-                    """.formatted(
-                        currentId,
-                        elStr,
-                        csomopontStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-
-            default:
-                break;
-        }
+        return """
+                %s:
+                elLista: %s
+                csomopontLista: %s
+                """.formatted(
+                id,
+                elIdk,
+                cpIdk
+        );
     }
 
     @Override

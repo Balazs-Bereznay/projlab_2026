@@ -42,46 +42,28 @@ public class Csomopont  implements ProtoEntitas {
 */
 
     /**
-     * Feldolgozza a csomópontra érkező, egyszerű prototípus-parancsokat.
-     *
-     * @param parancs a feldolgozandó parancs neve
-     * @param args a parancs további paraméterei
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
      */
-    @Override
-    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
-        if (parancs == null) {
-            return;
-        }
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utListaTartalom = String.join(", ", this.utLista.stream().map(katalogus::getId).toList());
+        String utListaStr = "{ " + utListaTartalom + (utListaTartalom.isEmpty() ? "" : " ") + "}";
 
-        switch (parancs) {
-            case "info":
-                String currentId = args.get(0);
-
-                String utListaTartalom = (this.utLista == null || this.utLista.isEmpty())
-                        ? ""
-                        : String.join(", ", this.utLista.stream().map(Object::toString).toList());
-                String utListaStr = "{ " + utListaTartalom + (utListaTartalom.isEmpty() ? "" : " ") + "}";
-
-                String infoKimenet = """
-                        %s:
-                        celpont: %b
-                        buszmegallo: %b
-                        azonosito: %s
-                        utLista: %s
-                        """.formatted(
-                        currentId,
-                        this.celpont,
-                        this.buszmegallo,
-                        this.azonosito,
-                        utListaStr
-                );
-
-                System.out.print(infoKimenet);
-                System.out.println("Info displayed");
-                break;
-            default:
-                break;
-        }
+        return """
+                %s:
+                celpont: %b
+                buszmegallo: %b
+                azonosito: %s
+                utLista: %s
+                """.formatted(
+                id,
+                this.celpont,
+                this.buszmegallo,
+                this.azonosito,
+                utListaStr
+        );
     }
 
     @Override

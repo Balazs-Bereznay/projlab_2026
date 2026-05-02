@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Azokat az objektumokat jelolo interfesz, amelyeket a jatekos iranyit.
  */
-public interface Iranyithato {
+public interface Iranyithato extends ProtoEntitas {
 
     /**
      * Beallitja az objektum altal kovetendo utegysegeket.

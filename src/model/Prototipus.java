@@ -208,16 +208,15 @@ public class Prototipus {
                 case "add":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
-                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
+                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
                     }
                     break;
-                /// Az info parancsnál kell a kiíráshoz is az entitás azonosítója
                 case "info":
-                    ProtoEntitas celponttt = katalogus.keres(szavak[1]);
-                    if (celponttt != null) {
-                        celponttt.parancsFeldolgoz(cmd, parametereketVag(szavak, 1), this.katalogus);
-                    }else{
-                        System.out.println("Entity not found!");
+                    ProtoEntitas celpontt = katalogus.keres(szavak[1]);
+                    if (celpontt != null) {
+                        String str = celpontt.info(szavak[1], katalogus);
+                        naplozas(str);
+                        System.out.println(str);
                     }
                     break;
 
@@ -239,7 +238,7 @@ public class Prototipus {
                     // só vagy biokerozin (ilyenkor nem kell megadni másik referenciát)
                     if (itemTipus.equalsIgnoreCase("so") || itemTipus.equalsIgnoreCase("biokerozin")) {
                         // Meghívjuk a kétparaméteres változatot
-                        gazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
+                        gazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
                     }
                     else {
                         // purchase <id> <valami> <masik id> [id]
