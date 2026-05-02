@@ -1,11 +1,13 @@
 package model;
 
+import java.util.List;
+
 /**
  * A hókotróra felszerelhető kotrófejek absztrakt ősosztálya.
  * Meghatározza, hogy az adott fej milyen tulajdonságokkal rendelkezik,
  * és milyen módon befolyásolja az útviszonyokat.
  */
-public abstract class Fej {
+public abstract class Fej implements ProtoEntitas {
 
     /**
      * Végrehajtja a hókotróra szerelt fejhez tartozó takarítási logikát

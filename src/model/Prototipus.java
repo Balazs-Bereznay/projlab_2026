@@ -322,6 +322,18 @@ public class Prototipus {
                 ""));
     }
 
+    private void szimulacioTick(int n) {
+        for (int i = 0; i < n; i++) {
+            for (Utegyseg ue : katalogus.osszesOfType(Utegyseg.class)) {
+                ue.havazas(1);
+            }
+            for (Auto auto : katalogus.osszesOfType(Auto.class)) {
+                auto.lep();
+            }
+            System.out.println("Tick " + (i + 1) + " lefutott.");
+        }
+    }
+
     public static void main(String[] args) {
         Prototipus proto = new Prototipus();
 

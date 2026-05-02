@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProtoEntitas {
 
     // Sima parancsok (set, move, clean, stb.)
-    void parancsFeldolgoz(String parancs, List<String> args);
+    default void parancsFeldolgoz(String parancs, List<String> args) {}
 
     /**
      * Feldolgozza azokat a parancsokat, amelyek egy masik prototipus-entitast
