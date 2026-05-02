@@ -1,0 +1,53 @@
+create Nyilvantarto ny1
+set ny1 penz 0
+
+create Csomopont A
+set A buszmegallo true
+
+create Csomopont B
+set B buszmegallo true
+
+create Csomopont C
+set C buszmegallo true
+
+create Utegyseg ueAB
+create Utegyseg ueBC
+create Utegyseg ueCB
+create Utegyseg ueBA
+
+create Sav savAB
+create Sav savBC
+create Sav savCB
+create Sav savBA
+
+set savAB elsoUtegyseg ueAB
+set savBC elsoUtegyseg ueBC
+set savCB elsoUtegyseg ueCB
+set savBA elsoUtegyseg ueBA
+
+create Ut ut1
+add ut1 savLista savAB
+add ut1 savLista savBA
+
+create Ut ut2
+add ut2 savLista savBC
+add ut2 savLista savCB
+
+assign ut1 A
+assign ut1 B
+assign ut2 B
+assign ut2 C
+
+create Busz b1
+set b1 vegallomas1 A
+set b1 vegallomas2 C
+
+assign ueAB b1
+
+tick 4
+
+info b1
+info ny1
+info A
+info B
+info C

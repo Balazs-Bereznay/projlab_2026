@@ -1,0 +1,31 @@
+create Csomopont cs1
+create Ut ut1
+create Ut ut2
+create Sav sav1
+create Sav sav2
+create Utegyseg ue1
+create Utegyseg ue2
+create Busz b1
+
+set cs1 buszmegallo true
+add cs1 utLista ut1
+add cs1 utLista ut2
+
+add ut1 savLista sav1
+add ut2 savLista sav2
+
+set sav1 elsoUtegyseg ue1
+set sav2 elsoUtegyseg ue2
+
+assign ue1 b1
+add b1 kijeloltUtvonal ut2
+
+assign ut1 cs1
+assign ut2 cs2
+
+tick 1
+
+info ue1
+info cs1
+info ue2
+info b1

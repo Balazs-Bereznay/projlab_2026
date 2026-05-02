@@ -1,0 +1,7 @@
+create Utegyseg ue1
+add_condition ice ue1 3
+set ue1 soMennyiseg 2
+set ue1 blokkolt true
+info ue1
+tick 1
+info ue1

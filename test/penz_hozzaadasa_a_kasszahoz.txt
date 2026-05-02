@@ -1,0 +1,3 @@
+create Nyilvantarto ny1
+add ny1 penz 5
+info ny1

@@ -1,0 +1,8 @@
+create Jatekos j1
+create Nyilvantarto ny1
+create Bolt b1
+assign j1 ny1
+set b1 soAr 5
+set ny1 penz 10
+purchase j1 salt
+info ny1

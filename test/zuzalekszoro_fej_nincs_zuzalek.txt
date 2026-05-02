@@ -1,0 +1,10 @@
+create Utegyseg ue1
+create Hokotro hk1
+create Zuzalekszoro z1
+assign ue1 hk1
+add_condition ice ue1 1
+set hk1 zuzalekMennyiseg 0
+set hk1 fej z1
+clean hk1
+info ue1
+info hk1

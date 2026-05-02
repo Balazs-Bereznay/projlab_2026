@@ -1,0 +1,19 @@
+create Utegyseg ue1
+create Utegyseg ue2
+create Utegyseg ue3
+create Auto a1
+create Auto a2
+set ue1 kovetkezoUtegyseg ue2
+set ue2 jobbUtegyseg ue3
+set ue3 balUtegyseg ue2
+add_condition ice ue2 1
+assign ue1 a1
+assign ue3 a2
+set a1 tapadas 0
+set ue2 megcsuszasEsely 100.0
+move a1 -f
+info ue1
+info ue2
+info ue3
+info a1
+info a2

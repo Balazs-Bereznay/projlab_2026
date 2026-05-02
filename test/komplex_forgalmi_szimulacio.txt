@@ -1,0 +1,68 @@
+create Utegyseg ue11
+create Utegyseg ue12
+create Utegyseg ue13
+create Utegyseg ue14
+create Utegyseg ue21
+create Utegyseg ue22
+create Utegyseg ue23
+create Utegyseg ue24
+
+set ue11 kovetkezoUtegyseg ue12
+set ue12 kovetkezoUtegyseg ue13
+set ue13 kovetkezoUtegyseg ue14
+set ue21 kovetkezoUtegyseg ue22
+set ue22 kovetkezoUtegyseg ue23
+set ue23 kovetkezoUtegyseg ue24
+
+set ue11 jobbUtegyseg ue21
+set ue12 jobbUtegyseg ue22
+set ue13 jobbUtegyseg ue23
+set ue14 jobbUtegyseg ue24
+set ue21 balUtegyseg ue11
+set ue22 balUtegyseg ue12
+set ue23 balUtegyseg ue13
+set ue24 balUtegyseg ue14
+
+set ue13 hoMagassag 8
+set ue13 letaposottsag 4
+set ue13 megcsuszasEsely 1.0
+
+create Sav sav1
+create Sav sav2
+set sav1 elsoUtegyseg ue11
+set sav2 elsoUtegyseg ue21
+
+create Ut ut1
+add ut1 savLista sav1
+add ut1 savLista sav2
+
+create Csomopont cs_start
+create Csomopont cs_end
+set ut1 vegpont1 cs_start
+set ut1 vegpont2 cs_end
+assign ut1 cs_start
+assign ut1 cs_end
+
+create Busz b1
+create Auto a1
+create Auto a2
+
+assign ue12 b1
+assign ue11 a1
+assign ue13 a2
+
+move a2 -r
+move b1 -f
+move b1 -f
+move a1 -f
+move a1 -f
+
+info ue11
+info ue12
+info ue13
+info ue14
+info ue23
+info b1
+info a1
+info a2
+info ny1

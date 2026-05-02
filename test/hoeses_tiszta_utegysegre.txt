@@ -1,0 +1,4 @@
+create Utegyseg ue1
+info ue1
+add_condition snow ue1 5
+info ue1

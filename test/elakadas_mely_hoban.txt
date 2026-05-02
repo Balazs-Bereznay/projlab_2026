@@ -1,0 +1,10 @@
+create Utegyseg ue1
+create Utegyseg ue2
+create Auto a1
+set ue1 kovetkezoUtegyseg ue2
+add_condition snow ue2 15
+assign ue1 a1
+move a1 -f
+info ue1
+info ue2
+info a1

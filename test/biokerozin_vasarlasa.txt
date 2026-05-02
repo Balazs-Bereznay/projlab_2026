@@ -1,0 +1,7 @@
+create Nyilvantarto ny1
+create Bolt b1
+create Jatekos p1
+set b1 biokerozinAr 10
+set ny1 penz 100
+purchase p1 biokerosene 5
+info ny1

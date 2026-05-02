@@ -1,0 +1,16 @@
+create Utegyseg ue1
+create Utegyseg ue2
+create Utegyseg ue3
+set ue1 kovetkezoUtegyseg ue2
+set ue1 jobbUtegyseg ue3
+set ue2 blokkolt true
+set ue2 hoMagassag 15
+create Auto a1
+create Auto a2
+assign ue1 a1
+assign ue2 a2
+tick 1
+info ue1
+info ue2
+info ue3
+info a1

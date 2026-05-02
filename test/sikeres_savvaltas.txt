@@ -1,0 +1,13 @@
+create Utegyseg ue1
+create Utegyseg ue2
+create Utegyseg ue3
+set ue1 kovetkezoUtegyseg ue2
+set ue1 jobbUtegyseg ue3
+set ue2 blokkolt true
+create Busz b1
+assign ue1 b1
+move a1 -r
+info ue1
+info ue2
+info ue3
+info b1

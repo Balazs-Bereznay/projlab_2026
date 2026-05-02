@@ -1,0 +1,11 @@
+create Nyilvantarto ny1
+create Bolt bo1
+create Jatekos p1
+create Utegyseg ue1
+create Hokotro hk1
+assign ue1 hk1
+set bo1 soszoroAr 20
+set ny1 penz 100
+purchase p1 saltspreader hk1
+info ny1
+info hk1
