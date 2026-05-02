@@ -38,6 +38,49 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
         this.nemBeertAutokSzama = n;
     }
 
+    /**
+     * Feldolgozza a nyilvántartóra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+
+                String infoKimenet = """
+                    %s:
+                    penz: %d
+                    so: %d
+                    biokerozin: %d
+                    nemBeertAutokSzama: %d
+                    nemnemBeertAutokLimit: %d
+                    jatekVege: %b
+                    """.formatted(
+                        currentId,
+                        this.penz,
+                        this.so,
+                        this.biokerozin,
+                        this.nemBeertAutokSzama,
+                        this.nemBeertAutokLimit,
+                        this.jatekVege
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+
+            default:
+                break;
+        }
+    }
+
     @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
         masik.parancsFeldolgozNyilvantartoval(parancs, this, args);

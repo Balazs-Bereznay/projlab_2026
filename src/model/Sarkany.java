@@ -6,7 +6,7 @@ import java.util.List;
  * Tisztítófej, amely képes egy útegységet szinte azonnal megtisztítani
  * biokerozin erőforrás felhasználásával.
  */
-public class Sarkany extends Fej {
+public class Sarkany extends Fej implements ProtoEntitas {
     ///A játékban lévő közös nyilvántartó.
     private Nyilvantarto nyilvantarto;
     /// Biokerozin mennyiség, ami egy útegység megtakarításához szükséges.
@@ -14,6 +14,42 @@ public class Sarkany extends Fej {
 
     public Sarkany(Nyilvantarto ny) {
         this.nyilvantarto = ny;
+    }
+
+    /**
+     * Feldolgozza a sárkány fejre érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "info":
+                String currentId = args.get(0);
+                String nyStr = (this.nyilvantarto != null) ? this.nyilvantarto.toString() : "null";
+
+                String infoKimenet = """
+                    %s:
+                    biokerozinAdag: %d
+                    nyilvantarto: %s
+                    """.formatted(
+                        currentId,
+                        BIOKEROZIN_ADAG,
+                        nyStr
+                );
+
+                System.out.print(infoKimenet);
+                System.out.println("Info displayed");
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
