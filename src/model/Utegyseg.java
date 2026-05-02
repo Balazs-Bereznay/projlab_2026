@@ -47,6 +47,12 @@ public class Utegyseg implements ProtoEntitas{
         this(0, 0.0, null, null, null, null, 0, 0, false, 0);
     }
 
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozUtegyseggel(parancs, this, args);
+    }
+
+
     /// Getterek és setterek
     /**
      * Visszatér a hoElakadasKuszob statikus tagváltozó értékével.

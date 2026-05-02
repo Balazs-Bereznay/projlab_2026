@@ -70,7 +70,7 @@ public class Ut implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgoz(String parancs, Sav sav, List<String> args) {
+    public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args){
         if (parancs.equals("assign")) {
             this.addSav(sav); // Az út listájába felvesszük a sávot
            // sav.setElsoUtegyseg(this);  // A sávnak is beállítjuk, hogy melyik úthoz tartozik

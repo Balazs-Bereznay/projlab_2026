@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ez a játék nyilvántartója, ami tárolja az összes globális adatot a játék során (pénz, só, kerozin).
  * Illetve figyeli a játékmenetet és ő dönti el, hogy mikor következik be a vereség, a munkába be nem ért autósok száma alapján.
  */
 
-public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
+public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
 
     /**
      * a közösen tárolt egyenleg
@@ -33,6 +36,17 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
         this.so = s;
         this.biokerozin = b;
         this.nemBeertAutokSzama = n;
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozNyilvantartoval(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozFejjel(String parancs, Fej fej, List<String> args) {
+        // Visszapasszoljuk a fejnek, mert ő csinálja a tényleges bekötést
+        fej.parancsFeldolgozNyilvantartoval(parancs, this, args);
     }
 
     /**

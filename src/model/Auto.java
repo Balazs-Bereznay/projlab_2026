@@ -28,6 +28,8 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
      */
     private int utonToltottIdo;
 
+
+
     /**
      * Meghatarozza a kezdopont es celpont alapjan az NPC auto legrovidebb utvonalat.
      *

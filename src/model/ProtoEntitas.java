@@ -138,6 +138,16 @@ public interface ProtoEntitas {
         kapcsolatNemTamogatott(parancs, csomopont);
     }
 
+    default void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
+        kapcsolatNemTamogatott(parancs, jatekos);
+    }
+
+    default void parancsFeldolgozTerkeppel(String parancs, Terkep terkep, List<String> args) {
+        kapcsolatNemTamogatott(parancs, terkep);
+    }
+
+
+
     /**
      * Alapertelmezett hibajelzes nem tamogatott kapcsolati parancsokhoz.
      *

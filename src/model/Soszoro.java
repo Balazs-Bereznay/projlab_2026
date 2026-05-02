@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A kiszórt sóval a jegesedés, vagy a hó megszüntetésére, illetve a havazás megelőzésére
  * használható tisztító fej, ami só erőforrás használatával működik.
@@ -13,6 +16,15 @@ class Soszoro extends Fej {
     public Soszoro(Nyilvantarto ny) {
         this.nyilvantarto = ny;
     }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.setNyilvantarto(ny);
+            System.out.println("Nyilvántartó sikeresen a fejhez rendelve.");
+        }
+    }
+
 
     /**
      * Só kiszórásával megkezdi a jég és hó olvasztását, illetve megelőzi

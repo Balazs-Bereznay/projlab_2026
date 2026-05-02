@@ -28,7 +28,7 @@ public class Csomopont  implements ProtoEntitas {
     public Csomopont(){
         this(new ArrayList<>(), false, false);
     }
-
+/*
     @Override
     public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
         if ("assign".equals(parancs)) {
@@ -39,7 +39,7 @@ public class Csomopont  implements ProtoEntitas {
             System.out.println("Megálló eltávolítva a busz útvonalából.");
         }
     }
-
+*/
     @Override
     public void parancsFeldolgoz(String parancs, List<String> args) {}
 
@@ -49,10 +49,10 @@ public class Csomopont  implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgoz(String parancs, Ut ut, List<String> args) {
+    public void parancsFeldolgozUttal(String parancs, Ut ut, List<String> args) {
         if (parancs.equals("assign")) {
             this.addUt(ut);
-            //ott allitjuk be ami meg nem volt beallitva
+
             if(ut.getVegpont1() == null){
                 ut.setVegpont1(this);
             }
@@ -65,6 +65,66 @@ public class Csomopont  implements ProtoEntitas {
             System.out.println("Út sikeresen eltávolítva a csomópontról.");
         } else {
             ProtoEntitas.super.parancsFeldolgoz(parancs, ut, args);
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozAutoval(String parancs, Auto auto, List<String> args) {
+        if ("assign".equals(parancs)) {
+            // Ha még nincs kezdőpontja, ez a csomópont lesz az
+            if (auto.getKezdopont() == null) {
+                auto.setKezdopont(this);
+                System.out.println("Csomópont beállítva az autó kezdőpontjának.");
+            }
+            // Ha kezdőpontja már van, de célpontja még nincs, ez lesz a célpont
+            else if (auto.getCelpont() == null) {
+                auto.setCelpont(this);
+                System.out.println("Csomópont beállítva az autó célpontjának.");
+            }
+            else {
+                System.out.println("Hiba: Az autónak már van kezdő- és célpontja is.");
+            }
+        } else if ("remove".equals(parancs)) {
+            // Törlés esetén megnézzük, melyik volt ez a csomópont, és azt nullázzuk
+            if (auto.getKezdopont() == this) {
+                auto.setKezdopont(null);
+                System.out.println("Az autó kezdőpontja törölve.");
+            } else if (auto.getCelpont() == this) {
+                auto.setCelpont(null);
+                System.out.println("Az autó célpontja törölve.");
+            }
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+        if ("assign".equals(parancs)) {
+            // 1. végállomás beállítása, ha még üres
+            if (busz.getVegallomas1() == null) {
+                busz.setVegallomas1(this);
+                System.out.println("Csomópont beállítva a busz 1. végállomásának.");
+            }
+            // 2. végállomás beállítása, ha az 1. már foglalt, de ez még üres
+            else if (busz.getVegallomas2() == null) {
+                busz.setVegallomas2(this);
+                System.out.println("Csomópont beállítva a busz 2. végállomásának.");
+            }
+            // Ha mindkét végállomás megvan, akkor sima megállóként adjuk a listához
+            else {
+                if (!busz.getMegallokLista().contains(this)) {
+                    busz.getMegallokLista().add(this);
+                    System.out.println("Megálló sikeresen hozzáadva a busz útvonalához.");
+                }
+            }
+        } else if ("remove".equals(parancs)) {
+            if (busz.getVegallomas1() == this) {
+                busz.setVegallomas1(null);
+            }
+            if (busz.getVegallomas2() == this) {
+                busz.setVegallomas2(null);
+            }
+            busz.getMegallokLista().remove(this);
+            System.out.println("Csomópont (végállomás/megálló) eltávolítva a busztól.");
         }
     }
 

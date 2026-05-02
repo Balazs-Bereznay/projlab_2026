@@ -67,15 +67,21 @@ public abstract class Jarmu implements ProtoEntitas {
      *
      */
     @Override
-    public void parancsFeldolgoz(String parancs, Utegyseg u, List<String> arg){
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozJarmuvel(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozUtegyseggel(String parancs, Utegyseg u, List<String> args) {
         if (parancs.equals("assign")) {
             this.utegyseg = u;
             u.setJarmu(this);
             System.out.println("Jármű sikeresen az útegységre helyezve.");
         }
     }
+
     @Override
-    public void parancsFeldolgoz(String parancs, Nyilvantarto ny1, List<String> arg){
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny1, List<String> args) {
         if (parancs.equals("assign")) {
             this.setNyilvantarto(ny1);
             System.out.println("Jármű sikeresen beallitva a nyilvantarto.");

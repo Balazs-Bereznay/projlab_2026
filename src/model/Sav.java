@@ -43,7 +43,7 @@ public class Sav implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgoz(String parancs, Utegyseg utegyseg, List<String> args) {
+    public void parancsFeldolgozUtegyseggel(String parancs, Utegyseg utegyseg, List<String> args) {
         if (parancs.equals("assign")) {
             this.elsoUtegyseg = utegyseg;// A sáv listájába felvesszük az útegységet
             System.out.println("Útegység sikeresen a sávhoz rendelve.");

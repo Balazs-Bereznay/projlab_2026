@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Tisztítófej, amely képes egy útegységet szinte azonnal megtisztítani
  * biokerozin erőforrás felhasználásával.
@@ -13,6 +15,16 @@ public class Sarkany extends Fej {
     public Sarkany(Nyilvantarto ny) {
         this.nyilvantarto = ny;
     }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.setNyilvantarto(ny);
+            System.out.println("Nyilvántartó sikeresen a fejhez rendelve.");
+        }
+    }
+
+
 
     /**
      * Biokerozin felhasználásával azonnali hatással tisztítja mind a jeget
