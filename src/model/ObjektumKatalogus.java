@@ -53,6 +53,23 @@ class ObjektumKatalogus {
     }
 
     /**
+     * Visszaadja egy katalógusban szereplő entitásnak az azonosítóját (id)
+     * @param entitas Az az entitás, aminek az azonosítóját megkeresi és visszaadja
+     * @return A keresett entitás azonosítója
+     */
+    public String getId(ProtoEntitas entitas) {
+        if (entitas == null) return "null";
+        for (Map<String, ProtoEntitas> map : kontener.values()) {
+            for (Map.Entry<String, ProtoEntitas> entry : map.entrySet()) {
+                if (entry.getValue() == entitas) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return "null";
+    }
+
+    /**
      * Globális keresés ID alapján.
      * Mivel az ID-k egyediek, végigfésüljük a típus-csoportokat.
      */

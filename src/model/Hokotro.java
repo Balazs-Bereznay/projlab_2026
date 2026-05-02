@@ -26,7 +26,7 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
     }
 
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {
+    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
         if ("move".equals(parancs)) {
             if (args.isEmpty()) return;
             String irany = args.get(0);

@@ -104,7 +104,7 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
      * @param args a parancs tovabbi parameterei
      */
     @Override
-    public void parancsFeldolgoz(String parancs, List<String> args) {
+    public void parancsFeldolgoz(String parancs, List<String> args, ObjektumKatalogus katalogus) {
         if (parancs == null || args == null) {
             return;
         }

@@ -209,14 +209,14 @@ public class Prototipus {
                 case "purchase":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
-                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
+                        celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
                     }
                     break;
                 /// Az info parancsnál kell a kiíráshoz is az entitás azonosítója
                 case "info":
                     ProtoEntitas celponttt = katalogus.keres(szavak[1]);
                     if (celponttt != null) {
-                        celponttt.parancsFeldolgoz(cmd, parametereketVag(szavak, 1));
+                        celponttt.parancsFeldolgoz(cmd, parametereketVag(szavak, 1), this.katalogus);
                     }else{
                         System.out.println("Entity not found!");
                     }
