@@ -21,6 +21,10 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         this.fej = fej;
     }
 
+    public Hokotro() {
+        this(null);
+    }
+
     // 1. Fogadja a Fejet
     @Override
     public void parancsFeldolgoz(String parancs, Fej fej, List<String> args) {
