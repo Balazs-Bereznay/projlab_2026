@@ -206,7 +206,6 @@ public class Prototipus {
                 case "add_condition":
                 case "list_shop":
                 case "add":
-                case "purchase":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
                         celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
@@ -221,6 +220,44 @@ public class Prototipus {
                         System.out.println("Entity not found!");
                     }
                     break;
+
+                case "purchase": {
+                    // eset: purchase <id> <valami> [mennyiseg]
+                    // legalább 3 hosszúnak kell lennie a tömbnek
+                    if (szavak.length < 3) {
+                        break;
+                    }
+
+                    String gazdaId = szavak[1];
+                    String itemTipus = szavak[2];
+
+                    ProtoEntitas gazda = katalogus.keres(gazdaId);
+                    if (gazda == null) {
+                        break;
+                    }
+
+                    // só vagy biokerozin (ilyenkor nem kell megadni másik referenciát)
+                    if (itemTipus.equalsIgnoreCase("so") || itemTipus.equalsIgnoreCase("biokerozin")) {
+                        // Meghívjuk a kétparaméteres változatot
+                        gazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2), this.katalogus);
+                    }
+                    else {
+                        // purchase <id> <valami> <masik id> [id]
+                        if (szavak.length < 4) {
+                            break;
+                        }
+
+                        ProtoEntitas cel = katalogus.keres(szavak[3]);
+
+                        if (cel == null) {
+                            break;
+                        }
+
+                        // Meghívjuk a háromparaméteres változatot
+                        gazda.parancsFeldolgoz(cmd, cel, parametereketVag(szavak, 2));
+                    }
+                    break;
+                }
 
                 // --- Kapcsolati parancsok (3 paraméteres overload) ---
                 case "assign":
