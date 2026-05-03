@@ -106,6 +106,7 @@ class ObjektumKatalogus {
      * Ha van típus megadva, csak az adott típushoz tartozókat.
      */
     public List<String> osszesIdLeker(String tipusNev) {
+        tipusNev = tipusNev.substring(0, 1).toUpperCase() + tipusNev.substring(1).toLowerCase();
         List<String> eredmeny = new ArrayList<>();
 
         if (tipusNev == null) {

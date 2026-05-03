@@ -46,12 +46,12 @@ public class Prototipus {
         }
 
         // Cél útvonal összeállítása (out mappa + fájlnév)
-        File celMappa = new File("out");
+        File celMappa = new File("output");
         if (!celMappa.exists()) {
             celMappa.mkdirs(); // Létrehozzuk az out mappát, ha még nincs
         }
 
-        Path celUtvonal = Paths.get("out", fajlnev);
+        Path celUtvonal = Paths.get("output", fajlnev);
 
         try {
             // Átmásoljuk a temp.txt-t a célhelyre, felülírva ha már létezik
@@ -103,7 +103,7 @@ public class Prototipus {
 
         // Ellenőrizzük, hogy van-e megadva típus (pl. "list Auto" -> szavak[1] = "Auto")
         // Ha a szavak tömb null, vagy nincs benne paraméter, null-t küldünk a katalógusnak
-        if (szavak == null) {
+        if (szavak == null || szavak.length < 2) {
             idLista = katalogus.osszesIdLeker(null);
             System.out.println("Osszes objektum listaja:");
         } else {
@@ -125,6 +125,7 @@ public class Prototipus {
     public void entitasLetrehoz(String osztaly, String id)
     {
         ProtoEntitas ujEntitas = null;
+        osztaly = osztaly.substring(0, 1).toUpperCase() + osztaly.substring(1).toLowerCase();
 
         switch (osztaly)
         {
@@ -190,7 +191,11 @@ public class Prototipus {
                     tesztKornyezetAlaphelyzet();
                     break;
                 case "create":
-                    entitasLetrehoz(szavak[1], szavak[2]);
+                    if (szavak.length > 2) {
+                        entitasLetrehoz(szavak[1], szavak[2]);
+                    } else {
+                        System.out.println("Nem megfelelő paraméterezés.");
+                    }
                     break;
                  case "delete":
                      entitasTorol(szavak[1]);
@@ -216,7 +221,6 @@ public class Prototipus {
                 case "clean":
                 case "add_condition":
                 case "list_shop":
-                case "add":
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
                         celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
@@ -454,5 +458,6 @@ public class Prototipus {
         Prototipus proto = new Prototipus();
 
         proto.futtat();
+        proto.tesztKornyezetAlaphelyzet();
     }
 }
