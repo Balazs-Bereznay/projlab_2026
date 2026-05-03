@@ -193,11 +193,8 @@ public class Prototipus {
                     tesztKornyezetAlaphelyzet();
                     break;
                 case "create":
-                    if (szavak.length > 2) {
-                        entitasLetrehoz(szavak[1], szavak[2]);
-                    } else {
-                        System.out.println("Nem megfelelő paraméterezés.");
-                    }
+                    if (szavak.length < 3) { System.out.println("Használat: create <osztaly> <id>"); break; }
+                    entitasLetrehoz(szavak[1], szavak[2]);
                     break;
                  case "delete":
                      if (szavak.length < 2) { System.out.println("Használat: delete <id>"); break; }
@@ -210,8 +207,12 @@ public class Prototipus {
                     teszteketListaz();
                     break;
                 case "tick":
-                    int ido = (szavak.length > 1) ? Integer.parseInt(szavak[1]) : 1;
-                    szimulacioTick(ido);
+                    try {
+                        int ido = (szavak.length > 1) ? Integer.parseInt(szavak[1]) : 1;
+                        szimulacioTick(ido);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Használat: tick [ido]");
+                    }
                     break;
                 case "help":
                     helpKiiras();
@@ -244,11 +245,7 @@ public class Prototipus {
                     break;
 
                 case "set": {
-                    ProtoEntitas celpont = katalogus.keres(szavak[1]);
-
-                    if (szavak.length < 4) {
-                        break;
-                    }
+                    if (szavak.length < 4) { System.out.println("Használat: set <id> <attributum> <ertek>"); break; }
 
                     String gazdaId = szavak[1];
                     String itemTipus = szavak[2];
@@ -282,9 +279,7 @@ public class Prototipus {
                 case "purchase": {
                     // eset: purchase <id> <valami> [mennyiseg]
                     // legalább 3 hosszúnak kell lennie a tömbnek
-                    if (szavak.length < 3) {
-                        break;
-                    }
+                    if (szavak.length < 3) { System.out.println("Használat: purchase <id> <tipus> [mennyiseg|celId]"); break; }
 
                     String gazdaId = szavak[1];
                     String itemTipus = szavak[2];
@@ -301,9 +296,7 @@ public class Prototipus {
                     }
                     else {
                         // purchase <id> <valami> <masik id> [id]
-                        if (szavak.length < 4) {
-                            break;
-                        }
+                        if (szavak.length < 4) { System.out.println("Használat: purchase <id> <tipus> <celId>"); break; }
 
                         ProtoEntitas cel = katalogus.keres(szavak[3]);
 
@@ -317,9 +310,7 @@ public class Prototipus {
                     break;
                 }
                 case "add":
-                    if (szavak.length < 4) {
-                        break;
-                    }
+                    if (szavak.length < 4) { System.out.println("Használat: add <id> <penz|so|biokerozin|...> <ertek|celId>"); break; }
 
                     String addGazdaId = szavak[1];
                     String item = szavak[2];
