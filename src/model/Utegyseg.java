@@ -52,6 +52,29 @@ public class Utegyseg implements ProtoEntitas{
         masik.parancsFeldolgozUtegyseggel(parancs, this, args);
     }
 
+    @Override
+    public void parancsFeldolgozUtegyseggel(String parancs, Utegyseg utegyseg, List<String> args) {
+        if (parancs.equalsIgnoreCase("set"))
+        {
+            String arg = args.get(0).toLowerCase();
+            switch(arg) {
+                case "kovetkezoutegyseg":
+                    utegyseg.setKovetkezoUtegyseg(this);
+                    break;
+
+                case "balutegyseg":
+                    utegyseg.setBalUtegyseg(this);
+                    break;
+
+                case "jobbutegyseg":
+                    utegyseg.setJobbUtegyseg(this);
+                    break;
+
+                default:
+                    System.out.println("Ismeretlen tulajdonsag: " + arg);
+                    break;
+            }}
+    }
 
     /// Getterek és setterek
     /**
@@ -479,7 +502,7 @@ public class Utegyseg implements ProtoEntitas{
                     }
                 } catch (NumberFormatException e) {
                 // Itt kapjuk el, ha a parseInt vagy parseDouble elszállt
-                System.out.println("Hiba: Ervenytelen szamformatum!");
+                System.out.println("Hiba: ÉrvÉnytelen számformátum!");
                 }
                 break;
 

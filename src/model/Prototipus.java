@@ -220,16 +220,16 @@ public class Prototipus {
                 // ! Minden az ProtoEntitas két paraméteres parancsFeldolgoz-t hívó esetnek ugyan az lenne a törzse,
                 // ! ezért a set, move stb. esetek végén nincs break és így közülük bármelyik következik be
                 // ! a purchase-nál megírt törzs fog lefutni. (Nem kell azokhoz semmit írni.)
-                case "set":
                 case "move":
                 case "clean":
                 case "add_condition":
-                case "list_shop":
+                case "list_shop": {
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
                         celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
                     }
                     break;
+                }
                 case "info":
                     ProtoEntitas celpontt = katalogus.keres(szavak[1]);
                     if (celpontt != null) {
@@ -238,6 +238,42 @@ public class Prototipus {
                         System.out.println(str);
                     }
                     break;
+
+                case "set": {
+                    ProtoEntitas celpont = katalogus.keres(szavak[1]);
+
+                    if (szavak.length < 4) {
+                        break;
+                    }
+
+                    String gazdaId = szavak[1];
+                    String itemTipus = szavak[2];
+
+                    ProtoEntitas gazda = katalogus.keres(gazdaId);
+                    if (gazda == null) {
+                        break;
+                    }
+
+                    // só vagy biokerozin (ilyenkor nem kell megadni másik referenciát)
+                    if (itemTipus.equalsIgnoreCase("kovetkezoutegyseg")
+                            || itemTipus.equalsIgnoreCase("jobbutegyseg")
+                            || itemTipus.equalsIgnoreCase("balutegyseg")) {
+
+                        ProtoEntitas cel = katalogus.keres(szavak[3]);
+
+                        if (cel == null) {
+                            break;
+                        }
+
+                        // Meghívjuk a háromparaméteres változatot
+                        gazda.parancsFeldolgoz(cmd, cel, parametereketVag(szavak, 2));
+
+                    } else {
+                        // Meghívjuk a kétparaméteres változatot
+                        gazda.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
+                        }
+                    break;
+                }
 
                 case "purchase": {
                     // eset: purchase <id> <valami> [mennyiseg]
