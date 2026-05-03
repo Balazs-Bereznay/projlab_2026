@@ -185,7 +185,8 @@ public class Prototipus {
                     beolvasFajlbol(szavak[1]);
                     break;
                 case "save":
-                    allapotMentese(szavak[1]);
+                    String nev = szavak.length > 1 ? szavak[1] : "nevtelen";
+                        allapotMentese(nev);
                     break;
                 case "reset":
                     tesztKornyezetAlaphelyzet();
@@ -456,8 +457,9 @@ public class Prototipus {
 
     public static void main(String[] args) {
         Prototipus proto = new Prototipus();
-
-        proto.futtat();
+        // kitörli a temp.txt, így ha abban maradt korábbról naplózás, akkor sem fog bezavarni
         proto.tesztKornyezetAlaphelyzet();
+        proto.futtat();
+
     }
 }
