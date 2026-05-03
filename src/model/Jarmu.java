@@ -153,6 +153,10 @@ public abstract class Jarmu implements ProtoEntitas {
             return;
         }
 
+        if (this.utegyseg != null) {
+            this.utegyseg.setJarmu(null);
+        }
+
         this.utegyseg = ujUtegyseg;
     }
 
