@@ -217,6 +217,10 @@ public class Prototipus {
                 case "help":
                     helpKiiras();
                     break;
+                case "quit":
+                    System.out.println("Kilépés...");
+                    System.exit(0);
+                    break;
 
 
                 // --- Egyedi entitás parancsok (2 paraméteres overload) ---
@@ -456,6 +460,9 @@ public class Prototipus {
                 "",
                 "  help",
                 "      Kiirja ezt a sugot.",
+                "",
+                "  quit",
+                "      Kilep a programbol.",
                 "",
                 "Letrehozhato tipusok:",
                 "  Utegyseg, Csomopont, Ut, Sav, Hokotro, Auto, Busz",
