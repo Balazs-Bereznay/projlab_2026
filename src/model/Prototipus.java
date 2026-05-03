@@ -182,6 +182,7 @@ public class Prototipus {
             switch (cmd) {
                 // --- Rendszerszintű parancsok (Prototípus osztály végzi) ---
                 case "load":
+                    if (szavak.length < 2) { System.out.println("Használat: load <fajlnev>"); break; }
                     beolvasFajlbol(szavak[1]);
                     break;
                 case "save":
@@ -199,6 +200,7 @@ public class Prototipus {
                     }
                     break;
                  case "delete":
+                     if (szavak.length < 2) { System.out.println("Használat: delete <id>"); break; }
                      entitasTorol(szavak[1]);
                      break;
                 case "list":
@@ -224,6 +226,7 @@ public class Prototipus {
                 case "clean":
                 case "add_condition":
                 case "list_shop": {
+                    if (szavak.length < 2) { System.out.println("Használat: " + cmd + " <id> [parameterek]"); break; }
                     ProtoEntitas celpont = katalogus.keres(szavak[1]);
                     if (celpont != null) {
                         celpont.parancsFeldolgoz(cmd, parametereketVag(szavak, 2));
@@ -231,6 +234,7 @@ public class Prototipus {
                     break;
                 }
                 case "info":
+                    if (szavak.length < 2) { System.out.println("Használat: info <id>"); break; }
                     ProtoEntitas celpontt = katalogus.keres(szavak[1]);
                     if (celpontt != null) {
                         String str = celpontt.info(szavak[1], katalogus);
@@ -342,6 +346,7 @@ public class Prototipus {
 
                 // --- Kapcsolati parancsok (3 paraméteres overload) ---
                 case "assign":
+                    if (szavak.length < 3) { System.out.println("Használat: assign <gazdaId> <celId>"); break; }
                     ProtoEntitas gazdi = katalogus.keres(szavak[1]);
                     ProtoEntitas destionation = katalogus.keres(szavak[2]);
                     if (gazdi != null && destionation != null) {
@@ -350,6 +355,7 @@ public class Prototipus {
                     break;
                     
                 case "remove":
+                    if (szavak.length < 3) { System.out.println("Használat: remove <gazdaId> <celId>"); break; }
                     ProtoEntitas gazda = katalogus.keres(szavak[1]);
                     ProtoEntitas cel = katalogus.keres(szavak[2]);
                     if (gazda != null && cel != null) {
