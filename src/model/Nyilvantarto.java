@@ -75,6 +75,44 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
         }
 
         switch (parancs) {
+            case "set":
+                if (args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "penz":
+                            setPenz(Integer.parseInt(ertek));
+                            break;
+                        case "so":
+                            setSo(Integer.parseInt(ertek));
+                            break;
+                        case "biokerozin":
+                            setBiokerozin(Integer.parseInt(ertek));
+                            break;
+                        case "nembeertautok":
+                        case "nembeertautokszama":
+                            setNemBeertAutokSzama(Integer.parseInt(ertek));
+                            break;
+                        case "nembeertautoklimit":
+                            setNemBeertAutokLimit(Integer.parseInt(ertek));
+                            break;
+                        case "jatekvege":
+                            if ("true".equalsIgnoreCase(ertek) || "false".equalsIgnoreCase(ertek)) {
+                                setJatekVege(Boolean.parseBoolean(ertek));
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
             case "add":
                 if ( args.size() < 2) {
                     return;

@@ -140,17 +140,6 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                             this.megcsuszott = Boolean.parseBoolean(value);
                         }
                         break;
-                    case "kijeloltUtvonal":
-                        if ("empty".equalsIgnoreCase(value)
-                                || "{}".equals(value)) {
-                            this.kijeloltUtvonal = new ArrayList<>();
-                        }
-                        break;
-                    case "kezdopont":
-                    case "celpont":
-                    case "utegyseg":
-                    case "nyilvantarto":
-                        break;
                     default:
                         break;
                 }

@@ -73,16 +73,52 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
 
     @Override
     public void parancsFeldolgoz(String parancs, List<String> args) {
-        if ("move".equals(parancs)) {
-            if (args.isEmpty()) return;
-            String irany = args.get(0);
-            if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
-                lep();
-            } else {
-                savValtas(irany);
-            }
-        } else if ("clean".equals(parancs)) {
-            takarit();
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "move":
+                if (args.isEmpty()) return;
+                String irany = args.get(0);
+                if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
+                    lep();
+                } else {
+                    savValtas(irany);
+                }
+                break;
+            case "clean":
+                takarit();
+                break;
+            case "set":
+                super.parancsFeldolgoz(parancs, args);
+                if (args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "bevetel":
+                            setBevetel(Integer.parseInt(ertek));
+                            break;
+                        case "zuzalekmennyiseg":
+                            this.zuzalekMennyiseg = Integer.parseInt(ertek);
+                            break;
+                        case "zuzaleklimit":
+                            this.zuzalekLimit = Integer.parseInt(ertek);
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+            default:
+                break;
         }
     }
 

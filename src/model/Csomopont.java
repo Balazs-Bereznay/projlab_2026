@@ -91,7 +91,6 @@ public class Csomopont  implements ProtoEntitas {
                         case "azonosito":
                             this.azonosito = ertek;
                             break;
-
                         default:
                             break;
                     }

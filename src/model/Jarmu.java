@@ -67,6 +67,56 @@ public abstract class Jarmu implements ProtoEntitas {
      *
      */
     @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "set":
+                if (args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "sebesseg":
+                            this.sebesseg = Integer.parseInt(ertek);
+                            break;
+                        case "tapadas":
+                            this.tapadas = Integer.parseInt(ertek);
+                            break;
+                        case "elakadt":
+                            if ("true".equalsIgnoreCase(ertek) || "false".equalsIgnoreCase(ertek)) {
+                                this.elakadt = Boolean.parseBoolean(ertek);
+                            }
+                            break;
+                        case "baleset":
+                            if ("true".equalsIgnoreCase(ertek) || "false".equalsIgnoreCase(ertek)) {
+                                this.baleset = Boolean.parseBoolean(ertek);
+                            }
+                            break;
+                        case "megcsuszott":
+                            if ("true".equalsIgnoreCase(ertek) || "false".equalsIgnoreCase(ertek)) {
+                                this.megcsuszott = Boolean.parseBoolean(ertek);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
         masik.parancsFeldolgozJarmuvel(parancs, this, args);
     }

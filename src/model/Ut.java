@@ -86,7 +86,6 @@ public class Ut implements ProtoEntitas {
                             case "alagut":
                                 this.alagut = Boolean.parseBoolean(ertek);
                                 break;
-
                             default:
                                 break;
                         }

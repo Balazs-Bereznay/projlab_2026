@@ -235,31 +235,6 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
                             this.megcsuszott = Boolean.parseBoolean(value);
                         }
                         break;
-                    case "kijeloltUtvonal":
-                        if ("empty".equalsIgnoreCase(value) || "{}".equals(value)) {
-                            this.kijeloltUtvonal = new ArrayList<>();
-                        }
-                        break;
-                    case "megallokLista":
-                        if ("empty".equalsIgnoreCase(value) || "{}".equals(value)) {
-                            this.megallokLista = new ArrayList<>();
-                        }
-                        break;
-                    case "erintettLista":
-                        if ("empty".equalsIgnoreCase(value) || "{}".equals(value)) {
-                            this.erintettLista = new ArrayList<>();
-                        }
-                        break;
-                    case "tervezettUtvonal":
-                        if ("empty".equalsIgnoreCase(value) || "{}".equals(value)) {
-                            this.tervezettUtvonal = new ArrayList<>();
-                        }
-                        break;
-                    case "vegallomas1":
-                    case "vegallomas2":
-                    case "utegyseg":
-                    case "nyilvantarto":
-                        break;
                     default:
                         break;
                 }

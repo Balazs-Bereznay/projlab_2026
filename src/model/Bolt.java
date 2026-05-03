@@ -287,12 +287,70 @@ public class Bolt implements ProtoEntitas {
         if (parancs == null) {
             return;
         }
-        if (nyilvantarto == null) {
+        if (nyilvantarto == null && !"set".equals(parancs)) {
             System.out.println("Hiba: A rendszer nincs inicializálva (hiányzik a nyilvántartó)!");
             return;
         }
 
         switch (parancs) {
+            case "set":
+                if (args == null || args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    int mennyiseg = Integer.parseInt(ertek);
+                    switch (tulajdonsag) {
+                        case "soar":
+                            this.soAr = mennyiseg;
+                            break;
+                        case "biokerozinar":
+                            this.biokerozinAr = mennyiseg;
+                            break;
+                        case "hokotroar":
+                            this.hokotroAr = mennyiseg;
+                            break;
+                        case "soproar":
+                        case "seproar":
+                            this.soproAr = mennyiseg;
+                            break;
+                        case "hanyoar":
+                            this.hanyoAr = mennyiseg;
+                            break;
+                        case "jegtoroar":
+                            this.jegtoroAr = mennyiseg;
+                            break;
+                        case "soszoroar":
+                            this.soszoroAr = mennyiseg;
+                            break;
+                        case "sarkanyar":
+                            this.sarkanyAr = mennyiseg;
+                            break;
+                        case "zuzalekar":
+                            this.zuzalekAr = mennyiseg;
+                            break;
+                        case "zuzalekszoroar":
+                            this.zuzalekszoroAr = mennyiseg;
+                            break;
+                        case "sebessegfejlesztesar":
+                            this.sebessegfejlesztesAr = mennyiseg;
+                            break;
+                        case "tapadasfejlesztesar":
+                            this.tapadasfejlesztesAr = mennyiseg;
+                            break;
+                        case "hozamfejlesztesar":
+                            this.hozamfejlesztesAr = mennyiseg;
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
             case "list_shop":
                 String kinalat = """
                     Bolt kínálata:
