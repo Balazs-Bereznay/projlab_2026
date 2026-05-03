@@ -167,5 +167,11 @@ public interface ProtoEntitas {
      * @param katalogus A nyilvántartó, amiben az objektumok vannak
      * @return Az entitás adatai egy stringben
      */
-     public String info(String id, ObjektumKatalogus katalogus);
+     default public String info(String id, ObjektumKatalogus katalogus) {
+         return """
+        %s:
+        """.formatted(
+                 id
+         );
+     }
 }
