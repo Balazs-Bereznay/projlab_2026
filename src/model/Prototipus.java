@@ -17,7 +17,7 @@ public class Prototipus {
      * @param fajlnev
      */
     public void beolvasFajlbol(String fajlnev) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fajlnev))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("test" + File.separator + fajlnev))) {
             String sor;
             while ((sor = br.readLine()) != null) {
                 sor = sor.trim();
@@ -204,6 +204,9 @@ public class Prototipus {
                 case "list":
                     listazasKezelo(szavak);
                     break;
+                case "list_tests":
+                    teszteketListaz();
+                    break;
                 case "tick":
                     int ido = (szavak.length > 1) ? Integer.parseInt(szavak[1]) : 1;
                     szimulacioTick(ido);
@@ -345,6 +348,31 @@ public class Prototipus {
     }
 
     /**
+     * kilistázza a test mappában található tesztekhez tartozó bemeneti fájlok neveit.
+     */
+    private void teszteketListaz() {
+        File mappa = new File("test"); // A "test" nevű mappa a gyökérben
+
+        if (mappa.exists() && mappa.isDirectory()) {
+            String[] fajlok = mappa.list();
+
+            if (fajlok == null || fajlok.length == 0) {
+                System.out.println("A 'test' mappa üres.");
+            } else {
+                System.out.println("Elérhető tesztfájlok:");
+                for (String fajlNev : fajlok) {
+                    // Opcionális: csak a .txt fájlokat listázzuk ki
+                    if (fajlNev.endsWith(".txt")) {
+                        System.out.println("- " + fajlNev);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Hiba: A 'test' mappa nem letezik!");
+        }
+    }
+
+    /**
      * Kiirja a prototipus bemeneti nyelvenek rovid, strukturalt leirasat.
      *
      * <p>A help celja, hogy a parancsfajtak, a parameter-sorrend es a
@@ -373,6 +401,9 @@ public class Prototipus {
                 "",
                 "  save <fajlnev>",
                 "      Elmenti az aktualis prototipus-allapotot a megadott fajlba.",
+                "",
+                "  list_tests",
+                "      Kiírja, hogy milyen nevű teszt bemenetek érhetőek el.",
                 "",
                 "  reset",
                 "      Tiszta lapot nyit egy új tesztesetnek: az eddigi objektumok elvesznek.",

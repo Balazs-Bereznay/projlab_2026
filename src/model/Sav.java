@@ -55,7 +55,7 @@ public class Sav implements ProtoEntitas {
         } else if ("remove".equals(parancs)) {
             ut.getSavok().remove(this);
             System.out.println("Sáv eltávolítva az útból.");
-        } else if ("add".equals(parancs) && args.get(0).equals("savLista")) {   // Kb. ugyanazt csinálja, mint az assign (?)
+        } else if ("add".equals(parancs) && args.get(0).equalsIgnoreCase("savok")) {   // Kb. ugyanazt csinálja, mint az assign (?)
             ut.addSav(this);
             System.out.println("Sáv sikeresen az út sáv listájához hozzáadva.");
         }

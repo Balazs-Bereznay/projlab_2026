@@ -114,7 +114,7 @@ public class Ut implements ProtoEntitas {
         } else if ("remove".equals(parancs)) {
             csomopont.removeUt(this);
             System.out.println("Út eltávolítva a csomópontból.");
-        } else if("add".equals(parancs) && args.get(0).equals("utLista")){    // Kb. ugyanazt csinálja, mint az assign (?)
+        } else if("add".equals(parancs) && args.get(0).equalsIgnoreCase("utLista")){    // Kb. ugyanazt csinálja, mint az assign (?)
             csomopont.addUt(this);
             System.out.println("Út sikeresen a csomópont út listájához hozzáadva.");
         }
