@@ -1,4 +1,4 @@
-ue1:  
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -13,7 +13,7 @@ kovetkezoUtegyseg: ue2
 balUtegyseg: null
 jobbUtegyseg: null
 
-ue2: 
+ue2:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -28,7 +28,7 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1: 
+a1:
 sebesseg: 0
 utegyseg: ue2
 tapadas: 0
@@ -36,7 +36,7 @@ elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto : null
-kijeloltUtvonal: { }
+kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
 utonToltottIdo: 0

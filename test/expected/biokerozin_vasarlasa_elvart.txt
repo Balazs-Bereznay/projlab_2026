@@ -1,4 +1,4 @@
-ny1: 
+ny1:
 penz: 50
 so: 0
 biokerozin: 5
