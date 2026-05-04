@@ -404,8 +404,8 @@ public class Bolt implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
-        jatekos.setBolt(this);
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozBolttal(parancs, this, args);
     }
 
     /**

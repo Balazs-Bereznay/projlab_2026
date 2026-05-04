@@ -71,6 +71,17 @@ public interface ProtoEntitas {
     }
 
     /**
+     * Celoldali feldolgozas akkor, amikor a gazda egy bolt.
+     *
+     * @param parancs a feldolgozando parancs neve
+     * @param bolt a parancs gazda objektuma
+     * @param args a parancs tovabbi parameterei
+     */
+    default void parancsFeldolgozBolttal(String parancs, Bolt bolt, List<String> args) {
+        kapcsolatNemTamogatott(parancs, bolt);
+    }
+
+    /**
      * Celoldali feldolgozas akkor, amikor a gazda egy fej.
      *
      * @param parancs a feldolgozando parancs neve

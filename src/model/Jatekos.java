@@ -108,6 +108,11 @@ public class Jatekos implements ProtoEntitas {
         this.nyilvantarto = ny;
     }
 
+    @Override
+    public void parancsFeldolgozBolttal(String parancs, Bolt bolt, List<String> args) {
+        this.bolt = bolt;
+    }
+
     public List<Iranyithato> getFlotta() {
         System.out.println("Lekérdezték a játékos flottáját.");
         return flotta;
