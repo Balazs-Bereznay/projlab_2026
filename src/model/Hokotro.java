@@ -187,7 +187,8 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         // Ha mindkettő rendelkezésre áll, meghívjuk a fej hasznal metódusát
         // az aktuális útegység átadásával.
         if (this.fej.hasznal(this.utegyseg)) {
-            nyilvantarto.penzNovel(BEVETEL);
+            if(nyilvantarto != null)
+                nyilvantarto.penzNovel(BEVETEL);
         }
     }
 
