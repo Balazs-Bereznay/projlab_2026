@@ -522,9 +522,16 @@ public class Prototipus {
         for (int i = 0; i < n; i++) {
             for (Utegyseg ue : katalogus.osszesOfType(Utegyseg.class)) {
                 ue.havazas(1);
+                ue.soOlvasztas();
             }
             for (Auto auto : katalogus.osszesOfType(Auto.class)) {
                 auto.lep();
+            }
+            for (Busz busz : katalogus.osszesOfType(Busz.class)) {
+                busz.lep();
+            }
+            for (Hokotro hokotro : katalogus.osszesOfType(Hokotro.class)) {
+                hokotro.lep();
             }
             System.out.println("Tick " + (i + 1) + " lefutott.");
         }
