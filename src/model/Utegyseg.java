@@ -120,7 +120,11 @@ public class Utegyseg implements ProtoEntitas{
     }
 
     public void setJarmu(Jarmu jarmu) {
-        this.jarmu = jarmu;
+        if(jarmu != null){
+            this.jarmu = jarmu;
+            blokkolt = true;
+        }
+        else{blokkolt = false;}
     }
 
     public Utegyseg getKovetkezoUtegyseg() {

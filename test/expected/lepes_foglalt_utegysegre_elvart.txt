@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -7,14 +7,13 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: a1
 kovetkezoUtegyseg: ue2
 balUtegyseg: null
 jobbUtegyseg: null
 
-ue2: 
+ue2:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -23,7 +22,6 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: a2
 kovetkezoUtegyseg: null
