@@ -3,5 +3,7 @@ create Bolt bo1
 create Jatekos p1
 set ny1 penz 10
 set bo1 soAr 50
+assign ny1 bo1
+assign bo1 p1
 purchase p1 so 1
 info ny1

@@ -5,6 +5,8 @@ set ny1 penz 200
 set bo1 hokotroAr 100
 set bo1 sarkanyAr 50
 set bo1 biokerozinAr 10
+assign ny1 bo1
+assign bo1 p1
 purchase p1 hokotro
 purchase p1 sarkany hk1
 purchase p1 biokerozin 2

@@ -72,6 +72,11 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
     }
 
     @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny1, List<String> args) {
+        this.nyilvantarto = ny1;
+    }
+
+    @Override
     public void parancsFeldolgoz(String parancs, List<String> args) {
         if (parancs == null || args == null) {
             return;
