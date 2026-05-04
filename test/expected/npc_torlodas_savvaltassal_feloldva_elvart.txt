@@ -14,7 +14,7 @@ balUtegyseg: null
 jobbUtegyseg: ue3
 
 ue2:
-hoMagassag: 15
+hoMagassag: 16
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
@@ -32,7 +32,7 @@ ue3:
 hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
-letaposottsag: 0
+letaposottsag: 1
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false

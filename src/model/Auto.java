@@ -51,6 +51,33 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
         return this.kijeloltUtvonal;
     }
 
+    @Override
+    public void lep() {
+        // Alapvető ellenőrzés: ha már elakadt vagy balesetet szenvedett, nem léphet
+        if (elakadt || baleset || utegyseg == null) {
+            return;
+        }
+
+        // 1. Megpróbálunk ELŐRE lépni
+        Utegyseg elore = utegyseg.getKovetkezoUtegyseg();
+        if (elore != null && elore.ralep(this)) {
+            return; // Sikerült előre lépni, kész vagyunk
+        }
+
+        // 2. Ha az előre nem sikerült, megpróbálunk JOBBRA lépni
+        Utegyseg jobb = utegyseg.getJobbUtegyseg();
+        if (jobb != null && jobb.ralep(this)) {
+            return; // Sikerült jobbra lépni, kész vagyunk
+        }
+
+        // 3. Ha a jobb sem sikerült, megpróbálunk BALRA lépni
+        // (Feltételezve, hogy a metódus neve getBalUtegyseg)
+        Utegyseg bal = utegyseg.getBalUtegyseg();
+        if (bal != null && bal.ralep(this)) {
+            return; // Sikerült balra lépni, kész vagyunk
+        }
+    }
+
     /**
      * A RendszerIranyitott interfesz utvonalkeresesi muvelete.
      *

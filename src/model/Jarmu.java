@@ -218,6 +218,8 @@ public abstract class Jarmu implements ProtoEntitas {
         }
 
         this.utegyseg = ujUtegyseg;
+
+        this.elakadt = false;
     }
 
     /**
