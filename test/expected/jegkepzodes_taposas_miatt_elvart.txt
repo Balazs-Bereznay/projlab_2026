@@ -15,14 +15,13 @@ jobbUtegyseg: null
 
 ue2:
 hoMagassag: 0
-jegmagassag: 3
+jegMagassag: 3
 soMennyiseg: 0
-letaposottsag: 5
+letaposottsag: 0
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: true
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: a1
 kovetkezoUtegyseg: null
