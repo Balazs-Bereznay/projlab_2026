@@ -1,40 +1,40 @@
 b1:
-  sebesseg: 1
-  utegyseg: ueBA
-  tapadas: 1
-  elakadt: false
-  baleset: false
-  megcsuszott: false
-  nyilvantarto: null
-  kijeloltUtvonal: { ut1, ut2, ut2, ut1 }
-  vegallomas1: A
-  vegallomas2: C
-  megallokLista: { }
-  erintettLista: { B, C, A }
-  bevetel: 800
+sebesseg: 1
+utegyseg: ueBA
+tapadas: 1
+elakadt: false
+baleset: false
+megcsuszott: false
+nyilvantarto: null
+kijeloltUtvonal: { ut1, ut2, ut2, ut1 }
+vegallomas1: A
+vegallomas2: C
+megallokLista: { }
+erintettLista: { B, C, A }
+bevetel: 800
 
 ny1:
-  penz: 800
-  so: 0
-  biokerozin: 0
-  nemBeertAutokSzama: 0
-  jatekVege: false
+penz: 800
+so: 0
+biokerozin: 0
+nemBeertAutokSzama: 0
+jatekVege: false
 
 
 A:
-  buszmegallo: true
-  celpont: false
-  utLista: { ut1 }
-  azonosito: A
+buszmegallo: true
+celpont: false
+utLista: { ut1 }
+azonosito: A
 
 B:
-  buszmegallo: true
-  celpont: false
-  utLista: { ut1, ut2 }
-  azonosito: B
+buszmegallo: true
+celpont: false
+utLista: { ut1, ut2 }
+azonosito: B
 
 C:
-  buszmegallo: true
-  celpont: false
-  utLista: { ut2 }
-  azonosito: C
+buszmegallo: true
+celpont: false
+utLista: { ut2 }
+azonosito: C
