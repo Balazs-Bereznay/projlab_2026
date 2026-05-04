@@ -390,27 +390,27 @@ public class Prototipus {
     }
 
     /**
-     * kilistázza a test mappában található tesztekhez tartozó bemeneti fájlok neveit.
+     * kilistázza a test/input mappában található tesztekhez tartozó bemeneti fájlok neveit.
      */
     private void teszteketListaz() {
-        File mappa = new File("test"); // A "test" nevű mappa a gyökérben
+        File mappa = new File("test" + File.separator + "input");
 
-        if (mappa.exists() && mappa.isDirectory()) {
-            String[] fajlok = mappa.list();
+        if (!mappa.exists() || !mappa.isDirectory()) {
+            System.out.println("Hiba: A 'test/input' mappa nem letezik!");
+            return;
+        }
 
-            if (fajlok == null || fajlok.length == 0) {
-                System.out.println("A 'test' mappa üres.");
-            } else {
-                System.out.println("Elérhető tesztfájlok:");
-                for (String fajlNev : fajlok) {
-                    // Opcionális: csak a .txt fájlokat listázzuk ki
-                    if (fajlNev.endsWith(".txt")) {
-                        System.out.println("- " + fajlNev);
-                    }
-                }
-            }
-        } else {
-            System.out.println("Hiba: A 'test' mappa nem letezik!");
+        File[] fajlok = mappa.listFiles(File::isFile);
+
+        if (fajlok == null || fajlok.length == 0) {
+            System.out.println("A 'test/input' mappa ures.");
+            return;
+        }
+
+        Arrays.sort(fajlok, Comparator.comparing(File::getName));
+        System.out.println("Elerheto tesztfajlok:");
+        for (File fajl : fajlok) {
+            System.out.println("- " + fajl.getName());
         }
     }
 
