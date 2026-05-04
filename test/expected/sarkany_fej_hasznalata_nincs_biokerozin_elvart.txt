@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 5
 soMennyiseg: 0
@@ -13,15 +13,14 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-ny1: 
+ny1:
 penz: 0
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
-
-hk1: 
+hk1:
 sebesseg: 0
 utegyseg: ue1
 tapadas: 0
