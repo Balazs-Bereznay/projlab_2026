@@ -6,7 +6,7 @@ set ue1 jobbUtegyseg ue3
 set ue2 blokkolt true
 create Busz b1
 assign ue1 b1
-move a1 -r
+move b1 -r
 info ue1
 info ue2
 info ue3
