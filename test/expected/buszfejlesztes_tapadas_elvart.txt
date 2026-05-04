@@ -1,12 +1,11 @@
-ny1: 
+ny1:
 penz: 90
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
-
-b1: 
+b1:
 sebesseg: 0
 utegyseg: ue1
 tapadas: 1
@@ -14,9 +13,9 @@ elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
-kijeloltUtvonal: { }
+kijeloltUtvonal: {  }
 vegallomas1: null
 vegallomas2: null
-megallokLista: { }
-erintettLista: { }
+megallokLista: {  }
+erintettLista: {  }
 bevetel: 0
