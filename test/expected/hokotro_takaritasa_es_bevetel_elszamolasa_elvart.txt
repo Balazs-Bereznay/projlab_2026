@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
