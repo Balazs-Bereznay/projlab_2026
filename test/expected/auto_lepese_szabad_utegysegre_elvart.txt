@@ -35,7 +35,7 @@ tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
-nyilvantarto : null
+nyilvantarto: null
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
