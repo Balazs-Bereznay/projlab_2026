@@ -23,7 +23,7 @@ ue2:
 hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
-letaposottsag: 1
+letaposottsag: 2
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
