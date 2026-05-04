@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -7,14 +7,14 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: true
 jeges: false
-befedesLimit: 0
+befedesLimit: 5
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-hk1: 
+hk1:
 sebesseg: 0
 utegyseg: ue1
 tapadas: 0
@@ -23,7 +23,7 @@ baleset: false
 megcsuszott: false
 nyilvantarto: null
 kijeloltUtvonal: { }
-fej: Zuzalekszoro
-bevetel: 0
-zuzalekMennyiseg: 4
+fej: zs1
+zuzalekMennyiseg: 0
 zuzalekLimit: 5
+bevetel: 10

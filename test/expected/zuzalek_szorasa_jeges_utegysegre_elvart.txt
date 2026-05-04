@@ -1,28 +1,29 @@
-ue1: 
+ue1:
 hoMagassag: 0
-jegmagassag: 1
+jegMagassag: 1
 soMennyiseg: 0
 letaposottsag: 0
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: true
-jeges: true
-befedesLimit: 0
+jeges: false
+befedesLimit: 5
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-hk1: 
+hk1:
 sebesseg: 0
-bevetel:0
 utegyseg: ue1
 tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
+nyilvantarto: null
 kijeloltUtvonal: { }
 fej: z1
-zuzalekMennyiseg: 4
+zuzalekMennyiseg: 3
 zuzalekLimit: 0
+bevetel: 10

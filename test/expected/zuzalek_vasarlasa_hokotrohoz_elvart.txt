@@ -1,19 +1,21 @@
 hk1:
 sebesseg: 0
-bevetel: 0
 utegyseg: null
 tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
+nyilvantarto: null
 kijeloltUtvonal: { }
 fej: null
 zuzalekMennyiseg: 1
 zuzalekLimit: 10
+bevetel: 10
 
 ny1:
 penz: 0
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
+nemBeertAutokLimit: 0
 jatekVege: false
