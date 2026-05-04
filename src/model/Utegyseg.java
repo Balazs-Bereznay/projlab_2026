@@ -390,13 +390,10 @@ public class Utegyseg implements ProtoEntitas{
         // Feltételezzük, hogy a 'jarmu' változó létezik és nem null
         int t = this.jarmu.getTapadas();
 
-        // A (100 - t) / 100.0 biztosítja, hogy lebegőpontos osztást végezzünk
-        double aktualisEsely = this.megcsuszasEsely * (100 - t) / 100.0;
+        if (this.megcsuszasEsely >= 1.0) return true;
 
-        Random rand = new Random();
-        int veletlenSzam = rand.nextInt(101);
-
-        return veletlenSzam < aktualisEsely;
+        double aktualisEsely = this.megcsuszasEsely * (100 - t);
+        return new Random().nextDouble() * 100 < aktualisEsely;
     }
 
     /**
@@ -420,11 +417,12 @@ public class Utegyseg implements ProtoEntitas{
 
         // A járműnek átadjuk a 'this' referenciát, hogy tudja, melyik útegységen áll
         j.sikeresLepes(this);
-        this.taposodas();
 
         if (this.megcsuszas()) {
             j.csuszik();
         }
+
+        this.taposodas();
 
 
         // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út

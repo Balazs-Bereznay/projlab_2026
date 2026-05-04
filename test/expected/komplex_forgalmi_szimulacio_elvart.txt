@@ -1,110 +1,116 @@
 ue11:
-  hoMagassag: 0
-  jegMagassag: 0
-  soMennyiseg: 0
-  letaposottsag: 0
-  megcsuszasEsely: 0.0
-  blokkolt: false
-  zuzalek: false
-  jeges: false
-  jarmu: null
-  kovetkezoUtegyseg: ue12
-  balUtegyseg: null
-  jobbUtegyseg: ue21
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: null
+kovetkezoUtegyseg: ue12
+balUtegyseg: null
+jobbUtegyseg: ue21
 
 ue12:
-  hoMagassag: 0
-  jegMagassag: 0
-  soMennyiseg: 0
-  letaposottsag: 0
-  megcsuszasEsely: 0.0
-  blokkolt: false
-  zuzalek: false
-  jeges: false
-  jarmu: null
-  kovetkezoUtegyseg: ue13
-  balUtegyseg: null
-  jobbUtegyseg: ue22
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: null
+kovetkezoUtegyseg: ue13
+balUtegyseg: null
+jobbUtegyseg: ue22
 
 ue13:
-  hoMagassag: 0
-  jegMagassag: 8
-  soMennyiseg: 0
-  letaposottsag: 0
-  megcsuszasEsely: 1.0
-  blokkolt: true
-  zuzalek: false
-  jeges: true
-  jarmu: a1
-  kovetkezoUtegyseg: ue14
-  balUtegyseg: null
-  jobbUtegyseg: ue23
+hoMagassag: 0
+jegMagassag: 8
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 1.0
+blokkolt: true
+zuzalek: false
+jeges: true
+befedesSzamlalo: 0
+jarmu: a1
+kovetkezoUtegyseg: ue14
+balUtegyseg: null
+jobbUtegyseg: ue23
 
 ue14:
-  hoMagassag: 0
-  jegMagassag: 0
-  soMennyiseg: 0
-  letaposottsag: 0
-  megcsuszasEsely: 0.0
-  blokkolt: true
-  zuzalek: false
-  jeges: false
-  jarmu: b1
-  kovetkezoUtegyseg: null
-  balUtegyseg: null
-  jobbUtegyseg: ue24
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: true
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: b1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: ue24
 
 ue23:
-  hoMagassag: 0
-  jegMagassag: 0
-  soMennyiseg: 0
-  letaposottsag: 0
-  megcsuszasEsely: 0.0
-  blokkolt: false
-  zuzalek: false
-  jeges: false
-  jarmu: a2
-  kovetkezoUtegyseg: ue24
-  balUtegyseg: ue13
-  jobbUtegyseg: null
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: a2
+kovetkezoUtegyseg: ue24
+balUtegyseg: ue13
+jobbUtegyseg: null
 
 b1:
-  sebesseg: 1
-  utegyseg: ue14
-  tapadas: 1
-  elakadt: false
-  baleset: true
-  megcsuszott: false
-  nyilvantarto: ny1
-  kijeloltUtvonal: { }
-  vegallomas1: null
-  vegallomas2: null
-  megallokLista: { }
-  erintettLista: { }
-  bevetel: 0
+sebesseg: 1
+utegyseg: ue14
+tapadas: 1
+elakadt: false
+baleset: true
+megcsuszott: false
+nyilvantarto: ny1
+kijeloltUtvonal: {  }
+vegallomas1: null
+vegallomas2: null
+megallokLista: {  }
+erintettLista: {  }
+bevetel: 0
 
 a1:
-  sebesseg: 1
-  utegyseg: ue13
-  tapadas: 1
-  elakadt: false
-  baleset: true
-  megcsuszott: true
-  nyilvantarto: ny1
-  kijeloltUtvonal: { }
-  kezdopont: null
-  celpont: null
-  utonToltottIdo: 0
+sebesseg: 1
+utegyseg: ue13
+tapadas: 1
+elakadt: false
+baleset: true
+megcsuszott: true
+nyilvantarto: ny1
+kijeloltUtvonal: {  }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0
 
 a2:
-  sebesseg: 1
-  utegyseg: ue23
-  tapadas: 1
-  elakadt: false
-  baleset: false
-  megcsuszott: false
-  nyilvantarto: ny1
-  kijeloltUtvonal: { }
-  kezdopont: null
-  celpont: null
-  utonToltottIdo: 0
+sebesseg: 1
+utegyseg: ue23
+tapadas: 1
+elakadt: false
+baleset: false
+megcsuszott: false
+nyilvantarto: ny1
+kijeloltUtvonal: {  }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0
+

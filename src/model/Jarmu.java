@@ -184,7 +184,7 @@ public abstract class Jarmu implements ProtoEntitas {
      */
     public void baleset() {
         this.baleset = true;
-        this.megcsuszott = false;
+        if (utegyseg != null) utegyseg.setBlokkolt(true);
     }
 
     /**
