@@ -9,4 +9,4 @@ assign b1 j1
 create hokotro h
 purchase j1 hokotro h
 info ny1
-info hk1
+info h

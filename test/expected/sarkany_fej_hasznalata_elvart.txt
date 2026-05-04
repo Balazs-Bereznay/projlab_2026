@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -7,29 +7,29 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-hk1: 
+hk1:
 sebesseg: 0
-bevetel: 0
 utegyseg: ue1
 tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
+nyilvantarto: ny1
 kijeloltUtvonal: { }
 fej: sk1
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10
 
 ny1:
-biokerozinMennyiseg: 4
-soMennyiseg: 0
+penz: 10
+so: 0
+biokerozin: 0
 nemBeertAutokSzama: 0
-penz: 0
 jatekVege: false

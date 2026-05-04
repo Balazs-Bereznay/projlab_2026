@@ -5,15 +5,16 @@ biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
-hk1:
+h:
 sebesseg: 0
-bevetel: 0
 utegyseg: null
 tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
+nyilvantarto: null
 kijeloltUtvonal: { }
-fej: null
+fej: Sopro
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10
