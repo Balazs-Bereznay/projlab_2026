@@ -179,10 +179,7 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
 
         switch (parancs) {
             case "move":
-                if (args.isEmpty()) {
-                    return;
-                }
-
+                if (args.isEmpty()) return;
                 String irany = args.get(0);
                 if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
                     lep();

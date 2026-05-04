@@ -250,28 +250,30 @@ public class Utegyseg implements ProtoEntitas{
      * @param mennyiseg Az a hómennyiség, amivel nő az útegységen lévő hóréteg.
      */
     public void havazas(int mennyiseg) {
-        //Ha nincs só az úton, ami olvasztaná a havat
-        if (soMennyiseg == 0) {
-            if (this.jeges) {
-                // Ha jeges az út, a jégmagasság nő
-                this.jegMagassag += mennyiseg;
-            } else {
-                // Ha nem jeges, a hómagasság nő
-                this.hoMagassag += mennyiseg;
+        // Ha sós az út, a hó nem tud leesni rá.
+        if (soMennyiseg > 0) {
+            return;
+        }
 
-                if (hoMagassag >= HO_ELAKADAS_KUSZOB) {
-                    blokkolt = true;
-                }
+        if (this.jeges) {
+            // Ha jeges az út, a jégmagasság nő
+            this.jegMagassag += mennyiseg;
+        } else {
+            // Ha nem jeges, a hómagasság nő
+            this.hoMagassag += mennyiseg;
 
-                // Ha van kint zúzalék, vizsgálni kell a befedettséget
-                if (this.zuzalek) {
-                    this.befedettseg += mennyiseg;
+            if (hoMagassag >= HO_ELAKADAS_KUSZOB) {
+                blokkolt = true;
+            }
 
-                    // Ha a befedettség eléri vagy meghaladja a statikus küszöbértéket
-                    if (this.befedettseg >= BEFEDES_KUSZOB) {
-                        this.zuzalek = false;
-                        this.befedettseg = 0;
-                    }
+            // Ha van kint zúzalék, vizsgálni kell a befedettséget
+            if (this.zuzalek) {
+                this.befedettseg += mennyiseg;
+
+                // Ha a befedettség eléri vagy meghaladja a statikus küszöbértéket
+                if (this.befedettseg >= BEFEDES_KUSZOB) {
+                    this.zuzalek = false;
+                    this.befedettseg = 0;
                 }
             }
         }
@@ -340,10 +342,17 @@ public class Utegyseg implements ProtoEntitas{
      * A só hatására csökkenti a hó vagy jégvastagság méretét.
      */
     public void soOlvasztas() {
+        if (soMennyiseg <= 0) {
+            return;
+        }
+
         if (this.hoMagassag > 0) {
             this.hoMagassag--;
         } else if (this.jegMagassag > 0) {
             this.jegMagassag--;
+            if(jegMagassag <= 0) {
+                this.jeges = false;
+            }
         }
 
         this.soMennyiseg--;

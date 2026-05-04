@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
@@ -7,20 +7,19 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-cs1: 
+cs1:
 celpont: false
 buszmegallo: true
 azonosito: cs1
 utLista: { ut1, ut2 }
 
-ue2: 
+ue2:
 hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
@@ -29,14 +28,13 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: b1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-b1: 
+b1:
 sebesseg: 0
 utegyseg: ue2
 tapadas: 0

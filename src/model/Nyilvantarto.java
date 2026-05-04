@@ -87,6 +87,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
                             setPenz(Integer.parseInt(ertek));
                             break;
                         case "so":
+                        case "somennyiseg":
                             setSo(Integer.parseInt(ertek));
                             break;
                         case "biokerozin":

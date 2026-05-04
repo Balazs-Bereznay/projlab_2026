@@ -1,15 +1,16 @@
 hk1:
 sebesseg: 0
-bevetel: 0
 utegyseg: null
 tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
-kijeloltUtvonal: { }
+nyilvantarto: null
+kijeloltUtvonal: {  }
 fej: z1
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10
 
 ny1:
 penz: 0

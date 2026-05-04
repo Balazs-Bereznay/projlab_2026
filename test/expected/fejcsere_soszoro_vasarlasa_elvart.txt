@@ -1,12 +1,11 @@
-ny1: 
+ny1:
 penz: 80
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
-
-hk1: 
+hk1:
 sebesseg: 0
 utegyseg: ue1
 tapadas: 0
@@ -16,6 +15,6 @@ megcsuszott: false
 nyilvantarto: null
 kijeloltUtvonal: { }
 fej: Soszoro
-bevetel: 0
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10

@@ -7,7 +7,6 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: true
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
@@ -31,7 +30,7 @@ baleset: false
 megcsuszott: false
 nyilvantarto: ny1
 kijeloltUtvonal: { }
-fej: Sarkany
-bevetel: 0
+fej: sk1
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10
