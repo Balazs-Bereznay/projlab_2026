@@ -20,7 +20,6 @@ biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
-
 A:
 buszmegallo: true
 celpont: false

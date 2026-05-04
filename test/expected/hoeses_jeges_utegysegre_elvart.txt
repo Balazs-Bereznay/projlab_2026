@@ -7,7 +7,7 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: true
-befedesSzamialo: 0
+befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
@@ -22,7 +22,7 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: true
-befedesSzamialo: 0
+befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
