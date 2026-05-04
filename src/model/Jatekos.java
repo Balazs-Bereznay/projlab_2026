@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Jatekos implements ProtoEntitas {
 
-    private static final Bolt bolt = new Bolt();
+    public static Bolt bolt;
 
     /**
      * A játékoshoz tartozó irányítható járművek (hókotrók, buszok) listája.
