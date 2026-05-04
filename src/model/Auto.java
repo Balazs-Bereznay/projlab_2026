@@ -175,6 +175,14 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
         }
     }
 
+    @Override
+    public void baleset(){
+        this.baleset = true;
+        this.megcsuszott = false;
+        this.nyilvantarto.nemBeertAutokNovel(1);
+    }
+
+
     /**
      * Adatok kiírásához, naplózásához szükséges
      * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
