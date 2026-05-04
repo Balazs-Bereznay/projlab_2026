@@ -12,9 +12,8 @@ assign ny1 b1
 add_condition ue1 jeg 1
 assign hk1 sk1
 set hk1 nyilvantarto ny1
-set ny1 biokerozinMennyiseg 5
+set ny1 biokerozin 5
 clean hk1
-tick 1
 info ue1
 info hk1
 info ny1
