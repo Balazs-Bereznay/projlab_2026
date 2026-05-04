@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -523,23 +524,23 @@ public class Utegyseg implements ProtoEntitas{
         String balId = katalogus.getId(this.balUtegyseg);
         String jobbId = katalogus.getId(this.jobbUtegyseg);
 
-        String infoKimenet = """
-                    %s:
-                    hoMagassag: %d
-                    jegMagassag: %d
-                    soMennyiseg: %d
-                    letaposottsag: %d
-                    megcsuszasEsely: %.1f
-                    blokkolt: %b
-                    zuzalek: %b
-                    jeges: %b
-                    befedesLimit: %d
-                    befedesSzamlalo: %d
-                    jarmu: %s
-                    kovetkezoUtegyseg: %s
-                    balUtegyseg: %s
-                    jobbUtegyseg: %s
-                    """.formatted(
+        String infoKimenet = String.format(
+            Locale.ROOT,
+            "%s:\n" +
+                "hoMagassag: %d\n" +
+                "jegMagassag: %d\n" +
+                "soMennyiseg: %d\n" +
+                "letaposottsag: %d\n" +
+                "megcsuszasEsely: %.1f\n" +
+                "blokkolt: %b\n" +
+                "zuzalek: %b\n" +
+                "jeges: %b\n" +
+                "befedesLimit: %d\n" +
+                "befedesSzamlalo: %d\n" +
+                "jarmu: %s\n" +
+                "kovetkezoUtegyseg: %s\n" +
+                "balUtegyseg: %s\n" +
+                "jobbUtegyseg: %s\n",
                 id,
                 this.hoMagassag,
                 this.jegMagassag,

@@ -34,7 +34,7 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
     public String info(String id, ObjektumKatalogus katalogus) {
         String utegysegId = katalogus.getId(this.getUtegyseg());
         String nyId = katalogus.getId(this.getNyilvantarto());
-        String fejId = fej == null ? "null" : this.fej.getClass().getSimpleName();
+        String fejId = fej == null ? "null" : katalogus.getId(this.getFej());
 
         // Útvonal ID-k listázása (Jarmu-től örökölt kijeloltUtvonal használatával)
         String utvonalTartalom = String.join(", ", this.kijeloltUtvonal.stream().map(katalogus::getId).toList());
@@ -51,9 +51,9 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
                 nyilvantarto: %s
                 kijeloltUtvonal: %s
                 fej: %s
-                bevetel: %d
                 zuzalekMennyiseg: %d
                 zuzalekLimit: %d
+                bevetel: %d
                 """.formatted(
                 id,
                 this.getSebesseg(),
@@ -65,9 +65,9 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
                 nyId,
                 utvonalStr,
                 fejId,
-                Hokotro.getBevetel(),
                 this.zuzalekMennyiseg,
-                this.zuzalekLimit
+                this.zuzalekLimit,
+                Hokotro.getBevetel()
         );
     }
 

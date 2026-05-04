@@ -3,7 +3,7 @@ create Hokotro hk1
 create Zuzalekszoro z1
 assign ue1 hk1
 add_condition ue1 jeg 1
-set hk1 zuzalekMennyiseg 5
+set hk1 zuzalekMennyiseg 8
 assign hk1 z1
 clean hk1
 info ue1
