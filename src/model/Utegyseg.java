@@ -535,7 +535,6 @@ public class Utegyseg implements ProtoEntitas{
                 "blokkolt: %b\n" +
                 "zuzalek: %b\n" +
                 "jeges: %b\n" +
-                "befedesLimit: %d\n" +
                 "befedesSzamlalo: %d\n" +
                 "jarmu: %s\n" +
                 "kovetkezoUtegyseg: %s\n" +
@@ -550,7 +549,6 @@ public class Utegyseg implements ProtoEntitas{
                 this.blokkolt,
                 this.zuzalek,
                 this.jeges,
-                getBefedesKuszob(),
                 this.befedettseg,
                 jarmuId,
                 kovetkezoId,

@@ -55,7 +55,6 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
                 so: %d
                 biokerozin: %d
                 nemBeertAutokSzama: %d
-                nemBeertAutokLimit: %d
                 jatekVege: %b
                 """.formatted(
                 id,
@@ -63,7 +62,6 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
                 this.so,
                 this.biokerozin,
                 this.nemBeertAutokSzama,
-                this.nemBeertAutokLimit,
                 this.jatekVege
         );
     }
