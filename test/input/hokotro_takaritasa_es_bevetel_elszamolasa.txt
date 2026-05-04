@@ -6,7 +6,7 @@ create Jatekos j1
 assign j1 hk1
 assign ue1 hk1
 add_condition ue1 ho 1
-set hk1 fej sp1
+assign hk1 sp1
 set j1 nyilvantarto ny1
 set hk1 nyilvantarto ny1
 clean hk1

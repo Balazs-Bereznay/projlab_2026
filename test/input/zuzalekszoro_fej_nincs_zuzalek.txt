@@ -4,7 +4,7 @@ create Zuzalekszoro z1
 assign ue1 hk1
 add_condition ue1 jeg 1
 set hk1 zuzalekMennyiseg 0
-set hk1 fej z1
+assign hk1 z1
 clean hk1
 info ue1
 info hk1
