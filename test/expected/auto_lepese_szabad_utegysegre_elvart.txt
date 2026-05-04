@@ -7,7 +7,6 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: ue2
@@ -23,7 +22,6 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: a1
 kovetkezoUtegyseg: null
@@ -37,6 +35,7 @@ tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
+nyilvantarto : null
 kijeloltUtvonal: { }
 kezdopont: null
 celpont: null

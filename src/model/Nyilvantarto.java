@@ -29,7 +29,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
 
     private boolean jatekVege;
 
-    private int nemBeertAutokLimit;
+    private int nemBeertAutokLimit = 15;
 
     public Nyilvantarto(int p, int s, int b, int n){
         this.penz = p;
