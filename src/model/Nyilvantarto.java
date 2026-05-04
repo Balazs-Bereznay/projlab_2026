@@ -261,9 +261,16 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      * @param mennyiseg annak az értéke amennyivel csökkenteni akarjuk a bankunkban lévő pénz értékét
      */
     @Override
-    public void penzLevon(int mennyiseg) {
-        penz -= mennyiseg;
-        System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+    public boolean penzLevon(int mennyiseg) {
+        if(penz - mennyiseg >= 0){
+            penz -= mennyiseg;
+            System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+            return true;
+        }
+        else {
+            System.out.println("Nincs elég pénzed.");
+            return  false;}
+
     }
 
     /**
