@@ -135,25 +135,25 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
 
         switch (item) {
             case "hokotro":
-                Jatekos.getBolt().hokotroVasarol(jatekos, this);
+                jatekos.getBolt().hokotroVasarol(jatekos, this);
                 break;
             case "soszoro":
-                Jatekos.getBolt().soszoroVasarol(this);
+                jatekos.getBolt().soszoroVasarol(this);
                 break;
             case "jegtoro":
-                Jatekos.getBolt().jegtoroVasarol(this);
+                jatekos.getBolt().jegtoroVasarol(this);
                 break;
             case "zuzalekszoro":
-                Jatekos.getBolt().zuzalekszoroVasarol(this);
+                jatekos.getBolt().zuzalekszoroVasarol(this);
                 break;
             case "sarkany":
-                Jatekos.getBolt().sarkanyVasarol(this);
+                jatekos.getBolt().sarkanyVasarol(this);
                 break;
             case "sopro":
-                Jatekos.getBolt().soproVasarol(this);
+                jatekos.getBolt().soproVasarol(this);
                 break;
             case "hanyo":
-                Jatekos.getBolt().hanyoVasarol(this);
+                jatekos.getBolt().hanyoVasarol(this);
                 break;
             case "zuzalek":
                 int mennyiseg = 1;
@@ -162,7 +162,7 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
                 } catch (NumberFormatException e) {
                 }
 
-                Jatekos.getBolt().zuzalekVasarol(this, mennyiseg);
+                jatekos.getBolt().zuzalekVasarol(this, mennyiseg);
                 break;
             default:
                 break;

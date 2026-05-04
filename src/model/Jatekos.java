@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Jatekos implements ProtoEntitas {
 
-    public static Bolt bolt;
+    public Bolt bolt;
 
     /**
      * A játékoshoz tartozó irányítható járművek (hókotrók, buszok) listája.
@@ -42,6 +42,7 @@ public class Jatekos implements ProtoEntitas {
      */
     public String info(String id, ObjektumKatalogus katalogus) {
         String nyId = katalogus.getId(this.nyilvantarto);
+        String boltId = katalogus.getId(this.bolt);
 
         String flottaTartalom = String.join(", ", this.flotta.stream().map(katalogus::getId).toList());
         String flottaStr = "{ " + flottaTartalom + (flottaTartalom.isEmpty() ? "" : " ") + "}";
@@ -50,10 +51,12 @@ public class Jatekos implements ProtoEntitas {
                 %s:
                 flotta: %s
                 nyilvantarto: %s
+                bolt: %s
                 """.formatted(
                 id,
                 flottaStr,
-                nyId
+                nyId,
+                boltId
         );
     }
 
@@ -125,7 +128,8 @@ public class Jatekos implements ProtoEntitas {
         this.nyilvantarto = nyilvantarto;
     }
 
-    public static Bolt getBolt() {
+    public Bolt getBolt() {
         return bolt;
     }
+    public void setBolt(Bolt bolt) { this.bolt = bolt;}
 }

@@ -52,13 +52,13 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
 
         switch (item) {
             case "sebessegfejlesztes":
-                Jatekos.getBolt().sebessegFejlesztes(this, 10);
+                jatekos.getBolt().sebessegFejlesztes(this, 10);
                 break;
             case "hozamfejlesztes":
-                Jatekos.getBolt().hozamFejlesztes(this, 10);
+                jatekos.getBolt().hozamFejlesztes(this, 10);
                 break;
             case "tapadasfejlesztes":
-                Jatekos.getBolt().tapadasFejlesztes(this, 10);
+                jatekos.getBolt().tapadasFejlesztes(this, 10);
                 break;
             default:
                 break;

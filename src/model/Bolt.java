@@ -3,7 +3,7 @@ package model;
 
 import java.util.List;
 
-import static model.Jatekos.bolt;
+//import static model.Jatekos.bolt;
 
 /**
  * A játék gazdasági központja, ahol a játékosok a megszerzett pénzből új eszközöket, nyersanyagokat vásárolhatnak,
@@ -38,7 +38,7 @@ public class Bolt implements ProtoEntitas {
 
     public Bolt() {
         this(100, 200);
-        bolt = this;
+        //bolt = this;
     }
 
     /**
@@ -401,6 +401,11 @@ public class Bolt implements ProtoEntitas {
     @Override
     public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny,  List<String> args) {
         setNyilvantarto(ny);
+    }
+
+    @Override
+    public void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
+        jatekos.setBolt(this);
     }
 
     /**
