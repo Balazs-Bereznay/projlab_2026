@@ -3,5 +3,7 @@ create Bolt b1
 create Jatekos p1
 set b1 biokerozinAr 10
 set ny1 penz 100
+assign ny1 b1
+assign b1 p1
 purchase p1 biokerozin 5
 info ny1
