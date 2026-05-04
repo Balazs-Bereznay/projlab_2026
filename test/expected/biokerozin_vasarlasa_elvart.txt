@@ -3,5 +3,4 @@ penz: 50
 so: 0
 biokerozin: 5
 nemBeertAutokSzama: 0
-nemBeertAutokLimit: 15
 jatekVege: false
