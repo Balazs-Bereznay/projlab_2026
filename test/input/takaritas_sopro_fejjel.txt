@@ -2,7 +2,7 @@ create Utegyseg ue1
 create Utegyseg ue2
 create Hokotro hk1
 set ue1 jobbUtegyseg ue2
-add_condition snow ue1 5
+add_condition ue1 ho 5
 assign ue1 hk1
 clean hk1
 info ue1

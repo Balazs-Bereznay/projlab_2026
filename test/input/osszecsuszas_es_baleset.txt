@@ -6,7 +6,7 @@ create Auto a2
 set ue1 kovetkezoUtegyseg ue2
 set ue2 jobbUtegyseg ue3
 set ue3 balUtegyseg ue2
-add_condition ice ue2 1
+add_condition ue2 jeg 1
 assign ue1 a1
 assign ue3 a2
 set a1 tapadas 0

@@ -3,7 +3,7 @@ create Utegyseg ue1
 create Utegyseg ue2
 create Auto a1
 set ue1 kovetkezoUtegyseg ue2
-add_condition snow ue2 15
+add_condition ue2 ho 15
 set a1 nyilvantarto ny1
 assign ue1 a1
 move -f a1

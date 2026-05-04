@@ -1,5 +1,5 @@
 create Utegyseg ue1
-add_condition snow ue1 3
+add_condition ue1 ho 3
 set ue1 soMennyiseg 2
 info ue1
 tick 1

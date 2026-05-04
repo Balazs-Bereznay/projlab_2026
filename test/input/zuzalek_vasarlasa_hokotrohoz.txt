@@ -2,7 +2,8 @@ create Jatekos j1
 create Nyilvantarto ny1
 create Bolt b1
 create Hokotro hk1
-assign j1 ny1
+assign ny1 j1
+assign ny1 b1
 set b1 zuzalekAr 5
 set ny1 penz 5
 set hk1 zuzalekLimit 10
