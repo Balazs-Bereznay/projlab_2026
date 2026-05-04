@@ -1,0 +1,35 @@
+ue2: 
+hoMagassag: 15
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: true
+zuzalek: false
+jeges: false
+befedesLimit: 0
+befedesSzamlalo: 0
+jarmu: a1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: null
+
+a1: 
+sebesseg: 0
+utegyseg: ue2
+tapadas: 0
+elakadt: true
+baleset: false
+megcsuszott: false
+nyilvantarto: ny1
+kijeloltUtvonal: { }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0
+
+ny1: 
+penz: 0
+so: 0
+biokerozin: 0
+nemBeertAutokSzama: 1
+jatekVege: false

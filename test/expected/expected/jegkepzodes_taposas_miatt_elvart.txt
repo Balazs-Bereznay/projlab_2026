@@ -1,0 +1,31 @@
+ue2: 
+hoMagassag: 3
+jegmagassag: 0
+soMennyiseg: 0
+letaposottsag: 4
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesLimit: 0
+befedesSzamialo: 0
+jarmu: null
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: null
+
+ue2: 
+hoMagassag: 0
+jegmagassag: 3
+soMennyiseg: 0
+letaposottsag: 5
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: true
+befedesLimit: 0
+befedesSzamialo: 0
+jarmu: a1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: null

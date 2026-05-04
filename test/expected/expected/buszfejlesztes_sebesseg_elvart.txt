@@ -1,0 +1,20 @@
+bsz1:
+sebesseg: 1
+utegyseg: null
+tapadas: 0
+elakadt: false
+baleset: false
+megcsuszott: false
+kijeloltUtvonal: { }
+vegallomas1: null
+vegallomas2: null
+megallokLista: { }
+erintettLista: { }
+bevetel: 0
+
+ny1:
+penz: 0
+so: 0
+biokerozin: 0
+nemBeertAutokSzama: 0
+jatekVege: false

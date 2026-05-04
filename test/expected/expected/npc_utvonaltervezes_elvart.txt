@@ -1,0 +1,11 @@
+a1:
+sebesseg: 0
+utegyseg: null
+tapadas: 0
+elakadt: false
+baleset: false
+megcsuszott: false
+kijeloltUtvonal: { ut1, ut2 }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0

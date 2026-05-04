@@ -17,7 +17,7 @@ public class Prototipus {
      * @param fajlnev
      */
     public void beolvasFajlbol(String fajlnev) {
-        try (BufferedReader br = new BufferedReader(new FileReader("test" + File.separator + fajlnev))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("test/input" + File.separator + fajlnev))) {
             String sor;
             while ((sor = br.readLine()) != null) {
                 sor = sor.trim();
@@ -46,12 +46,17 @@ public class Prototipus {
         }
 
         // Cél útvonal összeállítása (out mappa + fájlnév)
-        File celMappa = new File("output");
+        File celMappa = new File("test/output");
         if (!celMappa.exists()) {
-            celMappa.mkdirs(); // Létrehozzuk az out mappát, ha még nincs
+            celMappa.mkdirs(); // Létrehozzuk a test/output mappát, ha még nincs
         }
 
-        Path celUtvonal = Paths.get("output", fajlnev);
+        if (!fajlnev.endsWith(".txt")) {
+            fajlnev += ".txt";
+        }
+
+
+        Path celUtvonal = Paths.get("test/output", fajlnev);
 
         try {
             // Átmásoljuk a temp.txt-t a célhelyre, felülírva ha már létezik
