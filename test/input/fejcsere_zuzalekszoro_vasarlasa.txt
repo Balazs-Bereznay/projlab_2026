@@ -4,7 +4,7 @@ create Bolt b1
 create Hokotro hk1
 create Zuzalekszoro z1
 assign j1 ny1
-set b1 zuzalekszoroFejAr 15
+set b1 zuzalekszoroAr 15
 set ny1 penz 15
 assign ny1 b1
 assign b1 j1

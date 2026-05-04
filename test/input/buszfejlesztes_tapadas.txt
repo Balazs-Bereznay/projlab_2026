@@ -7,7 +7,7 @@ assign ue1 b1
 assign ny1 bo1
 assign bo1 p1
 set ny1 penz 100
-set bo1 fejlesztAr 10
+set bo1 tapadasfejlesztesAr 10
 purchase p1 tapadasFejlesztes b1
 info ny1
 info b1
