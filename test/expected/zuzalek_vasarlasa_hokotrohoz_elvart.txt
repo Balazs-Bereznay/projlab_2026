@@ -7,7 +7,7 @@ baleset: false
 megcsuszott: false
 nyilvantarto: null
 kijeloltUtvonal: { }
-fej: null
+fej: Sopro
 zuzalekMennyiseg: 1
 zuzalekLimit: 10
 bevetel: 10
