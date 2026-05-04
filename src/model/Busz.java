@@ -65,6 +65,11 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
         }
     }
 
+    @Override
+    public void baleset(){
+        super.baleset();
+    }
+
     /**
      * Adatok kiírásához, naplózásához szükséges
      * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be

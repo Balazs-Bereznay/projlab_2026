@@ -1,4 +1,32 @@
-ny1: 
+h:
+sebesseg: 0
+utegyseg: null
+tapadas: 0
+elakadt: false
+baleset: false
+megcsuszott: false
+nyilvantarto: null
+kijeloltUtvonal: { }
+fej: Sopro
+zuzalekMennyiseg: 0
+zuzalekLimit: 0
+bevetel: 10
+
+h:
+sebesseg: 0
+utegyseg: null
+tapadas: 0
+elakadt: false
+baleset: false
+megcsuszott: false
+nyilvantarto: null
+kijeloltUtvonal: { }
+fej: Sarkany
+zuzalekMennyiseg: 0
+zuzalekLimit: 0
+bevetel: 10
+
+ny1:
 penz: 30
 so: 0
 biokerozin: 2

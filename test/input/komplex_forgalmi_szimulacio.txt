@@ -43,9 +43,20 @@ set ut1 vegpont2 cs_end
 assign ut1 cs_start
 assign ut1 cs_end
 
+create Nyilvantarto ny1
 create Busz b1
 create Auto a1
 create Auto a2
+
+set b1 sebesseg 1
+set b1 tapadas 1
+assign ny1 b1
+set a1 sebesseg 1
+set a1 tapadas 1
+assign ny1 a1
+set a2 sebesseg 1
+set a2 tapadas 1
+assign ny1 a2
 
 assign ue12 b1
 assign ue11 a1
@@ -65,4 +76,3 @@ info ue23
 info b1
 info a1
 info a2
-info ny1
