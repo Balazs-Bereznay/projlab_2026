@@ -453,14 +453,14 @@ public class Utegyseg implements ProtoEntitas{
                 switch (type){
                     case "ho":
                         try {
-                            setHoMagassag(Integer.parseInt(amount));
+                            havazas(Integer.parseInt(amount));
                         } catch (NumberFormatException ignored) {
                             return;
                         }
                         break;
                     case "jeg":
                         try {
-                            setHoMagassag(Integer.parseInt(amount));
+                            havazas(Integer.parseInt(amount));
                             jegesedes();
                         } catch (NumberFormatException ignored) {
                             return;
