@@ -1,5 +1,0 @@
-create Ut ut1
-create Ut ut2
-create Auto a1
-set_route a1 ut1 ut2
-info a1
