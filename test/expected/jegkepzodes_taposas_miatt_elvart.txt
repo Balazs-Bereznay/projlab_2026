@@ -23,7 +23,7 @@ blokkolt: false
 zuzalek: false
 jeges: true
 befedesLimit: 0
-befedesSzamialo: 0
+befedesSzamlalo: 0
 jarmu: a1
 kovetkezoUtegyseg: null
 balUtegyseg: null
