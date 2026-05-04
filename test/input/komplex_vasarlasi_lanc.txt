@@ -5,7 +5,7 @@ set ny1 penz 200
 set bo1 hokotroAr 100
 set bo1 sarkanyAr 50
 set bo1 biokerozinAr 10
-purchase p1 snowplow
-purchase p1 dragon hk1 
-purchase p1 biokerosene 2
+purchase p1 hokotro
+purchase p1 sarkany hk1
+purchase p1 biokerozin 2
 info ny1
