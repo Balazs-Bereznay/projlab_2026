@@ -415,6 +415,7 @@ public class Utegyseg implements ProtoEntitas{
 
         // A járműnek átadjuk a 'this' referenciát, hogy tudja, melyik útegységen áll
         j.sikeresLepes(this);
+        this.taposodas();
 
         if (this.megcsuszas()) {
             j.csuszik();

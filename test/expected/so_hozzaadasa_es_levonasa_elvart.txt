@@ -1,21 +1,20 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
-soMennyiseg: 1
+soMennyiseg: 10
 letaposottsag: 0
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-ny1: 
-penz: 90
+ny1:
+penz: 20
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0

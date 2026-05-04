@@ -1,30 +1,28 @@
-ue1: 
+ue1:
 hoMagassag: 3
-jegmagassag: 0
+jegMagassag: 0
 soMennyiseg: 2
 letaposottsag: 0
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
-befedesSzamialo: 0
+befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-ue1: 
+ue1:
 hoMagassag: 2
-jegmagassag: 0
+jegMagassag: 0
 soMennyiseg: 1
 letaposottsag: 0
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
-befedesSzamialo: 0
+befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
