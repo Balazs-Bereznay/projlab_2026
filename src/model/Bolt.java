@@ -166,7 +166,8 @@ public class Bolt implements ProtoEntitas {
      */
     public void soszoroVasarol(Hokotro hokotro){
         if (nyilvantarto.penzLevon(soszoroAr)) {
-            Fej sSz = new Soszoro(nyilvantarto);
+            Soszoro sSz = new Soszoro(nyilvantarto);
+            sSz.setNyilvantarto(hokotro.getNyilvantarto());
             hokotro.setFej(sSz);
             System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
         }
@@ -178,7 +179,8 @@ public class Bolt implements ProtoEntitas {
      */
     public  void sarkanyVasarol(Hokotro hokotro){
         if (nyilvantarto.penzLevon(sarkanyAr)) {
-            Fej srkny = new Sarkany(nyilvantarto);
+            Sarkany srkny = new Sarkany(nyilvantarto);
+            srkny.setNyilvantarto(hokotro.getNyilvantarto());
             hokotro.setFej(srkny);
             System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
         }
@@ -186,7 +188,8 @@ public class Bolt implements ProtoEntitas {
 
     public  void zuzalekszoroVasarol(Hokotro hokotro){
         if (nyilvantarto.penzLevon(zuzalekszoroAr)) {
-            Fej zsz = new Zuzalekszoro(nyilvantarto);
+            Zuzalekszoro zsz = new Zuzalekszoro(nyilvantarto);
+            zsz.setNyilvantarto(hokotro.getNyilvantarto());
             hokotro.setFej(zsz);
             System.out.println("Zúzalékszóró fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
         }
