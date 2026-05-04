@@ -41,6 +41,13 @@ public class Csomopont  implements ProtoEntitas {
     }
 */
 
+    @Override
+    public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args) {
+        if (parancs.equalsIgnoreCase("assign")) {
+            sav.setVegCsomopont(this);
+        }
+    }
+
     /**
      * Adatok kiírásához, naplózásához szükséges
      * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
@@ -187,6 +194,8 @@ public class Csomopont  implements ProtoEntitas {
             }
             busz.getMegallokLista().remove(this);
             System.out.println("Csomópont (végállomás/megálló) eltávolítva a busztól.");
+        } else if ("add".equals(parancs) && args.get(0).equalsIgnoreCase("megalloklista")) {
+            busz.getMegallokLista().add(this);
         }
     }
 
@@ -221,6 +230,7 @@ public class Csomopont  implements ProtoEntitas {
             // Meghívjuk a busz metódusát, átadva az aktuális csomópontot (this)
             busz.megalloErintese(this);
         }
+        this.jarmuTavozik(jarmu);
     }
 
     /**
@@ -243,19 +253,19 @@ public class Csomopont  implements ProtoEntitas {
 
         // A következő út megkeresése az útvonalban.
         // Olyan út-párt keresünk, ahol mindkét út ehhez a csomóponthoz csatlakozik.
-        for (int i = 0; i <= utvonal.size() - 2; i++) {
-            Ut aktualisUt = utvonal.get(i);
-            Ut utanaKovetkezoUt = utvonal.get(i + 1);
+            for (int i = 0; i <= utvonal.size() - 2; i++) {
+                Ut aktualisUt = utvonal.get(i);
+                Ut utanaKovetkezoUt = utvonal.get(i + 1);
 
-            boolean aktualisKapcsolodik = (aktualisUt.getVegpont1() == this || aktualisUt.getVegpont2() == this);
-            boolean kovetkezoKapcsolodik = (utanaKovetkezoUt.getVegpont1() == this || utanaKovetkezoUt.getVegpont2() == this);
+                boolean aktualisKapcsolodik = (aktualisUt.getVegpont1() == this || aktualisUt.getVegpont2() == this);
+                boolean kovetkezoKapcsolodik = (utanaKovetkezoUt.getVegpont1() == this || utanaKovetkezoUt.getVegpont2() == this);
 
-            // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
-            if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
-                kovetkezoUt = utanaKovetkezoUt;
-                break;
+                // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
+                if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
+                    kovetkezoUt = utanaKovetkezoUt;
+                    break;
+                }
             }
-        }
 
         // Ha nem találtunk érvényes következő utat, a jármű nem tud továbbmenni
         if (kovetkezoUt == null) {

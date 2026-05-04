@@ -16,14 +16,14 @@ jobbUtegyseg: null
 cs1:
 celpont: false
 buszmegallo: true
-azonosito: cs1
+azonosito: 1
 utLista: { ut1, ut2 }
 
 ue2:
 hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
-letaposottsag: 0
+letaposottsag: 1
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
@@ -42,7 +42,7 @@ elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
-kijeloltUtvonal: { ut2 }
+kijeloltUtvonal: { ut1, ut2 }
 vegallomas1: null
 vegallomas2: null
 megallokLista: { cs1 }

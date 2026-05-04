@@ -149,6 +149,9 @@ public abstract class Jarmu implements ProtoEntitas {
         }
 
         if (kovetkezo == null) {
+            if (utegyseg.getSav() != null && utegyseg.getSav().getVegCsomopont() != null) {
+                utegyseg.getSav().getVegCsomopont().jarmuErkezik(this);
+            }
             return;
         }
 

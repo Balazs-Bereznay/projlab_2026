@@ -27,6 +27,7 @@ public class Utegyseg implements ProtoEntitas{
     private int soMennyiseg;
     private boolean zuzalek;
     private boolean jeges;
+    private Sav sav;
 
     /// Konstruktorok
     public Utegyseg(int letaposottsag, double megcsuszasEsely, Jarmu jarmu,
@@ -124,7 +125,10 @@ public class Utegyseg implements ProtoEntitas{
             this.jarmu = jarmu;
             blokkolt = true;
         }
-        else{blokkolt = false;}
+        else{
+            blokkolt = false;
+            this.jarmu = null;
+            }
     }
 
     public Utegyseg getKovetkezoUtegyseg() {
@@ -198,6 +202,14 @@ public class Utegyseg implements ProtoEntitas{
         this.zuzalek = zuzalek;
     }
 
+    public void setSav(Sav sav) {
+        this.sav = sav;
+    }
+
+    public Sav getSav() {
+        return sav;
+    }
+
     /**
      * Visszatér a jeges tagváltozó értékével.
      */
@@ -231,6 +243,7 @@ public class Utegyseg implements ProtoEntitas{
     public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args) {
         if ("assign".equals(parancs)) {
             sav.setElsoUtegyseg(this);
+            this.sav = sav;
             System.out.println("Útegység sikeresen a sávhoz rendelve.");
         } else if ("remove".equals(parancs)) {
             if (sav.getElsoUtegyseg() == this) {

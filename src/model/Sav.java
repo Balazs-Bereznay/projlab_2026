@@ -12,6 +12,7 @@ import java.util.List;
 public class Sav implements ProtoEntitas {
     ///Minden sáv legalább egy Utegysegből áll, melyhez a sáv további útegységei kapcsolódhatnak egymás után. Ez a sáv első útegysége.
     private Utegyseg elsoUtegyseg;
+    private Csomopont vegCsomopont;
 
     ///Konstruktorok
     public Sav(Utegyseg utegyseg){
@@ -65,6 +66,7 @@ public class Sav implements ProtoEntitas {
     public void parancsFeldolgozUtegyseggel(String parancs, Utegyseg utegyseg, List<String> args) {
         if (parancs.equals("assign")) {
             this.elsoUtegyseg = utegyseg;// A sáv listájába felvesszük az útegységet
+            utegyseg.setSav(this);
             System.out.println("Útegység sikeresen a sávhoz rendelve.");
         }
     }
@@ -87,4 +89,11 @@ public class Sav implements ProtoEntitas {
         this.elsoUtegyseg = elsoUtegyseg;
     }
 
+    public void setVegCsomopont(Csomopont cs) {
+        this.vegCsomopont = cs;
+    }
+
+    public Csomopont getVegCsomopont() {
+        return vegCsomopont;
+    }
 }

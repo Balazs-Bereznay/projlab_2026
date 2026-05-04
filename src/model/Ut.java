@@ -140,9 +140,9 @@ public class Ut implements ProtoEntitas {
     }
 
     @Override
-    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+    public void parancsFeldolgozJarmuvel(String parancs, Jarmu jarmu, List<String> args) {
         if (parancs.equals("add") && args.get(0).equals("kijeloltUtvonal")) {
-            busz.addKijeloltUt(this);
+            jarmu.addKijeloltUt(this);
             System.out.println("Út sikeresen hozzáadva a busz kijelölt útvonalához.");
         }
     }
