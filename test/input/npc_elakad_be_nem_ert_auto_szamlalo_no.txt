@@ -3,10 +3,11 @@ create Utegyseg ue1
 create Utegyseg ue2
 create Auto a1
 set ue1 kovetkezoUtegyseg ue2
+set ue2 blokkolt true
 add_condition ue2 ho 15
-set a1 nyilvantarto ny1
+assign ny1 a1
 assign ue1 a1
-move -f a1
+move a1 -f
 info ue2
 info a1
 info ny1

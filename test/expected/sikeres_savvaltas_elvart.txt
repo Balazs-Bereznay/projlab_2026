@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -13,7 +13,7 @@ kovetkezoUtegyseg: ue2
 balUtegyseg: null
 jobbUtegyseg: ue3
 
-ue2: 
+ue2:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -28,7 +28,7 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-ue3: 
+ue3:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -51,9 +51,9 @@ elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
-kijeloltUtvonal: { }
+kijeloltUtvonal: {  }
 vegallomas1: null
 vegallomas2: null
-megallokLista: { }
-erintettLista: { }
+megallokLista: {  }
+erintettLista: {  }
 bevetel: 0

@@ -1,4 +1,4 @@
-ue1: 
+ue1:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -7,38 +7,37 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: hk
 kovetkezoUtegyseg: null
 balUtegyseg: ue2
 jobbUtegyseg: null
 
-ue2: 
+ue2:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
 megcsuszasEsely: 0.0
-blokkolt: false
+blokkolt: true
 zuzalek: false
 jeges: false
-befedesLimit: 0
 befedesSzamlalo: 0
 jarmu: a1
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: ue1
 
-hk: 
+hk:
 sebesseg: 0
-bevetel:0
 utegyseg: ue1
 tapadas: 0
-elakadt: false
+elakadt: true
 baleset: false
 megcsuszott: false
+nyilvantarto: null
 kijeloltUtvonal: { }
-fej: null
+fej: Sopro
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
+bevetel: 10
