@@ -164,6 +164,15 @@ public abstract class Jarmu implements ProtoEntitas {
      */
     public void csuszik() {
         this.megcsuszott = true;
+
+        // Megpróbálunk baleseti partnert keresni
+        Jarmu partner = keresPartner();
+
+        // Ha találtunk partnert, mindkettőnél kiváltjuk a baleset eseményt
+        if (partner != null) {
+            baleset();
+            partner.baleset();
+        }
     }
 
     /**
@@ -175,6 +184,7 @@ public abstract class Jarmu implements ProtoEntitas {
      */
     public void baleset() {
         this.baleset = true;
+        this.megcsuszott = false;
     }
 
     /**
