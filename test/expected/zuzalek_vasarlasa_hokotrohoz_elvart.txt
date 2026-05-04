@@ -17,5 +17,4 @@ penz: 0
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
-nemBeertAutokLimit: 0
 jatekVege: false

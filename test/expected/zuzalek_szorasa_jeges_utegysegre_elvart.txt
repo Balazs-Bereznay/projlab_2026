@@ -7,7 +7,6 @@ megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: true
 jeges: false
-befedesLimit: 5
 befedesSzamlalo: 0
 jarmu: hk1
 kovetkezoUtegyseg: null
