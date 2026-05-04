@@ -3,6 +3,8 @@ package model;
 
 import java.util.List;
 
+import static model.Jatekos.bolt;
+
 /**
  * A játék gazdasági központja, ahol a játékosok a megszerzett pénzből új eszközöket, nyersanyagokat vásárolhatnak,
  * van lehetőség a hókotrófejek cseréjére, valamint a buszok fejlesztésére is. Az áruk listázása is az ő felelőssége.
@@ -33,8 +35,10 @@ public class Bolt implements ProtoEntitas {
         this.biokerozinAr = biokerozinAr;
     }
 
+
     public Bolt() {
         this(100, 200);
+        bolt = this;
     }
 
     /**
@@ -392,6 +396,11 @@ public class Bolt implements ProtoEntitas {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny,  List<String> args) {
+        setNyilvantarto(ny);
     }
 
     /**

@@ -100,6 +100,10 @@ public class Jatekos implements ProtoEntitas {
         cel.parancsFeldolgozJatekossal(parancs, this, args);
     }
 
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny,  List<String> args) {
+        this.nyilvantarto = ny;
+    }
 
     public List<Iranyithato> getFlotta() {
         System.out.println("Lekérdezték a játékos flottáját.");
