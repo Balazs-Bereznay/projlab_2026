@@ -173,6 +173,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      */
     public boolean ellenorizJatekVege(){
         if(nemBeertAutokSzama > nemBeertAutokLimit){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
+            this.jatekVege = true;
             System.out.println("A játék végetért: Túl sok ember nem ért be időben a munkahelyére:  " + this.nemBeertAutokSzama+"autó akadt el");
             return true;
         }

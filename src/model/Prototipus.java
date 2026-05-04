@@ -573,6 +573,10 @@ public class Prototipus {
             for (Hokotro hokotro : katalogus.osszesOfType(Hokotro.class)) {
                 hokotro.lep();
             }
+            for( Nyilvantarto ny:   katalogus.osszesOfType(Nyilvantarto.class)){
+                ny.ellenorizJatekVege();
+            }
+
             System.out.println("Tick " + (i + 1) + " lefutott.");
         }
     }

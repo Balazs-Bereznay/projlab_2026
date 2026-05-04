@@ -4,6 +4,7 @@ create Bolt b1
 assign j1 ny1
 set b1 hokotroAr 100
 set ny1 penz 100
-purchase j1 hokotro
+create hokotro h
+purchase j1 hokotro h
 info ny1
 info hk1

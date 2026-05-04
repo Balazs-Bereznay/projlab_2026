@@ -7,8 +7,8 @@ assign j1 hk1
 assign ue1 hk1
 add_condition ue1 ho 1
 assign hk1 sp1
-set j1 nyilvantarto ny1
-set hk1 nyilvantarto ny1
+assign ny1 j1
+assign ny1 hk1
 clean hk1
 info ue1
 info ny1
