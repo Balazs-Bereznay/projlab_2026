@@ -415,6 +415,10 @@ public class Utegyseg implements ProtoEntitas{
             return false;
         }
 
+        if(this.jarmu != null) {
+            return false;
+        }
+
         this.jarmu = j;
 
         // A járműnek átadjuk a 'this' referenciát, hogy tudja, melyik útegységen áll
@@ -424,6 +428,7 @@ public class Utegyseg implements ProtoEntitas{
         if (this.megcsuszas()) {
             j.csuszik();
         }
+
 
         // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út
         return true;
