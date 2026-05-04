@@ -67,8 +67,7 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
 
     @Override
     public void baleset(){
-        this.baleset = true;
-        this.megcsuszott = false;
+        super.baleset();
     }
 
     /**

@@ -177,9 +177,8 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
 
     @Override
     public void baleset(){
-        this.baleset = true;
-        this.megcsuszott = false;
-        this.nyilvantarto.nemBeertAutokNovel(1);
+        super.baleset();
+        if (nyilvantarto != null) nyilvantarto.nemBeertAutokNovel(1);
     }
 
 
