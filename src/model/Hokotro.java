@@ -176,6 +176,12 @@ public class Hokotro extends Jarmu implements Iranyithato, ProtoEntitas  {
         }
     }
 
+    @Override
+    public void baleset(){
+        this.baleset = true;
+        this.megcsuszott = false;
+    }
+
     /**
      * A hókotróra felszerelt fej használatával takarítja a jármű alatti útegységet.
      * A művelet sikeres elvégzése után a jármű bevételt generál a rendszer számára.

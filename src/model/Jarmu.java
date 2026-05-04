@@ -182,10 +182,7 @@ public abstract class Jarmu implements ProtoEntitas {
      * meg a baleset masik resztvevojet, es nem dont arrol, hogy a baleset
      * bekovetkezik-e.</p>
      */
-    public void baleset() {
-        this.baleset = true;
-        this.megcsuszott = false;
-    }
+    abstract public void baleset();
 
     /**
      * Rogziti a jarmu elakadasat.
