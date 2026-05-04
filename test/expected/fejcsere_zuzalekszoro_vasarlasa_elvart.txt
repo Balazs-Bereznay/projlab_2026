@@ -6,8 +6,8 @@ elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
-kijeloltUtvonal: {  }
-fej: z1
+kijeloltUtvonal: { }
+fej: Zuzalekszoro
 zuzalekMennyiseg: 0
 zuzalekLimit: 0
 bevetel: 10

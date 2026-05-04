@@ -1,4 +1,4 @@
-ny1:
+xny1:
 penz: 90
 so: 0
 biokerozin: 0
@@ -8,7 +8,7 @@ jatekVege: false
 b1:
 sebesseg: 0
 utegyseg: ue1
-tapadas: 1
+tapadas: 10
 elakadt: false
 baleset: false
 megcsuszott: false
