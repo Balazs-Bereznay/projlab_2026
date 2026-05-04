@@ -197,6 +197,13 @@ public class Prototipus {
                 case "reset":
                     tesztKornyezetAlaphelyzet();
                     break;
+                case "run_test":
+                    if (szavak.length >= 2) {
+                        tesztFuttatas(szavak[1]);
+                    } else {
+                        tesztFuttatas(null);
+                    }
+                break;
                 case "create":
                     if (szavak.length < 3) { System.out.println("Használat: create <osztaly> <id>"); break; }
                     entitasLetrehoz(szavak[1], szavak[2]);
@@ -412,6 +419,39 @@ public class Prototipus {
         for (File fajl : fajlok) {
             System.out.println("- " + fajl.getName());
         }
+    }
+
+    /**
+     * Futtatja a paramként megkapott tesztet, ha a teszt null, akkor futtatja az összes tesztet.
+     * Teszt futtatása alatt azt kell érteni, hogy betölti az adott nevű tesztet, kimenti a naplófájlt és
+     * alaphelyzetbe állítja a tesztelőkörnyezetet.
+     * @param tesztNev
+     */
+    private void tesztFuttatas(String tesztNev) {
+        if (tesztNev == null) {
+            File mappa = new File("test/input");
+            if (mappa.exists() && mappa.isDirectory()) {
+                String[] fajlok = mappa.list();
+                if (fajlok != null) {
+                    for (String fajl : fajlok) {
+                        // Csak a .txt fájlokat futtatjuk, és elkerüljük a végtelen ciklust (saját kimenetünket ne töltsük be)
+                        if (fajl.endsWith(".txt") && !fajl.startsWith("out_")) {
+                            tesztFuttatas(fajl);
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Hiba: A 'test' mappa nem talalhato.");
+            }
+            return;
+        }
+
+        System.out.println("--- Futtatas: " + tesztNev + " ---");
+
+        beolvasFajlbol(tesztNev);
+        parancsSor.add("save " + tesztNev);
+        parancsSor.add("reset ");
+
     }
 
     /**
