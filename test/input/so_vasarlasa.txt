@@ -4,5 +4,5 @@ create Bolt b1
 assign j1 ny1
 set b1 soAr 5
 set ny1 penz 10
-purchase j1 salt
+purchase j1 so
 info ny1

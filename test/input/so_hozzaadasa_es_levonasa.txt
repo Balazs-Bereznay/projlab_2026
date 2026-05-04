@@ -9,7 +9,7 @@ assign hk1 s1
 assign ue1 hk1
 set ny1 penz 100
 set b1 soAr 10
-purchase p1 salt 1
+purchase p1 so 1
 clean hk1
 clean hk1
 info ue1

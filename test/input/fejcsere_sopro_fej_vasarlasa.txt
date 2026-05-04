@@ -6,7 +6,6 @@ create Sopro s1
 assign j1 ny1
 set b1 soproFejAr 10
 set ny1 penz 10
-add b1 fejlesztesLista s1
-purchase j1 soprofej hk1
+purchase j1 sopro hk1
 info hk1
 info ny1
