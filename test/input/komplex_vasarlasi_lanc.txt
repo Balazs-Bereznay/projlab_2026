@@ -7,7 +7,10 @@ set bo1 sarkanyAr 50
 set bo1 biokerozinAr 10
 assign ny1 bo1
 assign bo1 p1
-purchase p1 hokotro
-purchase p1 sarkany hk1
+create Hokotro h
+purchase p1 hokotro h
+info h
+purchase p1 sarkany h
+info h
 purchase p1 biokerozin 2
 info ny1
