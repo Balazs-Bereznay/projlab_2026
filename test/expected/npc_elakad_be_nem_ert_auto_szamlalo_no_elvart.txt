@@ -8,14 +8,14 @@ blokkolt: true
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
-jarmu: a1
+jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
 a1:
 sebesseg: 0
-utegyseg: ue2
+utegyseg: ue1
 tapadas: 0
 elakadt: true
 baleset: false

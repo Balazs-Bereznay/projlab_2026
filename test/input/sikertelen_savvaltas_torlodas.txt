@@ -1,9 +1,11 @@
 create Utegyseg ue1 
 create Utegyseg ue2
+create Utegyseg ue3
 create Auto a1
 create Hokotro hk
-assign hk ue1
-assign a1 ue2
+assign ue1 hk
+assign ue2 a1
+set ue2 blokkolt true
 set ue1 balUtegyseg ue2
 set ue2 jobbUtegyseg ue1
 move hk -l
