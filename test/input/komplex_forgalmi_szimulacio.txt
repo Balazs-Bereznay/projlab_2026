@@ -24,7 +24,7 @@ set ue23 balUtegyseg ue13
 set ue24 balUtegyseg ue14
 
 set ue13 hoMagassag 8
-set ue13 letaposottsag 4
+set ue13 letaposottsag 3
 set ue13 megcsuszasEsely 1.0
 
 create Sav sav1
