@@ -19,7 +19,7 @@ jegMagassag: 1
 soMennyiseg: 0
 letaposottsag: 0
 megcsuszasEsely: 100.0
-blokkolt: false
+blokkolt: true
 zuzalek: false
 jeges: true
 befedesSzamlalo: 0
@@ -34,7 +34,7 @@ jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
 megcsuszasEsely: 0.0
-blokkolt: false
+blokkolt: true
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0

@@ -94,7 +94,7 @@ utegyseg: ue13
 tapadas: 1
 elakadt: false
 baleset: true
-megcsuszott: true
+megcsuszott: false
 nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
