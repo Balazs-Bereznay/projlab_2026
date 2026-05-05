@@ -1,24 +1,24 @@
-ue1:
-hoMagassag: 0
+ue2:
+hoMagassag: 3
 jegMagassag: 0
 soMennyiseg: 0
-letaposottsag: 0
+letaposottsag: 4
 megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
 jarmu: null
-kovetkezoUtegyseg: ue2
+kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
 ue2:
 hoMagassag: 0
-jegMagassag: 1
+jegMagassag: 3
 soMennyiseg: 0
 letaposottsag: 0
-megcsuszasEsely: 100.0
+megcsuszasEsely: 0.0
 blokkolt: false
 zuzalek: false
 jeges: true
@@ -28,15 +28,3 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1:
-sebesseg: 0
-utegyseg: ue2
-tapadas: 0
-elakadt: false
-baleset: false
-megcsuszott: true
-nyilvantarto: null
-kijeloltUtvonal: {  }
-kezdopont: null
-celpont: null
-utonToltottIdo: 1

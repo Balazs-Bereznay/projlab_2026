@@ -19,3 +19,4 @@ so: 0
 biokerozin: 0
 nemBeertAutokSzama: 1
 jatekVege: false
+

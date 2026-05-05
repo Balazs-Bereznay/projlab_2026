@@ -3,12 +3,17 @@ create Utegyseg ue2
 create Utegyseg ue3
 create Auto a1
 create Auto a2
+create Nyilvantarto ny1
 set ue1 kovetkezoUtegyseg ue2
 set ue2 jobbUtegyseg ue3
 set ue3 balUtegyseg ue2
 add_condition ue2 jeg 1
 assign ue1 a1
 assign ue3 a2
+assign ny1 a1
+assign ny1 a2
+set a1 utontolthetoido 10
+set a2 utontolthetoido 10
 set a1 tapadas 0
 set ue2 megcsuszasEsely 100.0
 move a1 -f

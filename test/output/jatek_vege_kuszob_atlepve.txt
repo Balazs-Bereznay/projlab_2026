@@ -1,0 +1,7 @@
+ny1:
+penz: 0
+so: 0
+biokerozin: 0
+nemBeertAutokSzama: 16
+jatekVege: true
+

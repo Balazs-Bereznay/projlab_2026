@@ -112,7 +112,7 @@ nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 1
+utonToltottIdo: 0
 
 ny1:
 penz: 0

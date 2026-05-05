@@ -24,7 +24,7 @@ zuzalek: false
 jeges: false
 befedesSzamlalo: 0
 jarmu: a2
-kovetkezoUtegyseg: null
+kovetkezoUtegyseg: ue4
 balUtegyseg: null
 jobbUtegyseg: null
 

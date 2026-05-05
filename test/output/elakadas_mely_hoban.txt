@@ -40,3 +40,4 @@ kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
 utonToltottIdo: 1
+

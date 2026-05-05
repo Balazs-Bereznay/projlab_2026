@@ -188,6 +188,7 @@ public abstract class Jarmu implements ProtoEntitas {
     public void baleset() {
         this.baleset = true;
         this.megcsuszott = false;
+        nyilvantarto.nemBeertAutokNovel(1);
         if (utegyseg != null) utegyseg.setBlokkolt(true);
     }
 
@@ -369,4 +370,6 @@ public abstract class Jarmu implements ProtoEntitas {
             kijeloltUtvonal.remove(ut);
         }
     }
+
+
 }

@@ -1,5 +1,5 @@
 ue1:
-hoMagassag: 0
+hoMagassag: 1
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
@@ -8,35 +8,44 @@ blokkolt: false
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
-jarmu: a1
-kovetkezoUtegyseg: ue2
-balUtegyseg: null
-jobbUtegyseg: null
-
-ue2:
-hoMagassag: 15
-jegMagassag: 0
-soMennyiseg: 0
-letaposottsag: 0
-megcsuszasEsely: 0.0
-blokkolt: true
-zuzalek: false
-jeges: false
-befedesSzamlalo: 0
 jarmu: null
 kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1:
+cs1:
+celpont: false
+buszmegallo: true
+azonosito: 1
+utLista: { ut1, ut2 }
+
+ue2:
+hoMagassag: 1
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 1
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: b1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: null
+
+b1:
 sebesseg: 0
-utegyseg: ue1
+utegyseg: ue2
 tapadas: 0
-elakadt: true
+elakadt: false
 baleset: false
 megcsuszott: false
-nyilvantarto: null
-kijeloltUtvonal: {  }
-kezdopont: null
-celpont: null
-utonToltottIdo: 1
+nyilvantarto: ny1
+kijeloltUtvonal: { ut2 }
+vegallomas1: null
+vegallomas2: null
+megallokLista: { cs1 }
+erintettLista: { cs1 }
+bevetel: 100
+

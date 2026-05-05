@@ -8,18 +8,18 @@ blokkolt: false
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
-jarmu: a1
-kovetkezoUtegyseg: ue2
+jarmu: hk1
+kovetkezoUtegyseg: null
 balUtegyseg: null
-jobbUtegyseg: null
+jobbUtegyseg: ue2
 
 ue2:
-hoMagassag: 15
+hoMagassag: 5
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
 megcsuszasEsely: 0.0
-blokkolt: true
+blokkolt: false
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
@@ -28,15 +28,17 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1:
+hk1:
 sebesseg: 0
 utegyseg: ue1
 tapadas: 0
-elakadt: true
+elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
-kijeloltUtvonal: {  }
-kezdopont: null
-celpont: null
-utonToltottIdo: 1
+kijeloltUtvonal: { }
+fej: Sopro
+zuzalekMennyiseg: 0
+zuzalekLimit: 0
+bevetel: 10
+

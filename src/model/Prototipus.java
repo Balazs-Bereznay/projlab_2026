@@ -568,6 +568,9 @@ public class Prototipus {
             }
             for (Auto auto : katalogus.osszesOfType(Auto.class)) {
                 auto.lep();
+                if (auto.nemErBe()) {
+                    katalogus.torol(katalogus.getId(auto));
+                }
             }
             for (Busz busz : katalogus.osszesOfType(Busz.class)) {
                 busz.lep();

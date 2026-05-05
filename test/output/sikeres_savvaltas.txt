@@ -8,13 +8,13 @@ blokkolt: false
 zuzalek: false
 jeges: false
 befedesSzamlalo: 0
-jarmu: a1
+jarmu: null
 kovetkezoUtegyseg: ue2
 balUtegyseg: null
-jobbUtegyseg: null
+jobbUtegyseg: ue3
 
 ue2:
-hoMagassag: 15
+hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
@@ -28,15 +28,33 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1:
+ue3:
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: b1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: null
+
+b1:
 sebesseg: 0
-utegyseg: ue1
+utegyseg: ue3
 tapadas: 0
-elakadt: true
+elakadt: false
 baleset: false
 megcsuszott: false
 nyilvantarto: null
 kijeloltUtvonal: {  }
-kezdopont: null
-celpont: null
-utonToltottIdo: 1
+vegallomas1: null
+vegallomas2: null
+megallokLista: {  }
+erintettLista: {  }
+bevetel: 0
+
