@@ -84,7 +84,6 @@ public class Bolt implements ProtoEntitas {
     }
 
     public void sebessegFejlesztes(Busz busz, int novelesMerteke){
-       // Sebessegfejlesztes sebesseg = new Sebessegfejlesztes(fejlesztAr,1);
        // sebesseg.fejleszt(busz);
         System.out.println("Sebességfejlesztés alkalmazva.");
         if(busz == null){
@@ -98,7 +97,6 @@ public class Bolt implements ProtoEntitas {
 
     }
     public void tapadasFejlesztes(Busz busz,  int novelesMerteke){
-      //  Tapadasfejlesztes tapadasfejlesztes = new Tapadasfejlesztes(fejlesztAr,1);
       //  tapadasfejlesztes.fejleszt(busz);
         System.out.println("Tapadásfejlesztés alkalmazva.");
         if(busz == null){
@@ -111,7 +109,6 @@ public class Bolt implements ProtoEntitas {
 
     }
     public void hozamFejlesztes(Busz busz, int  novelesMerteke){
-        //Hozamfejlesztes hozamfejlesztes = new Hozamfejlesztes(fejlesztAr,100);
         //  hozamfejlesztes.fejleszt(busz);
         System.out.println("Hozamfejlesztés alkalmazva.");
         if(busz == null){
