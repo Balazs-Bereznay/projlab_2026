@@ -1,0 +1,70 @@
+ue1:
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: false
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: null
+kovetkezoUtegyseg: ue2
+balUtegyseg: null
+jobbUtegyseg: null
+
+ue2:
+hoMagassag: 0
+jegMagassag: 1
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 100.0
+blokkolt: true
+zuzalek: false
+jeges: true
+befedesSzamlalo: 0
+jarmu: a1
+kovetkezoUtegyseg: null
+balUtegyseg: null
+jobbUtegyseg: ue3
+
+ue3:
+hoMagassag: 0
+jegMagassag: 0
+soMennyiseg: 0
+letaposottsag: 0
+megcsuszasEsely: 0.0
+blokkolt: true
+zuzalek: false
+jeges: false
+befedesSzamlalo: 0
+jarmu: a2
+kovetkezoUtegyseg: null
+balUtegyseg: ue2
+jobbUtegyseg: null
+
+a1:
+sebesseg: 0
+utegyseg: ue2
+tapadas: 0
+elakadt: false
+baleset: true
+megcsuszott: false
+nyilvantarto: null
+kijeloltUtvonal: {  }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0
+
+a2:
+sebesseg: 0
+utegyseg: ue3
+tapadas: 0
+elakadt: false
+baleset: true
+megcsuszott: false
+nyilvantarto: null
+kijeloltUtvonal: {  }
+kezdopont: null
+celpont: null
+utonToltottIdo: 0

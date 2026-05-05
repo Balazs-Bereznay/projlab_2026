@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java -cp target/classes model.Prototipus)",
+      "Bash(mvn compile *)",
+      "Bash(bash run_tests.sh)",
+      "Bash(java -Dfile.encoding=UTF-8 -cp target/classes model.Prototipus)",
+      "Bash(python3 -c ' *)",
+      "Bash(xxd test/expected/hokotro_alapmozgas_szabad_uton_elvart.txt)",
+      "Bash(xxd temp.txt)",
+      "PowerShell(java *)",
+      "Bash(cp test/output/komplex_forgalmi_szimulacio.txt test/expected/komplex_forgalmi_szimulacio_elvart.txt)",
+      "Read(//c/c/Users/kissb/Documents/4.félév/Projlab/projlab_2026/test/expected/**)",
+      "Bash(javac -d out src/model/*.java)",
+      "Bash(java -cp out model.Prototipus test/input/komplex_forgalmi_szimulacio.txt)",
+      "Bash(Get-Content test/input/komplex_forgalmi_szimulacio.txt)",
+      "Bash(java -cp out model.Prototipus)",
+      "Bash(mvn -q exec:java -Dexec.mainClass=\"model.Prototipus\" -Dexec.cleanupDaemonThreads=false)",
+      "PowerShell(cmd /c 'fc /N \"C:\\\\Users\\\\kissb\\\\Documents\\\\4.félév\\\\Projlab\\\\projlab_2026\\\\test\\\\expected\\\\megcsuszas_jeges_uton_elvart.txt\" \"C:\\\\Users\\\\kissb\\\\Documents\\\\4.félév\\\\Projlab\\\\projlab_2026\\\\test\\\\output\\\\megcsuszas_jeges_uton.txt\"')"
+    ]
+  }
+}
