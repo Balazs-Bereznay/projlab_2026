@@ -9,10 +9,10 @@ set ue1 jobbUtegyseg ue3
 set ue2 blokkolt true
 set ue2 hoMagassag 15
 set ue4 blokkolt true
-set a1 utontolthetoido 10100
-set a2 utontolthetoido 10100
 create Auto a1
 create Auto a2
+set a1 utontolthetoido 10100
+set a2 utontolthetoido 10100
 assign ue1 a1
 assign ue2 a2
 assign ny1 a1
