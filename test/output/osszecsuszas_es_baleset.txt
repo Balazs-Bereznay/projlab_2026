@@ -50,11 +50,11 @@ tapadas: 0
 elakadt: false
 baleset: true
 megcsuszott: false
-nyilvantarto: null
+nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 0
+utonToltottIdo: 1
 
 a2:
 sebesseg: 0
@@ -63,7 +63,7 @@ tapadas: 0
 elakadt: false
 baleset: true
 megcsuszott: false
-nyilvantarto: null
+nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null

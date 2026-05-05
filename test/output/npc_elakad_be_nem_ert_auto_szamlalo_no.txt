@@ -1,5 +1,5 @@
 ue2:
-hoMagassag: 15
+hoMagassag: 16
 jegMagassag: 0
 soMennyiseg: 0
 letaposottsag: 0
@@ -13,22 +13,9 @@ kovetkezoUtegyseg: null
 balUtegyseg: null
 jobbUtegyseg: null
 
-a1:
-sebesseg: 0
-utegyseg: ue1
-tapadas: 0
-elakadt: true
-baleset: false
-megcsuszott: false
-nyilvantarto: ny1
-kijeloltUtvonal: {  }
-kezdopont: null
-celpont: null
-utonToltottIdo: 0
-
 ny1:
 penz: 0
 so: 0
 biokerozin: 0
-nemBeertAutokSzama: 0
+nemBeertAutokSzama: 1
 jatekVege: false

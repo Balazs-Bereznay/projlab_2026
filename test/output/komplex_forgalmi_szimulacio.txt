@@ -99,7 +99,7 @@ nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 0
+utonToltottIdo: 2
 
 a2:
 sebesseg: 1
@@ -112,11 +112,11 @@ nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 0
+utonToltottIdo: 1
 
 ny1:
 penz: 0
 so: 0
 biokerozin: 0
-nemBeertAutokSzama: 1
+nemBeertAutokSzama: 3
 jatekVege: false

@@ -59,8 +59,9 @@ public class Prototipus {
         Path celUtvonal = Paths.get("test/output", fajlnev);
 
         try {
-            // Átmásoljuk a temp.txt-t a célhelyre, felülírva ha már létezik
-            Files.copy(forras.toPath(), celUtvonal, StandardCopyOption.REPLACE_EXISTING);
+            String tartalom = Files.readString(forras.toPath());
+            tartalom = tartalom.stripTrailing() + "\n";
+            Files.writeString(celUtvonal, tartalom, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             System.out.println("Állapot sikeresen mentve: " + celUtvonal.toString());
         } catch (IOException e) {
             System.err.println("Hiba a mentés során: " + e.getMessage());
