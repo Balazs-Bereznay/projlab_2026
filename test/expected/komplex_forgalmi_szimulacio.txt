@@ -1,4 +1,4 @@
-﻿ue11:
+ue11:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0
@@ -99,7 +99,7 @@ nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 2
+utonToltottIdo: 0
 
 a2:
 sebesseg: 1
@@ -112,11 +112,11 @@ nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 1
+utonToltottIdo: 0
 
 ny1:
 penz: 0
 so: 0
 biokerozin: 0
-nemBeertAutokSzama: 3
+nemBeertAutokSzama: 1
 jatekVege: false
