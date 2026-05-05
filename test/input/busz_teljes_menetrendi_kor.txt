@@ -26,12 +26,12 @@ set savCB elsoUtegyseg ueCB
 set savBA elsoUtegyseg ueBA
 
 create Ut ut1
-add ut1 savLista savAB
-add ut1 savLista savBA
+add ut1 savok savAB
+add ut1 savok savBA
 
 create Ut ut2
-add ut2 savLista savBC
-add ut2 savLista savCB
+add ut2 savok savBC
+add ut2 savok savCB
 
 assign ut1 A
 assign ut1 B
@@ -39,8 +39,17 @@ assign ut2 B
 assign ut2 C
 
 create Busz b1
-set b1 vegallomas1 A
-set b1 vegallomas2 C
+assign b1 A
+assign b1 C
+
+add b1 kijeloltUtvonal ut1
+add b1 kijeloltUtvonal ut2
+add b1 kijeloltUtvonal ut2
+add b1 kijeloltUtvonal ut1
+
+add b1 megallokLista A
+add b1 megallokLista B
+add b1 megallokLista C
 
 assign ueAB b1
 

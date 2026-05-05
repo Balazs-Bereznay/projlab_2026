@@ -432,7 +432,7 @@ public class Utegyseg implements ProtoEntitas{
             j.csuszik();
         }
 
-        this.taposodas();
+
 
 
         // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út
