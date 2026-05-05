@@ -359,7 +359,7 @@ public abstract class Jarmu implements ProtoEntitas {
      * @param ut Az az út, ami bekerül az kijeloltUtvonal listába.
      */
     public void addKijeloltUt(Ut ut) {
-        if (ut != null && !kijeloltUtvonal.contains(ut)) {
+        if (ut != null /* && !kijeloltUtvonal.contains(ut)*/) {
             kijeloltUtvonal.add(ut);
         }
     }

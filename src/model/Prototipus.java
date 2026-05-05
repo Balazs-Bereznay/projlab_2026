@@ -274,7 +274,9 @@ public class Prototipus {
                     // só vagy biokerozin (ilyenkor nem kell megadni másik referenciát)
                     if (itemTipus.equalsIgnoreCase("kovetkezoutegyseg")
                             || itemTipus.equalsIgnoreCase("jobbutegyseg")
-                            || itemTipus.equalsIgnoreCase("balutegyseg")) {
+                            || itemTipus.equalsIgnoreCase("balutegyseg")
+                            || itemTipus.equalsIgnoreCase("vegpont1")
+                            || itemTipus.equalsIgnoreCase("vegpont2")) {
 
                         ProtoEntitas cel = katalogus.keres(szavak[3]);
 

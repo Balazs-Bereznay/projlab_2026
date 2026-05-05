@@ -41,10 +41,10 @@ tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
-nyilvantarto: null
-kijeloltUtvonal: { ut1, ut2 }
+nyilvantarto: ny1
+kijeloltUtvonal: { ut2 }
 vegallomas1: null
 vegallomas2: null
 megallokLista: { cs1 }
 erintettLista: { cs1 }
-bevetel: 0
+bevetel: 100

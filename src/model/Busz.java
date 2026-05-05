@@ -139,7 +139,13 @@ public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
 
         if (ervenyesMegallo && !erintettLista.contains(megallo)) {
             erintettLista.add(megallo);
+            nyilvantarto.penzNovel(bevetel);
         }
+    }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny1, List<String> args) {
+        setNyilvantarto(ny1);
     }
 
     /**

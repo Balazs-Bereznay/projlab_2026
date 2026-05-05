@@ -1,39 +1,39 @@
 b1:
-sebesseg: 1
+sebesseg: 0
 utegyseg: ueBA
-tapadas: 1
+tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
-nyilvantarto: null
-kijeloltUtvonal: { ut1, ut2, ut2, ut1 }
+nyilvantarto: ny1
+kijeloltUtvonal: { ut1 }
 vegallomas1: A
 vegallomas2: C
-megallokLista: { }
+megallokLista: { A, B, C }
 erintettLista: { B, C, A }
-bevetel: 800
+bevetel: 100
 
 ny1:
-penz: 800
+penz: 300
 so: 0
 biokerozin: 0
 nemBeertAutokSzama: 0
 jatekVege: false
 
 A:
-buszmegallo: true
 celpont: false
+buszmegallo: true
+azonosito: 1
 utLista: { ut1 }
-azonosito: A
 
 B:
-buszmegallo: true
 celpont: false
+buszmegallo: true
+azonosito: 2
 utLista: { ut1, ut2 }
-azonosito: B
 
 C:
-buszmegallo: true
 celpont: false
+buszmegallo: true
+azonosito: 3
 utLista: { ut2 }
-azonosito: C

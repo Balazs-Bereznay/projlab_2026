@@ -3,9 +3,13 @@ create Ut ut1
 create Ut ut2
 create Sav sav1
 create Sav sav2
+create Nyilvantarto ny1
 create Utegyseg ue1
 create Utegyseg ue2
 create Busz b1
+
+assign ny1 b1
+set b1 bevetel 100
 
 set cs1 buszmegallo true
 add cs1 utLista ut1

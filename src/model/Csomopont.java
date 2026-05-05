@@ -132,7 +132,21 @@ public class Csomopont  implements ProtoEntitas {
         } else if (parancs.equals("remove")) {
             this.removeUt(ut);
             System.out.println("Út sikeresen eltávolítva a csomópontról.");
-        } else {
+        } else if (parancs.equalsIgnoreCase("set")) {
+                String arg = args.get(0).toLowerCase();
+                switch(arg) {
+                    case "vegpont1":
+                        ut.setVegpont1(this);
+                        this.addUt(ut);
+                        break;
+
+                    case "vegpont2":
+                        ut.setVegpont2(this);
+                        this.addUt(ut);
+                        break;
+
+                }
+        }else {
             ProtoEntitas.super.parancsFeldolgoz(parancs, ut, args);
         }
     }
@@ -230,6 +244,7 @@ public class Csomopont  implements ProtoEntitas {
             // Meghívjuk a busz metódusát, átadva az aktuális csomópontot (this)
             busz.megalloErintese(this);
         }
+
         this.jarmuTavozik(jarmu);
     }
 
@@ -263,8 +278,10 @@ public class Csomopont  implements ProtoEntitas {
                 // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
                 if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
                     kovetkezoUt = utanaKovetkezoUt;
+                    jarmu.getKijeloltUtvonal().remove(aktualisUt);
                     break;
                 }
+
             }
 
         // Ha nem találtunk érvényes következő utat, a jármű nem tud továbbmenni
@@ -277,7 +294,7 @@ public class Csomopont  implements ProtoEntitas {
             Utegyseg cel = sav.getElsoUtegyseg();
 
             // Ha a sávnak van kezdő útegysége
-            if (cel != null) {
+            if (cel != null && sav.getVegCsomopont() != this) {
                 // Megpróbálunk rálépni
                 boolean sikeres = cel.ralep(jarmu);
 
