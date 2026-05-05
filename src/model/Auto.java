@@ -28,6 +28,8 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
      */
     private int utonToltottIdo;
 
+    private int utonTolthetoIdo;
+
 
 
     /**
@@ -53,6 +55,7 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
 
     @Override
     public void lep() {
+        utonToltottIdo++;
         // Alapvető ellenőrzés: ha már elakadt vagy balesetet szenvedett, nem léphet
         if (elakadt || baleset || utegyseg == null) {
             return;
@@ -141,6 +144,13 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
                     case "tapadas":
                         try {
                             setTapadas(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case "utontolthetoido":
+                        try {
+                            setUtonTolthetoIdo(Integer.parseInt(value));
                         } catch (NumberFormatException ignored) {
                             return;
                         }
@@ -300,5 +310,34 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
      */
     public void setUtonToltottIdo(int utonToltottIdo) {
         this.utonToltottIdo = utonToltottIdo;
+    }
+
+    @Override
+    public void addKijeloltUt(Ut ut) {
+        super.addKijeloltUt(ut);
+        utonTolthetoIdo += ut.utHossz() * 2;
+    }
+
+    public boolean nemErBe() {
+        if (utonTolthetoIdo <= utonToltottIdo) {
+            this.utegyseg.setJarmu(null);
+            nyilvantarto.nemBeertAutokNovel(1);
+            return true;
+        }
+        return false;
+    }
+
+    public void setUtonTolthetoIdo(int utonTolthetoIdo) {
+        this.utonTolthetoIdo = utonTolthetoIdo;
+    }
+
+    public int getUtonTolthetoIdo() {
+        return utonTolthetoIdo;
+    }
+
+    @Override
+    public boolean savValtas(String irany) {
+        this.utonToltottIdo++;
+        return super.savValtas(irany);
     }
 }

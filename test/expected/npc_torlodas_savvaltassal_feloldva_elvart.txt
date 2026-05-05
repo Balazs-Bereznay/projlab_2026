@@ -24,7 +24,7 @@ zuzalek: false
 jeges: false
 befedesSzamlalo: 0
 jarmu: a2
-kovetkezoUtegyseg: null
+kovetkezoUtegyseg: ue4
 balUtegyseg: null
 jobbUtegyseg: null
 
@@ -50,8 +50,8 @@ tapadas: 0
 elakadt: false
 baleset: false
 megcsuszott: false
-nyilvantarto: null
+nyilvantarto: ny1
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 0
+utonToltottIdo: 1

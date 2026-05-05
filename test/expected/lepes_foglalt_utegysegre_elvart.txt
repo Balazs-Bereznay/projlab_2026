@@ -39,7 +39,7 @@ nyilvantarto: null
 kijeloltUtvonal: {  }
 kezdopont: null
 celpont: null
-utonToltottIdo: 0
+utonToltottIdo: 1
 
 a2:
 sebesseg: 0

@@ -180,6 +180,24 @@ public class Ut implements ProtoEntitas {
         }
     }
 
+    public int utHossz() {
+
+        int count = 0;
+
+        if (savok == null && savok.isEmpty()){
+            return 0;
+        }
+
+        Utegyseg aktualis = this.savok.get(0).getElsoUtegyseg();
+
+        while (aktualis != null) {
+            count++;
+            aktualis = aktualis.getKovetkezoUtegyseg();
+        }
+
+        return count;
+    }
+
     /**
      * Hozzáfűz egy Sav típusú objektumot az savok végéres.
      * @param sav Az a sáv, ami bekerül az savok listába.
