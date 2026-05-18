@@ -1,0 +1,10 @@
+create Utegyseg ue1
+create Hokotro hk1
+create Zuzalekszoro zs1
+set hk1 zuzalekLimit 5
+set hk1 zuzalekMennyiseg 5
+assign hk1 zs1
+assign ue1 hk1
+clean hk1
+info ue1
+info hk1

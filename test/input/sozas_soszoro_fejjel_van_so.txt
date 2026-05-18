@@ -1,0 +1,13 @@
+create Nyilvantarto ny1
+create Utegyseg ue1
+create Hokotro hk1
+create Soszoro s1
+assign ny1 hk1
+set ny1 so 5
+assign hk1 s1
+assign ny1 s1
+assign ue1 hk1
+clean hk1
+info ue1
+info ny1
+info hk1

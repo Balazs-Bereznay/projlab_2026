@@ -1,0 +1,13 @@
+create Nyilvantarto ny1
+create Utegyseg ue1
+create Utegyseg ue2
+create Auto a1
+set ue1 kovetkezoUtegyseg ue2
+set ue2 blokkolt true
+add_condition ue2 ho 15
+assign ny1 a1
+assign ue1 a1
+tick 1
+info ue2
+info a1
+info ny1

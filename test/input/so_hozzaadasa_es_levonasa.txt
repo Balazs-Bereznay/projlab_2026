@@ -1,0 +1,21 @@
+create Nyilvantarto ny1
+create Bolt b1
+create Jatekos p1
+create Utegyseg ue1
+create Hokotro hk1
+create Soszoro s1
+assign ny1 hk1
+assign hk1 s1
+assign ue1 hk1
+set ny1 penz 100
+set b1 soAr 10
+assign ny1 b1
+assign b1 p1
+assign ny1 s1
+assign ny1 p1
+assign p1 hk1
+purchase p1 so 10
+clean hk1
+clean hk1
+info ue1
+info ny1

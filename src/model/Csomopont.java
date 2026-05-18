@@ -7,7 +7,7 @@ import java.util.List;
  * Az úthálózat szakaszait (Ut) összekötő csatlakozási pontok. Kezeli a járművek be és
  * kilépését a csomópontba és a hozzá csatlakozó utakra.
  */
-public class Csomopont {
+public class Csomopont  implements ProtoEntitas {
     private ArrayList<Ut> utLista;
     private boolean celpont;
     private boolean buszmegallo;
@@ -27,6 +27,190 @@ public class Csomopont {
 
     public Csomopont(){
         this(new ArrayList<>(), false, false);
+    }
+/*
+    @Override
+    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+        if ("assign".equals(parancs)) {
+            busz.getMegallokLista().add(this);
+            System.out.println("Megálló sikeresen hozzáadva a busz útvonalához.");
+        } else if ("remove".equals(parancs)) {
+            busz.getMegallokLista().remove(this);
+            System.out.println("Megálló eltávolítva a busz útvonalából.");
+        }
+    }
+*/
+
+    @Override
+    public void parancsFeldolgozSavval(String parancs, Sav sav, List<String> args) {
+        if (parancs.equalsIgnoreCase("assign")) {
+            sav.setVegCsomopont(this);
+        }
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utListaTartalom = String.join(", ", this.utLista.stream().map(katalogus::getId).toList());
+        String utListaStr = "{ " + utListaTartalom + (utListaTartalom.isEmpty() ? "" : " ") + "}";
+
+        return """
+                %s:
+                celpont: %b
+                buszmegallo: %b
+                azonosito: %s
+                utLista: %s
+                """.formatted(
+                id,
+                this.celpont,
+                this.buszmegallo,
+                this.azonosito,
+                utListaStr
+        );
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "set":
+                if (args.size() < 2) return;
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "celpont":
+                            this.celpont = Boolean.parseBoolean(ertek);
+                            break;
+
+                        case "buszmegallo":
+                            this.buszmegallo = Boolean.parseBoolean(ertek);
+                            break;
+
+                        case "azonosito":
+                            this.azonosito = ertek;
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    // Itt kapjuk el, ha a parseInt vagy parseDouble elszállt
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozCsomoponttal(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozUttal(String parancs, Ut ut, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.addUt(ut);
+
+            if(ut.getVegpont1() == null){
+                ut.setVegpont1(this);
+            }
+            if(ut.getVegpont1() != null &&  ut.getVegpont2() == null){
+                ut.setVegpont2(this);
+            }
+            System.out.println("Út sikeresen a csomóponthoz rendelve.");
+        } else if (parancs.equals("remove")) {
+            this.removeUt(ut);
+            System.out.println("Út sikeresen eltávolítva a csomópontról.");
+        } else if (parancs.equalsIgnoreCase("set")) {
+                String arg = args.get(0).toLowerCase();
+                switch(arg) {
+                    case "vegpont1":
+                        ut.setVegpont1(this);
+                        this.addUt(ut);
+                        break;
+
+                    case "vegpont2":
+                        ut.setVegpont2(this);
+                        this.addUt(ut);
+                        break;
+
+                }
+        }else {
+            ProtoEntitas.super.parancsFeldolgoz(parancs, ut, args);
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozAutoval(String parancs, Auto auto, List<String> args) {
+        if ("assign".equals(parancs)) {
+            // Ha még nincs kezdőpontja, ez a csomópont lesz az
+            if (auto.getKezdopont() == null) {
+                auto.setKezdopont(this);
+                System.out.println("Csomópont beállítva az autó kezdőpontjának.");
+            }
+            // Ha kezdőpontja már van, de célpontja még nincs, ez lesz a célpont
+            else if (auto.getCelpont() == null) {
+                auto.setCelpont(this);
+                System.out.println("Csomópont beállítva az autó célpontjának.");
+            }
+            else {
+                System.out.println("Hiba: Az autónak már van kezdő- és célpontja is.");
+            }
+        } else if ("remove".equals(parancs)) {
+            // Törlés esetén megnézzük, melyik volt ez a csomópont, és azt nullázzuk
+            if (auto.getKezdopont() == this) {
+                auto.setKezdopont(null);
+                System.out.println("Az autó kezdőpontja törölve.");
+            } else if (auto.getCelpont() == this) {
+                auto.setCelpont(null);
+                System.out.println("Az autó célpontja törölve.");
+            }
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozBusszal(String parancs, Busz busz, List<String> args) {
+        if ("assign".equals(parancs)) {
+            // 1. végállomás beállítása, ha még üres
+            if (busz.getVegallomas1() == null) {
+                busz.setVegallomas1(this);
+                System.out.println("Csomópont beállítva a busz 1. végállomásának.");
+            }
+            // 2. végállomás beállítása, ha az 1. már foglalt, de ez még üres
+            else if (busz.getVegallomas2() == null) {
+                busz.setVegallomas2(this);
+                System.out.println("Csomópont beállítva a busz 2. végállomásának.");
+            }
+            // Ha mindkét végállomás megvan, akkor sima megállóként adjuk a listához
+            else {
+                if (!busz.getMegallokLista().contains(this)) {
+                    busz.getMegallokLista().add(this);
+                    System.out.println("Megálló sikeresen hozzáadva a busz útvonalához.");
+                }
+            }
+        } else if ("remove".equals(parancs)) {
+            if (busz.getVegallomas1() == this) {
+                busz.setVegallomas1(null);
+            }
+            if (busz.getVegallomas2() == this) {
+                busz.setVegallomas2(null);
+            }
+            busz.getMegallokLista().remove(this);
+            System.out.println("Csomópont (végállomás/megálló) eltávolítva a busztól.");
+        } else if ("add".equals(parancs) && args.get(0).equalsIgnoreCase("megalloklista")) {
+            busz.getMegallokLista().add(this);
+        }
     }
 
     ///Getterek és setterek
@@ -60,6 +244,8 @@ public class Csomopont {
             // Meghívjuk a busz metódusát, átadva az aktuális csomópontot (this)
             busz.megalloErintese(this);
         }
+
+        this.jarmuTavozik(jarmu);
     }
 
     /**
@@ -82,19 +268,21 @@ public class Csomopont {
 
         // A következő út megkeresése az útvonalban.
         // Olyan út-párt keresünk, ahol mindkét út ehhez a csomóponthoz csatlakozik.
-        for (int i = 0; i <= utvonal.size() - 2; i++) {
-            Ut aktualisUt = utvonal.get(i);
-            Ut utanaKovetkezoUt = utvonal.get(i + 1);
+            for (int i = 0; i <= utvonal.size() - 2; i++) {
+                Ut aktualisUt = utvonal.get(i);
+                Ut utanaKovetkezoUt = utvonal.get(i + 1);
 
-            boolean aktualisKapcsolodik = (aktualisUt.getVegpont1() == this || aktualisUt.getVegpont2() == this);
-            boolean kovetkezoKapcsolodik = (utanaKovetkezoUt.getVegpont1() == this || utanaKovetkezoUt.getVegpont2() == this);
+                boolean aktualisKapcsolodik = (aktualisUt.getVegpont1() == this || aktualisUt.getVegpont2() == this);
+                boolean kovetkezoKapcsolodik = (utanaKovetkezoUt.getVegpont1() == this || utanaKovetkezoUt.getVegpont2() == this);
 
-            // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
-            if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
-                kovetkezoUt = utanaKovetkezoUt;
-                break;
+                // Megnézzük, hogy ez a csomópont a "kapocs" a két út között
+                if (aktualisKapcsolodik && kovetkezoKapcsolodik) {
+                    kovetkezoUt = utanaKovetkezoUt;
+                    jarmu.getKijeloltUtvonal().remove(aktualisUt);
+                    break;
+                }
+
             }
-        }
 
         // Ha nem találtunk érvényes következő utat, a jármű nem tud továbbmenni
         if (kovetkezoUt == null) {
@@ -106,7 +294,7 @@ public class Csomopont {
             Utegyseg cel = sav.getElsoUtegyseg();
 
             // Ha a sávnak van kezdő útegysége
-            if (cel != null) {
+            if (cel != null && sav.getVegCsomopont() != this) {
                 // Megpróbálunk rálépni
                 boolean sikeres = cel.ralep(jarmu);
 
@@ -126,6 +314,11 @@ public class Csomopont {
     public void addUt(Ut ut) {
         if (ut != null && !utLista.contains(ut)) {
             utLista.add(ut);
+        }
+    }
+    public void removeUt(Ut ut) {
+        if (utLista.contains(ut)) {
+            utLista.remove(ut);
         }
     }
 }

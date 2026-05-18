@@ -5,17 +5,63 @@ import java.util.*;
 /** Számontartja az összes csomópontot és az összes utat,
  *  valamint útvonalat generál az autók számára.
  */
-public class Terkep {
+public class Terkep  implements ProtoEntitas{
     /// A játékban lévő összes út listája.
     private ArrayList<Ut> elLista;
     /// A játékban lévő összes csomópont listája.
     private ArrayList<Csomopont> csomopontLista;
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String elIdk = "{ " + String.join(", ", this.elLista.stream().map(katalogus::getId).toList()) + " }";
+        String cpIdk = "{ " + String.join(", ", this.csomopontLista.stream().map(katalogus::getId).toList()) + " }";
+
+        return """
+                %s:
+                elLista: %s
+                csomopontLista: %s
+                """.formatted(
+                id,
+                elIdk,
+                cpIdk
+        );
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozTerkeppel(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozUttal(String parancs, Ut ut, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.elLista.add(ut);
+            System.out.println("Út a térképhez adva.");
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozCsomoponttal(String parancs, Csomopont cs, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.csomopontLista.add(cs);
+            System.out.println("Csomópont a térképhez adva.");
+        }
+    }
+
+
 
     ///Konstruktorok
     public Terkep(ArrayList<Ut> elLista, ArrayList<Csomopont> csomopontLista){
         this.elLista = (elLista != null) ? new ArrayList<>(elLista) : new ArrayList<>();
         this.csomopontLista = (csomopontLista != null) ? new ArrayList<>(csomopontLista) : new ArrayList<>();
     }
+
+
 
     public Terkep(){
 

@@ -1,0 +1,9 @@
+create Utegyseg ue1
+create Hokotro hk
+create Sopro sp
+assign ue1 hk
+add_condition ue1 ho 2
+assign hk sp
+clean hk
+info ue1
+info hk

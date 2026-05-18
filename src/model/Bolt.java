@@ -1,12 +1,16 @@
 package model;
 
 
+import java.util.List;
+
+//import static model.Jatekos.bolt;
+
 /**
  * A játék gazdasági központja, ahol a játékosok a megszerzett pénzből új eszközöket, nyersanyagokat vásárolhatnak,
  * van lehetőség a hókotrófejek cseréjére, valamint a buszok fejlesztésére is. Az áruk listázása is az ő felelőssége.
  */
 
-public class Bolt {
+public class Bolt implements ProtoEntitas {
 
     /// a megvasarolható sónak az egységára
     private  int soAr;
@@ -31,14 +35,22 @@ public class Bolt {
         this.biokerozinAr = biokerozinAr;
     }
 
+
+    public Bolt() {
+        this(100, 200);
+        //bolt = this;
+    }
+
     /**
      * A játékos megvásárol egy új hokotrót
      */
-    public void hokotroVasarol(Jatekos jatekos){
-        Fej sopro = new Sopro();
-        jatekos.getFlotta().add(new Hokotro(sopro));
-        nyilvantarto.penzLevon(hokotroAr);
-        System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
+    public void hokotroVasarol(Jatekos jatekos, Hokotro hokotro){
+        if (nyilvantarto.penzLevon(hokotroAr)) {
+            Fej sopro = new Sopro();
+            hokotro.setFej(sopro);
+            jatekos.getFlotta().add(hokotro);
+            System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
+        }
 
     }
 
@@ -47,68 +59,78 @@ public class Bolt {
      * @param mennyiseg annak a mennyisége, hogy mennyi sót  akarunk vásárolni.
      */
     public void soVasarol(int mennyiseg){
+        if (nyilvantarto.penzLevon(soAr * mennyiseg)) {
+            nyilvantarto.soNovel(mennyiseg);
+            System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
+        }
+    }
 
-        nyilvantarto.soNovel(mennyiseg);
-        nyilvantarto.penzLevon(soAr);
-        System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
+    public void zuzalekVasarol(Hokotro hokotro, int mennyiseg) {
+       if (nyilvantarto.penzLevon(mennyiseg * zuzalekAr))
+       {
+           hokotro.zuzalekNovel(mennyiseg);
+       }
     }
 
     /**
      * "Egy játékos által vásárolt adott mennyiségű biokerozint hozzáadja a Nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi biokerozint  akarunk vásárolni.
      */
-    public void setBiokerozinVasarol(int mennyiseg){
-        nyilvantarto.biokerozinNovel(mennyiseg);
-        nyilvantarto.penzLevon(biokerozinAr);
-        System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
+    public void biokerozinVasarol(int mennyiseg){
+        if (nyilvantarto.penzLevon(biokerozinAr * mennyiseg)) {
+            nyilvantarto.biokerozinNovel(mennyiseg);
+            System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
+        }
     }
 
     public void sebessegFejlesztes(Busz busz, int novelesMerteke){
-       // Sebessegfejlesztes sebesseg = new Sebessegfejlesztes(fejlesztAr,1);
        // sebesseg.fejleszt(busz);
         System.out.println("Sebességfejlesztés alkalmazva.");
         if(busz == null){
             return;
         }
-        busz.setSebesseg(busz.getSebesseg() + novelesMerteke);
-        busz.nyilvantarto.penzLevon(sebessegfejlesztesAr);
 
-       System.out.println("A busz sebessége fejlesztve lett!");
+        if (nyilvantarto.penzLevon(sebessegfejlesztesAr)) {
+            busz.setSebesseg(busz.getSebesseg() + novelesMerteke);
+            System.out.println("A busz sebessége fejlesztve lett!");
+        }
+
     }
     public void tapadasFejlesztes(Busz busz,  int novelesMerteke){
-      //  Tapadasfejlesztes tapadasfejlesztes = new Tapadasfejlesztes(fejlesztAr,1);
       //  tapadasfejlesztes.fejleszt(busz);
         System.out.println("Tapadásfejlesztés alkalmazva.");
         if(busz == null){
             return;
         }
-        busz.setTapadas(busz.getTapadas() + novelesMerteke);
-        busz.nyilvantarto.penzLevon(tapadasfejlesztesAr);
+        if (nyilvantarto.penzLevon(tapadasfejlesztesAr)) {
+            busz.setTapadas(busz.getTapadas() + novelesMerteke);
+            System.out.println("A busz tapadasa fejlesztve lett!");
+        }
 
-        System.out.println("A busz tapadasa fejlesztve lett!");
     }
     public void hozamFejlesztes(Busz busz, int  novelesMerteke){
-        //Hozamfejlesztes hozamfejlesztes = new Hozamfejlesztes(fejlesztAr,100);
         //  hozamfejlesztes.fejleszt(busz);
         System.out.println("Hozamfejlesztés alkalmazva.");
         if(busz == null){
             return;
         }
-        busz.setBevetel(busz.getBevetel() + novelesMerteke);
-        busz.nyilvantarto.penzLevon(sebessegfejlesztesAr);
+        if (nyilvantarto.penzLevon(hozamfejlesztesAr)) {
+            busz.setBevetel(busz.getBevetel() + novelesMerteke);
+            System.out.println("A busz hozama fejlesztve lett!");
+        }
 
-        System.out.println("A busz hozama fejlesztve lett!");
     }
 
     /**
      * A jatékos megvásárol egy seprőfejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      * @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void seproVasarol(Hokotro hokotro){
-        Fej sepro = new Sopro();
-        hokotro.setFej(sepro);
-        nyilvantarto.penzLevon(soproAr);
-        System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+    public void soproVasarol(Hokotro hokotro){
+        if (nyilvantarto.penzLevon(soproAr)) {
+            Fej sepro = new Sopro();
+            hokotro.setFej(sepro);
+            System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        }
     }
 
     /**
@@ -116,10 +138,11 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void hanyoVasarol(Hokotro hokotro){
-        Fej hanyo = new Hanyo();
-        hokotro.setFej(hanyo);
-        nyilvantarto.penzLevon(hanyoAr);
-        System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        if (nyilvantarto.penzLevon(hanyoAr)) {
+            Fej hanyo = new Hanyo();
+            hokotro.setFej(hanyo);
+            System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        }
     }
 
     /**
@@ -127,10 +150,11 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void jegtoroVasarol(Hokotro hokotro){
-        Fej jegt = new Jegtoro();
-        hokotro.setFej(jegt);
-        nyilvantarto.penzLevon(jegtoroAr);
-        System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        if (nyilvantarto.penzLevon(jegtoroAr)) {
+            Fej jegt = new Jegtoro();
+            hokotro.setFej(jegt);
+            System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        }
     }
 
     /**
@@ -138,10 +162,12 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public void soszoroVasarol(Hokotro hokotro){
-        Fej sSz = new Soszoro(nyilvantarto);
-        hokotro.setFej(sSz);
-        nyilvantarto.penzLevon(soszoroAr);
-        System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        if (nyilvantarto.penzLevon(soszoroAr)) {
+            Soszoro sSz = new Soszoro(nyilvantarto);
+            sSz.setNyilvantarto(hokotro.getNyilvantarto());
+            hokotro.setFej(sSz);
+            System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+        }
     }
 
     /**
@@ -149,10 +175,21 @@ public class Bolt {
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
     public  void sarkanyVasarol(Hokotro hokotro){
-        Fej srkny = new Sarkany(nyilvantarto);
-        hokotro.setFej(srkny);
-        nyilvantarto.penzLevon(sarkanyAr);
-        System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+        if (nyilvantarto.penzLevon(sarkanyAr)) {
+            Sarkany srkny = new Sarkany(nyilvantarto);
+            srkny.setNyilvantarto(hokotro.getNyilvantarto());
+            hokotro.setFej(srkny);
+            System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+        }
+    }
+
+    public  void zuzalekszoroVasarol(Hokotro hokotro){
+        if (nyilvantarto.penzLevon(zuzalekszoroAr)) {
+            Zuzalekszoro zsz = new Zuzalekszoro(nyilvantarto);
+            zsz.setNyilvantarto(hokotro.getNyilvantarto());
+            hokotro.setFej(zsz);
+            System.out.println("Zúzalékszóró fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+        }
     }
 
     /**
@@ -257,4 +294,176 @@ public class Bolt {
 
     public int getHozamfejlesztesAr(){ return hozamfejlesztesAr; }
     public void setHozamfejlesztesAr(int mennyiseg){hozamfejlesztesAr = mennyiseg; }
+
+    /**
+     * Feldolgozza a boltra érkező, egyszerű prototípus-parancsokat.
+     *
+     * @param parancs a feldolgozandó parancs neve
+     * @param args a parancs további paraméterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null) {
+            return;
+        }
+        if (nyilvantarto == null && !"set".equals(parancs)) {
+            System.out.println("Hiba: A rendszer nincs inicializálva (hiányzik a nyilvántartó)!");
+            return;
+        }
+
+        switch (parancs) {
+            case "set":
+                if (args == null || args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    int mennyiseg = Integer.parseInt(ertek);
+                    switch (tulajdonsag) {
+                        case "soar":
+                            this.soAr = mennyiseg;
+                            break;
+                        case "biokerozinar":
+                            this.biokerozinAr = mennyiseg;
+                            break;
+                        case "hokotroar":
+                            this.hokotroAr = mennyiseg;
+                            break;
+                        case "soproar":
+                        case "seproar":
+                            this.soproAr = mennyiseg;
+                            break;
+                        case "hanyoar":
+                            this.hanyoAr = mennyiseg;
+                            break;
+                        case "jegtoroar":
+                            this.jegtoroAr = mennyiseg;
+                            break;
+                        case "soszoroar":
+                            this.soszoroAr = mennyiseg;
+                            break;
+                        case "sarkanyar":
+                            this.sarkanyAr = mennyiseg;
+                            break;
+                        case "zuzalekar":
+                            this.zuzalekAr = mennyiseg;
+                            break;
+                        case "zuzalekszoroar":
+                            this.zuzalekszoroAr = mennyiseg;
+                            break;
+                        case "sebessegfejlesztesar":
+                            this.sebessegfejlesztesAr = mennyiseg;
+                            break;
+                        case "tapadasfejlesztesar":
+                            this.tapadasfejlesztesAr = mennyiseg;
+                            break;
+                        case "hozamfejlesztesar":
+                            this.hozamfejlesztesAr = mennyiseg;
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+            case "list_shop":
+                String kinalat = """
+                    Bolt kínálata:
+        
+                    Vásárolható erőforrások:
+                    - Só ára: %d
+                    - Biokerozin ára: %d
+                    - Zúzalék ára: %d
+        
+                    Vásárolható fejek:
+                    - Söprő fej ára: %d
+                    - Hányó fej ára: %d
+                    - Jégtörő fej ára: %d
+                    - Sószóró fej ára: %d
+                    - Sárkány fej ára: %d
+                    - Zúzalékszóró fej ára: %d
+        
+                    Egyéb eszközök:
+                    - Hókotró ára: %d
+        
+                    Fejlesztések buszokra:
+                    - Sebességfejlesztés ára: %d
+                    - Tapadásfejlesztés ára: %d
+                    - Hozamfejlesztés ára: %d
+                    
+                    Jelenleg a nyilvántartóban rendelkezésre álló erőforrások mennyisége:
+                    - pénz:
+                    - só:
+                    - biokerozin:
+                    """.formatted(
+                        soAr, biokerozinAr, zuzalekAr,
+                        soproAr, hanyoAr, jegtoroAr, soszoroAr, sarkanyAr, zuzalekszoroAr,
+                        hokotroAr,
+                        sebessegfejlesztesAr, tapadasfejlesztesAr, hozamfejlesztesAr,
+                        nyilvantarto.getPenz(), nyilvantarto.getSo(), nyilvantarto.getBiokerozin()
+                );
+                System.out.println(kinalat);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny,  List<String> args) {
+        setNyilvantarto(ny);
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozBolttal(parancs, this, args);
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String nyId = katalogus.getId(this.nyilvantarto);
+
+        return """
+                %s:
+                soAr: %d
+                biokerozinAr: %d
+                hokotroAr: %d
+                soproAr: %d
+                hanyoAr: %d
+                jegtoroAr: %d
+                soszoroAr: %d
+                sarkanyAr: %d
+                zuzalekAr: %d
+                zuzalekszoroAr: %d
+                sebessegfejlesztesAr: %d
+                tapadasfejlesztesAr: %d
+                hozamfejlesztesAr: %d
+                nyilvantarto: %s
+                """.formatted(
+                id,
+                this.soAr,
+                this.biokerozinAr,
+                this.hokotroAr,
+                this.soproAr,
+                this.hanyoAr,
+                this.jegtoroAr,
+                this.soszoroAr,
+                this.sarkanyAr,
+                this.zuzalekAr,
+                this.zuzalekszoroAr,
+                this.sebessegfejlesztesAr,
+                this.tapadasfejlesztesAr,
+                this.hozamfejlesztesAr,
+                nyId
+        );
+    }
 }

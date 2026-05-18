@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ez a játék nyilvántartója, ami tárolja az összes globális adatot a játék során (pénz, só, kerozin).
  * Illetve figyeli a játékmenetet és ő dönti el, hogy mikor következik be a vereség, a munkába be nem ért autósok száma alapján.
  */
 
-public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
+public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
 
     /**
      * a közösen tárolt egyenleg
@@ -26,7 +29,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
 
     private boolean jatekVege;
 
-    private int nemBeertAutokLimit;
+    private int nemBeertAutokLimit = 15;
 
     public Nyilvantarto(int p, int s, int b, int n){
         this.penz = p;
@@ -35,11 +38,143 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
         this.nemBeertAutokSzama = n;
     }
 
+    public Nyilvantarto() {
+        this(0, 0, 0, 0);
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        return """
+                %s:
+                penz: %d
+                so: %d
+                biokerozin: %d
+                nemBeertAutokSzama: %d
+                jatekVege: %b
+                """.formatted(
+                id,
+                this.penz,
+                this.so,
+                this.biokerozin,
+                this.nemBeertAutokSzama,
+                this.jatekVege
+        );
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "set":
+                if (args.size() < 2) {
+                    return;
+                }
+
+                String tulajdonsag = args.get(0).toLowerCase();
+                String ertek = args.get(1);
+
+                try {
+                    switch (tulajdonsag) {
+                        case "penz":
+                            setPenz(Integer.parseInt(ertek));
+                            break;
+                        case "so":
+                        case "somennyiseg":
+                            setSo(Integer.parseInt(ertek));
+                            break;
+                        case "biokerozin":
+                            setBiokerozin(Integer.parseInt(ertek));
+                            break;
+                        case "nembeertautok":
+                        case "nembeertautokszama":
+                            setNemBeertAutokSzama(Integer.parseInt(ertek));
+                            break;
+                        case "nembeertautoklimit":
+                            setNemBeertAutokLimit(Integer.parseInt(ertek));
+                            break;
+                        case "jatekvege":
+                            if ("true".equalsIgnoreCase(ertek) || "false".equalsIgnoreCase(ertek)) {
+                                setJatekVege(Boolean.parseBoolean(ertek));
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Hiba: Ervenytelen szamformatum!");
+                }
+                break;
+            case "add":
+                if ( args.size() < 2) {
+                    return;
+                }
+
+                String item = args.get(0);
+                String value = args.get(1);
+
+                switch (item){
+                    case ("penz"):
+                        try {
+                            this.penzNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("so"):
+                        try {
+                            this.soNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("biokerozin"):
+                        try {
+                            this.biokerozinNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case ("nemBeertAutok"):
+                        try {
+                            this.nemBeertAutokNovel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas masik, List<String> args) {
+        masik.parancsFeldolgozNyilvantartoval(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozFejjel(String parancs, Fej fej, List<String> args) {
+        // Visszapasszoljuk a fejnek, mert ő csinálja a tényleges bekötést
+        fej.parancsFeldolgozNyilvantartoval(parancs, this, args);
+    }
+
     /**
      * Megvizsgálja, hogy a munkahelyükre be nem ért autók száma meghalad-e egy előre meghatározott határt, ami a játék végét jelenti.
      */
     public boolean ellenorizJatekVege(){
         if(nemBeertAutokSzama > nemBeertAutokLimit){ /// ide mostcsak irtam egy szamot, nem tudom hogy mennyi lesz madj pontosan.
+            this.jatekVege = true;
             System.out.println("A játék végetért: Túl sok ember nem ért be időben a munkahelyére:  " + this.nemBeertAutokSzama+"autó akadt el");
             return true;
         }
@@ -126,9 +261,16 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel {
      * @param mennyiseg annak az értéke amennyivel csökkenteni akarjuk a bankunkban lévő pénz értékét
      */
     @Override
-    public void penzLevon(int mennyiseg) {
-        penz -= mennyiseg;
-        System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+    public boolean penzLevon(int mennyiseg) {
+        if(penz - mennyiseg >= 0){
+            penz -= mennyiseg;
+            System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+            return true;
+        }
+        else {
+            System.out.println("Nincs elég pénzed.");
+            return  false;}
+
     }
 
     /**

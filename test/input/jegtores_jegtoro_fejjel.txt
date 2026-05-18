@@ -1,0 +1,9 @@
+create Utegyseg ue1
+create Hokotro hk1
+create Jegtoro jt1
+assign ue1 hk1
+assign hk1 jt1
+add_condition ue1 jeg 1
+clean hk1
+info ue1
+info hk1

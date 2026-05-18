@@ -1,135 +1,379 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A játékos által irányított jármű, amely megállókat érintve közlekedik.
+ * A jatekos altal uzemeltetett buszt megvalosito jarmuosztaly.
+ *
+ * <p>A Busz felel a busz utvonalahoz tartozo vegallomasok es megallok
+ * nyilvantartasaert, az erintett megallok feljegyzeseert, valamint a
+ * teljesitett utvonal alapjan jaro bevetel kiszamitasert. A Jarmu
+ * leszarmazottjakent hasznalja a kozos mozgasi es allapotkezelesi
+ * muveleteket.</p>
  */
-public class Busz extends Jarmu implements Iranyithato {
+public class Busz extends Jarmu implements Iranyithato, ProtoEntitas {
+
+    /**
+     * A busz egyik vegallomasa.
+     */
     private Csomopont vegallomas1;
+
+    /**
+     * A busz masik vegallomasa.
+     */
     private Csomopont vegallomas2;
-    private ArrayList<Csomopont> megallokLista;
-    private ArrayList<Csomopont> erintettLista;
+
+    /**
+     * A busz utvonalahoz tartozo koztes megallok listaja.
+     */
+    private List<Csomopont> megallokLista = new ArrayList<>();
+
+    /**
+     * A teljesites soran mar erintett megallok listaja.
+     */
+    private List<Csomopont> erintettLista = new ArrayList<>();
+
+    /**
+     * Egy erintett megallo utan jaro beveteli ertek.
+     */
     private int bevetel;
 
-    public Busz() {
-        super();
-        this.vegallomas1 = null;
-        this.vegallomas2 = null;
-        this.megallokLista = new ArrayList<>();
-        this.erintettLista = new ArrayList<>();
-        this.bevetel = 0;
-    }
-
-    public Busz(Csomopont vegallomas1, Csomopont vegallomas2, int sebesseg, Utegyseg utegyseg, int tapadas) {
-        super(sebesseg, utegyseg, tapadas);
-        this.vegallomas1 = vegallomas1;
-        this.vegallomas2 = vegallomas2;
-        this.megallokLista = new ArrayList<>();
-        this.erintettLista = new ArrayList<>();
-        this.bevetel = 0;
-    }
-
     /**
-     * Beállítja a busz által követett útvonalat.
-     * @param utegysegLista A kiválasztott útvonal útegységei.
+     * Az Iranyithato interfeszen keresztul valasztott utegyseg-alapu utvonal.
      */
+    private List<Utegyseg> tervezettUtvonal = new ArrayList<>();
+
     @Override
-    public void utvonalatValaszt(ArrayList<Utegyseg> utegysegLista) {
-        System.out.println("Busz utvonalatValaszt() meghivva.");
-        System.out.println("Kivalasztott utegysegek szama: " +
-                (utegysegLista == null ? 0 : utegysegLista.size()));
+    public void parancsFeldolgozJatekossal(String parancs, Jatekos jatekos, List<String> args) {
+        if (args.isEmpty()) return;
+
+        String item = args.get(0).toLowerCase(); // Az item neve a lista eleje
+
+        switch (item) {
+            case "sebessegfejlesztes":
+                jatekos.getBolt().sebessegFejlesztes(this, 10);
+                break;
+            case "hozamfejlesztes":
+                jatekos.getBolt().hozamFejlesztes(this, 10);
+                break;
+            case "tapadasfejlesztes":
+                jatekos.getBolt().tapadasFejlesztes(this, 10);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void baleset(){
+        super.baleset();
     }
 
     /**
-     * Rögzíti, hogy a busz érintett egy megállót.
-     * @param megallo Az érintett megálló.
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String utegysegId = katalogus.getId(this.getUtegyseg());
+        String nyId = katalogus.getId(this.getNyilvantarto());
+        String v1Id = katalogus.getId(this.vegallomas1);
+        String v2Id = katalogus.getId(this.vegallomas2);
+
+        String utvonalStr = "{ " + String.join(", ", this.kijeloltUtvonal.stream().map(katalogus::getId).toList()) + " }";
+        String megallokStr = "{ " + String.join(", ", this.megallokLista.stream().map(katalogus::getId).toList()) + " }";
+        String erintettStr = "{ " + String.join(", ", this.erintettLista.stream().map(katalogus::getId).toList()) + " }";
+
+        return """
+                %s:
+                sebesseg: %d
+                utegyseg: %s
+                tapadas: %d
+                elakadt: %b
+                baleset: %b
+                megcsuszott: %b
+                nyilvantarto: %s
+                kijeloltUtvonal: %s
+                vegallomas1: %s
+                vegallomas2: %s
+                megallokLista: %s
+                erintettLista: %s
+                bevetel: %d
+                """.formatted(
+                id,
+                this.getSebesseg(),
+                utegysegId,
+                this.getTapadas(),
+                this.elakadt,
+                this.baleset,
+                this.megcsuszott,
+                nyId,
+                utvonalStr,
+                v1Id,
+                v2Id,
+                megallokStr,
+                erintettStr,
+                this.bevetel
+        );
+    }
+
+    /**
+     * Rogziti, hogy a busz erintett egy ervenyes megallot.
+     *
+     * <p>Ervenyes megallonak szamit a ket vegallomas, valamint a megallokLista
+     * barmely eleme. Egy megallo egy teljesitesen belul csak egyszer kerulhet be
+     * az erintettLista listaba.</p>
+     *
+     * @param megallo az erintett csomopont
      */
     public void megalloErintese(Csomopont megallo) {
         if (megallo == null) {
-            System.out.println("Nincs megadott megallo.");
             return;
         }
 
-        if (!erintettLista.contains(megallo)) {
+        boolean ervenyesMegallo = megallo == vegallomas1
+                || megallo == vegallomas2
+                || megallokLista.contains(megallo);
+
+        if (ervenyesMegallo && !erintettLista.contains(megallo)) {
             erintettLista.add(megallo);
-            System.out.println("Busz megerintette a megallot: " + megallo);
-        } else {
-            System.out.println("A megallo mar korabban erintve lett: " + megallo);
+            nyilvantarto.penzNovel(bevetel);
         }
     }
 
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny1, List<String> args) {
+        setNyilvantarto(ny1);
+    }
+
     /**
-     * Kiszámítja a busz által termelt bevételt.
-     * @return A kiszámított bevétel.
+     * Kiszamitja a busz altal teljesitett utvonal alapjan jaro jutalmat.
+     *
+     * <p>A szamitas alapja az erintettLista merete es a bevetel attributum
+     * erteke. A metodus nem modositja a kozos penzkeszletet, csak visszaadja a
+     * buszhoz tartozo jutalomerteket.</p>
+     *
+     * @return a kiszamitott jutalom
      */
     public int jutalomKiszamitasa() {
-        this.bevetel = erintettLista.size() * 100;
-
-        boolean ketVegallomasMegvan =
-                erintettLista.contains(vegallomas1) && erintettLista.contains(vegallomas2);
-
-        if (ketVegallomasMegvan) {
-            this.bevetel += 500;
-        }
-
-        System.out.println("Busz jutalomKiszamitasa() meghivva, bevetel: " + bevetel);
-        return bevetel;
+        return erintettLista.size() * bevetel;
     }
 
     /**
-     * A busz egy lépését modellezi.
+     * Beallitja, hogy az Iranyithato interfesz altal kapott utvonal a
+     * tervezettUtvonal attributumba keruljon.
+     *
+     * @param utegysegLista a busz altal kovetendo utegysegek listaja
      */
     @Override
-    public void lep() {
-        super.lep();
-        if (!baleset && !elakadt) {
-            System.out.println("A busz tovabbhaladt a kijelolt utvonalon.");
+    public void setKijeloltUtegysegek(List<Utegyseg> utegysegLista) {
+        if (utegysegLista == null) {
+            this.tervezettUtvonal = new ArrayList<>();
+        } else {
+            this.tervezettUtvonal = new ArrayList<>(utegysegLista);
         }
     }
 
+    /**
+     * Feldolgozza a buszra erkezo, egyszeru prototipus-parancsokat.
+     *
+     * @param parancs a feldolgozando parancs neve
+     * @param args a parancs tovabbi parameterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, List<String> args) {
+        if (parancs == null || args == null) {
+            return;
+        }
+
+        switch (parancs) {
+            case "move":
+                if (args.isEmpty()) return;
+                String irany = args.get(0);
+                if ("-f".equalsIgnoreCase(irany) || "forward".equalsIgnoreCase(irany)) {
+                    lep();
+                } else {
+                    savValtas(irany);
+                }
+                break;
+            case "set":
+                if (args.size() < 2) {
+                    return;
+                }
+
+                String property = args.get(0);
+                String value = args.get(1);
+
+                switch (property) {
+                    case "sebesseg":
+                        try {
+                            setSebesseg(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case "tapadas":
+                        try {
+                            setTapadas(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case "bevetel":
+                        try {
+                            setBevetel(Integer.parseInt(value));
+                        } catch (NumberFormatException ignored) {
+                            return;
+                        }
+                        break;
+                    case "elakadt":
+                        if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+                            this.elakadt = Boolean.parseBoolean(value);
+                        }
+                        break;
+                    case "baleset":
+                        if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+                            this.baleset = Boolean.parseBoolean(value);
+                        }
+                        break;
+                    case "megcsuszott":
+                        if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+                            this.megcsuszott = Boolean.parseBoolean(value);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "clean":
+            case "add_condition":
+            case "list_shop":
+            case "purchase":
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Feldolgozza a buszra erkezo, masik prototipus-entitast is hasznalo
+     * parancsokat.
+     *
+     * <p>A cel objektum tipusat nem a Busz vizsgalja. A double dispatch
+     * mukodes szerint a cel objektum kapja meg a buszt, es a sajat
+     * {@code parancsFeldolgozBusszal} metodusaban donti el, mit jelent vele az
+     * adott parancs.</p>
+     *
+     * @param parancs a feldolgozando parancs neve
+     * @param cel a parancs masik erintett objektuma
+     * @param args a parancs tovabbi parameterei
+     */
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        if (parancs == null || cel == null) {
+            return;
+        }
+
+        cel.parancsFeldolgozBusszal(parancs, this, args);
+    }
+
+    /**
+     * Visszaadja az elso vegallomast.
+     *
+     * @return az elso vegallomas
+     */
     public Csomopont getVegallomas1() {
         return vegallomas1;
     }
 
+    /**
+     * Beallitja az elso vegallomast.
+     *
+     * @param vegallomas1 az uj elso vegallomas
+     */
     public void setVegallomas1(Csomopont vegallomas1) {
         this.vegallomas1 = vegallomas1;
     }
 
+    /**
+     * Visszaadja a masodik vegallomast.
+     *
+     * @return a masodik vegallomas
+     */
     public Csomopont getVegallomas2() {
         return vegallomas2;
     }
 
+    /**
+     * Beallitja a masodik vegallomast.
+     *
+     * @param vegallomas2 az uj masodik vegallomas
+     */
     public void setVegallomas2(Csomopont vegallomas2) {
         this.vegallomas2 = vegallomas2;
     }
 
-    public ArrayList<Csomopont> getMegallokLista() {
+    /**
+     * Visszaadja a busz megalloinak listajat.
+     *
+     * @return a megallok listaja
+     */
+    public List<Csomopont> getMegallokLista() {
         return megallokLista;
     }
 
-    public void setMegallokLista(ArrayList<Csomopont> megallokLista) {
-        this.megallokLista = megallokLista;
+    /**
+     * Beallitja a busz megalloinak listajat.
+     *
+     * @param megallokLista az uj megallolista
+     */
+    public void setMegallokLista(List<Csomopont> megallokLista) {
+        if (megallokLista == null) {
+            this.megallokLista = new ArrayList<>();
+        } else {
+            this.megallokLista = new ArrayList<>(megallokLista);
+        }
     }
 
-    public ArrayList<Csomopont> getErintettLista() {
+    /**
+     * Visszaadja az erintett megallok listajat.
+     *
+     * @return az erintett megallok listaja
+     */
+    public List<Csomopont> getErintettLista() {
         return erintettLista;
     }
 
+    /**
+     * Beallitja az erintett megallok listajat.
+     *
+     * @param erintettLista az uj erintett megallolista
+     */
+    public void setErintettLista(List<Csomopont> erintettLista) {
+        if (erintettLista == null) {
+            this.erintettLista = new ArrayList<>();
+        } else {
+            this.erintettLista = new ArrayList<>(erintettLista);
+        }
+    }
+
+    /**
+     * Visszaadja a beveteli erteket.
+     *
+     * @return a beveteli ertek
+     */
     public int getBevetel() {
         return bevetel;
     }
 
-    public void setBevetel(int bevetel) {this.bevetel = bevetel;}
-
-    @Override
-    public String toString() {
-        return super.toString()
-                + " Busz{vegallomas1=" + vegallomas1
-                + ", vegallomas2=" + vegallomas2
-                + ", megallokSzama=" + megallokLista.size()
-                + ", erintettSzama=" + erintettLista.size()
-                + ", bevetel=" + bevetel
-                + "}";
+    /**
+     * Beallitja a beveteli erteket.
+     *
+     * @param bevetel az uj beveteli ertek
+     */
+    public void setBevetel(int bevetel) {
+        this.bevetel = bevetel;
     }
 }

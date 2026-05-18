@@ -1,0 +1,9 @@
+create Utegyseg ue1
+create Utegyseg ue2
+create Hokotro hk
+set ue1 kovetkezoUtegyseg ue2
+assign ue1 hk
+move hk -f
+info ue1
+info ue2
+info hk

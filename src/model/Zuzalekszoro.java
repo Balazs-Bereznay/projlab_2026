@@ -1,10 +1,12 @@
 package model;
 
+import java.util.List;
+
 /**
  * Egy tisztíıtófej, ami képes egy útegységre zúzalékot kiszórni, hogy meggátolja annak
  * csúszósságát.
  */
-public class Zuzalekszoro extends Fej {
+public class Zuzalekszoro extends Fej implements ProtoEntitas{
     ///A játékban lévő közös nyilvántartó.
     private Nyilvantarto nyilvantarto;
     /// Egy használattal egyszerre ekkora adag zúzalékot tud kiszórni az adott útegységre.
@@ -12,6 +14,31 @@ public class Zuzalekszoro extends Fej {
 
     public Zuzalekszoro(Nyilvantarto ny) {
         this.nyilvantarto = ny;
+    }
+
+    public Zuzalekszoro() {
+        this(null);
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus){
+        String nyStr = katalogus.getId(this.nyilvantarto);
+
+        String infoKimenet = """
+            %s:
+            zuzalekAdag: %d
+            nyilvantarto: %s
+            """.formatted(
+                id,
+                ZUZALEK_ADAG,
+                nyStr
+        );
+        return infoKimenet;
     }
 
     /**

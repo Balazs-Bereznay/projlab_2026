@@ -1,0 +1,13 @@
+create Nyilvantarto ny1
+create Utegyseg ue1
+create Hokotro hk1
+create Sarkany sk1
+add_condition ue1 jeg 5
+assign ny1 hk1
+assign ny1 sk1
+assign hk1 sk1
+assign ue1 hk1
+clean hk1
+info ue1
+info ny1
+info hk1

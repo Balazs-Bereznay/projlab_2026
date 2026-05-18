@@ -1,0 +1,9 @@
+create Utegyseg ue1
+create Hokotro hk1
+create Hanyo h1
+add_condition ue1 ho 5
+assign hk1 h1
+assign ue1 hk1
+clean hk1
+info ue1
+info hk1

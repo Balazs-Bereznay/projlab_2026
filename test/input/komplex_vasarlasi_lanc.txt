@@ -1,0 +1,16 @@
+create Nyilvantarto ny1
+create Bolt bo1
+create Jatekos p1
+set ny1 penz 200
+set bo1 hokotroAr 100
+set bo1 sarkanyAr 50
+set bo1 biokerozinAr 10
+assign ny1 bo1
+assign bo1 p1
+create Hokotro h
+purchase p1 hokotro h
+info h
+purchase p1 sarkany h
+info h
+purchase p1 biokerozin 2
+info ny1

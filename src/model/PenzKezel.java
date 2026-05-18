@@ -18,6 +18,6 @@ public interface PenzKezel {
      * @param mennyiség annak az értéke amennyivel csökkenteni akarjuk a bankunkban lévő pénz értékét
      */
 
-    void penzLevon(int mennyiség);
+    boolean penzLevon(int mennyiség);
 
 }

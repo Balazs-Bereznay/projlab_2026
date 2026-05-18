@@ -1,13 +1,18 @@
 package model;
 
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Az út egy sávját leíró osztály. Felelős a sávhoz tartozó útegységek kezdőpontjának nyilvántartásáért.
  * A Sav az út felépítésében segédobjektumként jelenik meg, amely az első útegységen keresztül kapcsolódik
  * a sávot alkotó útegységek láncolatához.
  */
-public class Sav {
+public class Sav implements ProtoEntitas {
     ///Minden sáv legalább egy Utegysegből áll, melyhez a sáv további útegységei kapcsolódhatnak egymás után. Ez a sáv első útegysége.
     private Utegyseg elsoUtegyseg;
+    private Csomopont vegCsomopont;
 
     ///Konstruktorok
     public Sav(Utegyseg utegyseg){
@@ -19,6 +24,53 @@ public class Sav {
 
         this(null);
     }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String euId = katalogus.getId(this.elsoUtegyseg);
+
+        return """
+                %s:
+                elsoUtegyseg: %s
+                """.formatted(
+                id,
+                euId
+        );
+    }
+
+    @Override
+    public void parancsFeldolgoz(String parancs, ProtoEntitas cel, List<String> args) {
+        cel.parancsFeldolgozSavval(parancs, this, args);
+    }
+
+    @Override
+    public void parancsFeldolgozUttal(String parancs, Ut ut, List<String> args) {
+        if ("assign".equals(parancs)) {
+            ut.addSav(this);
+            System.out.println("Sáv sikeresen az úthoz rendelve.");
+        } else if ("remove".equals(parancs)) {
+            ut.getSavok().remove(this);
+            System.out.println("Sáv eltávolítva az útból.");
+        } else if ("add".equals(parancs) && args.get(0).equalsIgnoreCase("savok")) {   // Kb. ugyanazt csinálja, mint az assign (?)
+            ut.addSav(this);
+            System.out.println("Sáv sikeresen az út sáv listájához hozzáadva.");
+        }
+    }
+
+    @Override
+    public void parancsFeldolgozUtegyseggel(String parancs, Utegyseg utegyseg, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.elsoUtegyseg = utegyseg;// A sáv listájába felvesszük az útegységet
+            utegyseg.setSav(this);
+            System.out.println("Útegység sikeresen a sávhoz rendelve.");
+        }
+    }
+
 
     ///Getter és setter
     /**
@@ -37,4 +89,11 @@ public class Sav {
         this.elsoUtegyseg = elsoUtegyseg;
     }
 
+    public void setVegCsomopont(Csomopont cs) {
+        this.vegCsomopont = cs;
+    }
+
+    public Csomopont getVegCsomopont() {
+        return vegCsomopont;
+    }
 }

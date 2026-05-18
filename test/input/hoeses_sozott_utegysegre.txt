@@ -1,0 +1,5 @@
+create Utegyseg ue1
+set ue1 soMennyiseg 2
+info ue1
+add_condition ue1 ho 3
+info ue1

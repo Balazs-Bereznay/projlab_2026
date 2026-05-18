@@ -1,0 +1,14 @@
+create Jatekos j1
+create Nyilvantarto ny1
+create Bolt b1
+create Hokotro hk1
+assign ny1 j1
+assign ny1 b1
+set b1 zuzalekAr 5
+set ny1 penz 5
+set hk1 zuzalekLimit 10
+assign ny1 b1
+assign b1 j1
+purchase j1 zuzalek hk1 1
+info hk1
+info ny1

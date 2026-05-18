@@ -1,10 +1,12 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Tisztítófej, amely képes egy útegységet szinte azonnal megtisztítani
  * biokerozin erőforrás felhasználásával.
  */
-public class Sarkany extends Fej {
+public class Sarkany extends Fej implements ProtoEntitas {
     ///A játékban lévő közös nyilvántartó.
     private Nyilvantarto nyilvantarto;
     /// Biokerozin mennyiség, ami egy útegység megtakarításához szükséges.
@@ -13,6 +15,40 @@ public class Sarkany extends Fej {
     public Sarkany(Nyilvantarto ny) {
         this.nyilvantarto = ny;
     }
+
+    public Sarkany() {
+        this(null);
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String nyId = katalogus.getId(this.nyilvantarto);
+
+        return """
+        %s:
+        biokerozinAdag: %d
+        nyilvantarto: %s
+        """.formatted(
+                id,
+                BIOKEROZIN_ADAG,
+                nyId
+        );
+    }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.setNyilvantarto(ny);
+            System.out.println("Nyilvántartó sikeresen a fejhez rendelve.");
+        }
+    }
+
+
 
     /**
      * Biokerozin felhasználásával azonnali hatással tisztítja mind a jeget

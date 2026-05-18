@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A kiszórt sóval a jegesedés, vagy a hó megszüntetésére, illetve a havazás megelőzésére
  * használható tisztító fej, ami só erőforrás használatával működik.
  */
-class Soszoro extends Fej {
+class Soszoro extends Fej implements ProtoEntitas {
     ///A játékban lévő közös nyilvántartó.
     private Nyilvantarto nyilvantarto;
     /// Egy használattal egyszerre ekkora adag sót tud kiszórni az adott útegységre.
@@ -12,6 +15,37 @@ class Soszoro extends Fej {
 
     public Soszoro(Nyilvantarto ny) {
         this.nyilvantarto = ny;
+    }
+    public Soszoro() {
+        this(null);
+    }
+
+    /**
+     * Adatok kiírásához, naplózásához szükséges
+     * @param id Az entitás azonosítója, amiről összegyűjti az adatot egy string-be
+     * @param katalogus A nyilvántartó, amiben az objektumok vannak
+     * @return Az entitás adatai egy stringben
+     */
+    public String info(String id, ObjektumKatalogus katalogus) {
+        String nyId = katalogus.getId(this.nyilvantarto);
+
+        return """
+                %s:
+                soAdag: %d
+                nyilvantarto: %s
+                """.formatted(
+                id,
+                SO_ADAG,
+                nyId
+        );
+    }
+
+    @Override
+    public void parancsFeldolgozNyilvantartoval(String parancs, Nyilvantarto ny, List<String> args) {
+        if (parancs.equals("assign")) {
+            this.setNyilvantarto(ny);
+            System.out.println("Nyilvántartó sikeresen a fejhez rendelve.");
+        }
     }
 
     /**

@@ -1,0 +1,38 @@
+create Csomopont cs1
+create Ut ut1
+create Ut ut2
+create Sav sav1
+create Sav sav2
+create Nyilvantarto ny1
+create Utegyseg ue1
+create Utegyseg ue2
+create Busz b1
+
+assign ny1 b1
+set b1 bevetel 100
+
+set cs1 buszmegallo true
+add cs1 utLista ut1
+add cs1 utLista ut2
+
+add ut1 savok sav1
+add ut2 savok sav2
+
+assign sav1 ue1
+assign sav2 ue2
+
+assign sav1 cs1
+assign ue1 b1
+add b1 megallokLista cs1
+add b1 kijeloltUtvonal ut1
+add b1 kijeloltUtvonal ut2
+
+assign ut1 cs1
+assign ut2 cs1
+
+tick 1
+
+info ue1
+info cs1
+info ue2
+info b1
