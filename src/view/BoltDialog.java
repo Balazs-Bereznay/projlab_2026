@@ -265,6 +265,12 @@ public class BoltDialog extends JDialog {
                         Hokotro hk = kivalasztottHokotro();
                         if (hk != null) bolt.soszoroVasarol(hk);
                     }, vanHokotro);
+                add("Sárkány fej", bolt.getSarkanyAr() + " Ft",
+                    "Lángszóróval olvasztja el a jeget és havat egyszerre.",
+                    () -> {
+                        Hokotro hk = kivalasztottHokotro();
+                        if (hk != null) bolt.sarkanyVasarol(hk);
+                    }, vanHokotro);
                 break;
 
             case "Erőforrás":
@@ -279,13 +285,13 @@ public class BoltDialog extends JDialog {
 
             case "Buszfejlesztés":
                 hokotroSelectorCB.setVisible(false);
-                add("Sebességfejlesztés (+10)", "150 Ft",
+                add("Sebességfejlesztés (+10)", bolt.getSebessegfejlesztesAr() + " Ft",
                     "A busz sebességét 10 egységgel növeli.",
                     () -> { if (vanBusz) bolt.sebessegFejlesztes(buszok.get(0), 10); }, vanBusz);
-                add("Tapadásfejlesztés (+10)", "120 Ft",
+                add("Tapadásfejlesztés (+10)", bolt.getTapadasfejlesztesAr() + " Ft",
                     "A busz tapadását 10 egységgel növeli, csökkentve a megcsúszás esélyét.",
                     () -> { if (vanBusz) bolt.tapadasFejlesztes(buszok.get(0), 10); }, vanBusz);
-                add("Hozamfejlesztés (+10)", "200 Ft",
+                add("Hozamfejlesztés (+10)", bolt.getHozamfejlesztesAr() + " Ft",
                     "A busz hozamát 10 egységgel növeli, több bevételt termelve.",
                     () -> { if (vanBusz) bolt.hozamFejlesztes(buszok.get(0), 10); }, vanBusz);
                 break;

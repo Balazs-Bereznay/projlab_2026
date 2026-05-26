@@ -1,4 +1,4 @@
-﻿ue11:
+ue11:
 hoMagassag: 0
 jegMagassag: 0
 soMennyiseg: 0

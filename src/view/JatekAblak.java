@@ -2,6 +2,7 @@ package view;
 
 import controller.JatekController;
 import controller.JatekController.Fazis;
+import model.Iranyithato;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -47,7 +48,7 @@ public class JatekAblak extends JFrame {
         add(cardPanel, BorderLayout.CENTER);
         cardLayout.show(cardPanel, CARD_MENU);
 
-        setSize(900, 620);
+        setSize(900, 560);
         setLocationRelativeTo(null);
     }
 
@@ -59,13 +60,11 @@ public class JatekAblak extends JFrame {
     }
 
     private void ujJatekIndit(String[] nevek, String[] szerepek) {
-        if (controller == null) {
-            controller = new JatekController();
-        }
         if (szimulacioTimer != null) {
             szimulacioTimer.stop();
             szimulacioTimer = null;
         }
+        controller = new JatekController();
         controller.ujJatek(nevek.length, nevek);
         controller.addAllapotValtozoListener(this::frissitView);
 
@@ -142,7 +141,7 @@ public class JatekAblak extends JFrame {
         bottomBar.setBorder(new MatteBorder(1, 0, 0, 0, new Color(180, 185, 210)));
 
         utvonalKijelolBtn = alsogomb("Útvonal kijelölés");
-        takaritBtn = alsogomb("takarít");
+        takaritBtn = alsogomb("takarit");
         korVegeBtn = alsogomb("Kör vége");
 
         utvonalKijelolBtn.addActionListener(e -> utvonalKijelolToggle());
@@ -163,23 +162,30 @@ public class JatekAblak extends JFrame {
     }
 
     private void utvonalKijelolToggle() {
-        // Az útvonal-kijelölés mindig aktív tervezési fázisban (kattintás a térképen).
-        // Ez a gomb csak figyelmeztet / visszajelzést ad.
-        if (controller.getAktualisFazis() == Fazis.TERVEZES) {
-            JOptionPane.showMessageDialog(this,
-                "Kattints az útegységekre a térképen a kijelölt jármű útvonalának megtervezéséhez.",
-                "Útvonal kijelölés", JOptionPane.INFORMATION_MESSAGE);
+        if (controller.getAktualisFazis() != Fazis.TERVEZES) return;
+        Iranyithato kiv = controller.getKivalasztottJarmu();
+        if (kiv == null) {
+            // Nincs kiválasztott jármű – kijelöljük az elsőt
+            if (!controller.getHokotrók().isEmpty())
+                controller.jarmuvKivalaszt(controller.getHokotrók().get(0));
+            else if (!controller.getBuszok().isEmpty())
+                controller.jarmuvKivalaszt(controller.getBuszok().get(0));
+        } else {
+            // Van kiválasztott jármű – töröljük az útvonalát (újra tervezés)
+            controller.tervTorol(kiv);
         }
     }
 
     private void takaritAkcio() {
         Fazis fazis = controller.getAktualisFazis();
         if (fazis == Fazis.SZIMULACIO) {
-            controller.szimulacioTick();
-        } else if (fazis == Fazis.TERVEZES) {
-            // Autorun: teljesíti az egy kört szimulációval
-            controller.korBefejezes();
-            autoSzimulacioStart();
+            if (szimulacioTimer != null && szimulacioTimer.isRunning()) {
+                szimulacioTimer.stop();
+                szimulacioTimer = null;
+                frissitGombok();
+            } else {
+                controller.szimulacioTick();
+            }
         }
     }
 
@@ -187,13 +193,9 @@ public class JatekAblak extends JFrame {
         Fazis fazis = controller.getAktualisFazis();
         if (fazis == Fazis.TERVEZES) {
             controller.korBefejezes();
+            autoSzimulacioStart();
         } else if (fazis == Fazis.SZIMULACIO) {
-            if (szimulacioTimer != null && szimulacioTimer.isRunning()) {
-                szimulacioTimer.stop();
-                szimulacioTimer = null;
-            } else {
-                autoSzimulacioStart();
-            }
+            autoSzimulacioStart();
         }
     }
 
@@ -257,13 +259,23 @@ public class JatekAblak extends JFrame {
         if (szimulacio && szimulacioTimer != null && szimulacioTimer.isRunning()) {
             takaritBtn.setText("⏹ Stop");
             takaritBtn.setBackground(new Color(230, 130, 130));
+            takaritBtn.setEnabled(true);
             korVegeBtn.setEnabled(false);
+        } else if (szimulacio) {
+            takaritBtn.setText("takarit");
+            takaritBtn.setBackground(new Color(150, 200, 255));
+            takaritBtn.setEnabled(true);
+            korVegeBtn.setEnabled(true);
         } else {
-            takaritBtn.setText("takarít");
-            takaritBtn.setBackground(new Color(150, 230, 150));
-            korVegeBtn.setEnabled(tervezes || szimulacio);
+            takaritBtn.setText("takarit");
+            takaritBtn.setBackground(new Color(180, 180, 180));
+            takaritBtn.setEnabled(false);
+            korVegeBtn.setEnabled(tervezes);
         }
-        takaritBtn.setEnabled(fazis != Fazis.JATEK_VEGE);
+        if (fazis == Fazis.JATEK_VEGE) {
+            takaritBtn.setEnabled(false);
+            korVegeBtn.setEnabled(false);
+        }
     }
 
     private JButton alsogomb(String szoveg) {

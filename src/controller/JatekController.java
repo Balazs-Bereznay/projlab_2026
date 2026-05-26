@@ -34,6 +34,8 @@ public class JatekController {
     private final Map<Csomopont, int[]> csomopontPoziciok = new LinkedHashMap<>();
     // Útegységek megjelenítési pozíciói (az utak mentén számítva)
     private final Map<Utegyseg, int[]> utegysegPoziciok = new LinkedHashMap<>();
+    // Útegységek menetirányai (egységvektor * 1000)
+    private final Map<Utegyseg, int[]> utegysegIranyok = new LinkedHashMap<>();
 
     private final List<Auto> autok = new ArrayList<>();
     private final List<Hokotro> hokotrók = new ArrayList<>();
@@ -44,7 +46,6 @@ public class JatekController {
     private final List<String> jatekosNevek = new ArrayList<>();
 
     public JatekController() {
-        ujJatek(1);
     }
 
     public void ujJatek(int jatekosokSzama, String[] nevek) {
@@ -64,10 +65,14 @@ public class JatekController {
         bolt.setNyilvantarto(nyilvantarto);
         bolt.setSoAr(50);
         bolt.setBiokerozinAr(100);
-        bolt.setSeproAr(0);
-        bolt.setHanyoAr(150);
-        bolt.setJegtoroAr(120);
-        bolt.setSoszoroAr(200);
+        bolt.setSeproAr(50);
+        bolt.setHanyoAr(80);
+        bolt.setJegtoroAr(100);
+        bolt.setSoszoroAr(150);
+        bolt.setSarkanyAr(300);
+        bolt.setSebessegfejlesztesAr(150);
+        bolt.setTapadasfejlesztesAr(120);
+        bolt.setHozamfejlesztesAr(200);
 
         jatekosok.clear(); autok.clear(); hokotrók.clear(); buszok.clear();
         tervekMap.clear(); aktivTervek.clear(); szimulacioIndex.clear();
@@ -98,10 +103,10 @@ public class JatekController {
         terkep.addUt(ut1); terkep.addUt(ut2);
         terkep.addUt(ut3); terkep.addUt(ut4);
 
-        csomopontPoziciok.put(cs1, new int[]{150, 150});
-        csomopontPoziciok.put(cs2, new int[]{450, 150});
-        csomopontPoziciok.put(cs3, new int[]{450, 350});
-        csomopontPoziciok.put(cs4, new int[]{150, 350});
+        csomopontPoziciok.put(cs1, new int[]{100, 140});
+        csomopontPoziciok.put(cs2, new int[]{500, 140});
+        csomopontPoziciok.put(cs3, new int[]{500, 380});
+        csomopontPoziciok.put(cs4, new int[]{100, 380});
         szamolUtegysegPoziciok();
 
         for (int i = 0; i < jatekosokSzama; i++) {
@@ -218,7 +223,8 @@ public class JatekController {
 
     private void szamolUtegysegPoziciok() {
         utegysegPoziciok.clear();
-        final int LANE_OFFSET = 10;
+        utegysegIranyok.clear();
+        final int LANE_OFFSET = 22;
         for (Ut ut : terkep.getElLista()) {
             Csomopont vp1 = ut.getVegpont1();
             Csomopont vp2 = ut.getVegpont2();
@@ -230,8 +236,8 @@ public class JatekController {
             double dx = p2[0] - p1[0];
             double dy = p2[1] - p1[1];
             double len = Math.sqrt(dx * dx + dy * dy);
-            double nx = dx / len, ny = dy / len;   // irány
-            double px = -ny, py = nx;               // merőleges
+            double nx = dx / len, ny = dy / len;
+            double px = -ny, py = nx;
 
             List<Sav> savok = ut.getSavok();
             int n = savok.size();
@@ -239,6 +245,9 @@ public class JatekController {
                 Sav sav = savok.get(si);
                 double offset = (si - (n - 1) / 2.0) * LANE_OFFSET;
                 boolean forward = (sav.getVegCsomopont() == vp2);
+
+                int dirX = (int)((forward ? nx : -nx) * 1000);
+                int dirY = (int)((forward ? ny : -ny) * 1000);
 
                 List<Utegyseg> ueList = new ArrayList<>();
                 Utegyseg cur = sav.getElsoUtegyseg();
@@ -250,24 +259,54 @@ public class JatekController {
                 for (int ui = 0; ui < m; ui++) {
                     double t = (ui + 0.5) / m;
                     double progress = forward ? t : (1.0 - t);
-                    // Kis margó a csomópontoktól
                     double adjustedProgress = 0.05 + progress * 0.9;
                     int x = (int) (p1[0] + dx * adjustedProgress + px * offset);
                     int y = (int) (p1[1] + dy * adjustedProgress + py * offset);
                     utegysegPoziciok.put(ueList.get(ui), new int[]{x, y});
+                    utegysegIranyok.put(ueList.get(ui), new int[]{dirX, dirY});
                 }
             }
         }
     }
 
-    /** Tervezési fázisban kijelöl vagy megszüntet egy útegységet a kiválasztott jármű útvonalán. */
+    /** Tervezési fázisban kijelöl egy útegységet a kiválasztott jármű útvonalán, ha érvényes szomszédos lépés. */
     public void utegysegKijelol(Utegyseg ue) {
         if (aktualisFazis != Fazis.TERVEZES || kivalasztottJarmu == null) return;
         List<Utegyseg> terv = tervekMap.get(kivalasztottJarmu);
         if (terv == null) return;
-        if (terv.contains(ue)) terv.remove(ue);
-        else terv.add(ue);
+        if (terv.contains(ue)) {
+            terv.remove(ue);
+        } else {
+            Utegyseg ref = terv.isEmpty()
+                ? ((Jarmu) kivalasztottJarmu).getUtegyseg()
+                : terv.get(terv.size() - 1);
+            if (ref != null && validKovetkezok(ref).contains(ue)) {
+                terv.add(ue);
+            }
+        }
         ertesitListeners();
+    }
+
+    private Set<Utegyseg> validKovetkezok(Utegyseg ref) {
+        Set<Utegyseg> eredmeny = new HashSet<>();
+        Utegyseg kovetkezo = ref.getKovetkezoUtegyseg();
+        if (kovetkezo != null) {
+            eredmeny.add(kovetkezo);
+        } else {
+            // Sáv végén: a vegCsomóponttól INDULÓ (nem oda érkező) sávok első útegységei érvényesek
+            Sav sav = ref.getSav();
+            if (sav != null && sav.getVegCsomopont() != null) {
+                Csomopont vegCsp = sav.getVegCsomopont();
+                for (Ut ut : vegCsp.getUtLista()) {
+                    for (Sav s : ut.getSavok()) {
+                        if (s.getVegCsomopont() != vegCsp && s.getElsoUtegyseg() != null) {
+                            eredmeny.add(s.getElsoUtegyseg());
+                        }
+                    }
+                }
+            }
+        }
+        return eredmeny;
     }
 
     /** Kiválaszt egy járművet az útvonal-tervezéshez. */
@@ -366,6 +405,10 @@ public class JatekController {
         listeners.add(r);
     }
 
+    public void clearListeners() {
+        listeners.clear();
+    }
+
     private void ertesitListeners() {
         for (Runnable r : listeners) r.run();
     }
@@ -382,6 +425,7 @@ public class JatekController {
     public Map<Iranyithato, List<Utegyseg>> getTervekMap() { return tervekMap; }
     public Map<Csomopont, int[]> getCsomopontPoziciok() { return csomopontPoziciok; }
     public Map<Utegyseg, int[]> getUtegysegPoziciok() { return utegysegPoziciok; }
+    public Map<Utegyseg, int[]> getUtegysegIranyok() { return utegysegIranyok; }
     public List<Auto> getAutok() { return autok; }
     public List<Hokotro> getHokotrók() { return hokotrók; }
     public List<Busz> getBuszok() { return buszok; }

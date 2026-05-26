@@ -16,12 +16,13 @@ public class InfoPanel extends JPanel {
     private final JatekController controller;
     private final Runnable boltMegnyitCallback;
 
-    private final JLabel kasszaLabel = new JLabel();
-    private final JLabel soLabel = new JLabel();
-    private final JLabel bioLabel = new JLabel();
-    private final JLabel utazikLabel = new JLabel();
-    private final JLabel nemBeertLabel = new JLabel();
-    private final JLabel aktivFejLabel = new JLabel();
+    private final JLabel kasszaLabel  = new JLabel();
+    private final JLabel soLabel      = new JLabel();
+    private final JLabel bioLabel     = new JLabel();
+    private final JLabel zuzalekLabel = new JLabel();
+    private final JLabel utazikLabel  = new JLabel();
+    private final JLabel nemBeertLabel= new JLabel();
+    private final JLabel aktivFejLabel= new JLabel();
 
     private final JPanel jarmuListaPanel = new JPanel();
     private final JLabel tervLabel = new JLabel();
@@ -45,15 +46,16 @@ public class InfoPanel extends JPanel {
         add(szekcioCim("Erőforrások"));
         add(Box.createRigidArea(new Dimension(0, 4)));
 
-        kasszaLabel.setFont(labelFont); kasszaLabel.setForeground(labelSzin);
-        soLabel.setFont(labelFont); soLabel.setForeground(labelSzin);
-        bioLabel.setFont(labelFont); bioLabel.setForeground(labelSzin);
-        utazikLabel.setFont(labelFont); utazikLabel.setForeground(labelSzin);
-        nemBeertLabel.setFont(labelFont); nemBeertLabel.setForeground(labelSzin);
-        aktivFejLabel.setFont(labelFont); aktivFejLabel.setForeground(labelSzin);
+        kasszaLabel.setFont(labelFont);  kasszaLabel.setForeground(labelSzin);
+        soLabel.setFont(labelFont);      soLabel.setForeground(labelSzin);
+        bioLabel.setFont(labelFont);     bioLabel.setForeground(labelSzin);
+        zuzalekLabel.setFont(labelFont); zuzalekLabel.setForeground(labelSzin);
+        utazikLabel.setFont(labelFont);  utazikLabel.setForeground(labelSzin);
+        nemBeertLabel.setFont(labelFont);nemBeertLabel.setForeground(labelSzin);
+        aktivFejLabel.setFont(labelFont);aktivFejLabel.setForeground(labelSzin);
 
-        for (JLabel l : new JLabel[]{kasszaLabel, soLabel, bioLabel,
-                                      utazikLabel, nemBeertLabel, aktivFejLabel}) {
+        for (JLabel l : new JLabel[]{kasszaLabel, soLabel, bioLabel, zuzalekLabel,
+                                      utazikLabel, nemBeertLabel}) {
             l.setAlignmentX(Component.LEFT_ALIGNMENT);
             add(l);
             add(Box.createRigidArea(new Dimension(0, 3)));
@@ -62,6 +64,8 @@ public class InfoPanel extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 8)));
         add(szekcioCim("Aktív fej"));
         aktivFejLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(aktivFejLabel);
+        add(Box.createRigidArea(new Dimension(0, 3)));
 
         // --- Bolt gomb ---
         add(Box.createRigidArea(new Dimension(0, 10)));
@@ -105,6 +109,10 @@ public class InfoPanel extends JPanel {
         add(tervTorleBtn);
 
         add(Box.createVerticalGlue());
+        add(Box.createRigidArea(new Dimension(0, 8)));
+        add(szekcioCim("Jelmagyarázat"));
+        add(Box.createRigidArea(new Dimension(0, 4)));
+        add(buildJelmagyarazat());
         frissit();
     }
 
@@ -115,6 +123,10 @@ public class InfoPanel extends JPanel {
         kasszaLabel.setText("Kassza: " + ny.getPenz() + " T");
         soLabel.setText("Só: " + ny.getSo());
         bioLabel.setText("Biokerozin: " + ny.getBiokerozin());
+        int osszesenZuzalek = 0;
+        for (model.Hokotro hk : controller.getHokotrók())
+            osszesenZuzalek += hk.getZuzalekMennyiseg();
+        zuzalekLabel.setText("Zúzalék: " + osszesenZuzalek);
         utazikLabel.setText("Utazik: " + controller.getAutok().size() + " NPC");
         nemBeertLabel.setText("Nem beért: " + ny.getNemBeertAutokSzama()
                 + "/" + ny.getNemBeertAutokLimit() + " db");
@@ -127,14 +139,17 @@ public class InfoPanel extends JPanel {
         if (kiv != null && tervezes) {
             List<Utegyseg> terv = controller.getTervekMap().get(kiv);
             int db = (terv != null) ? terv.size() : 0;
-            tervLabel.setText("jelenlegi útvonal: " + db + " db");
+            tervLabel.setText("<html><b>kijelölt:</b> " + getJarmuNev(kiv)
+                + "<br><b>útvonal:</b> " + db + " egység</html>");
             tervTorleBtn.setVisible(db > 0);
             final Iranyithato torolando = kiv;
-            tervTorleBtn.addActionListener(null);
             for (var l : tervTorleBtn.getActionListeners()) tervTorleBtn.removeActionListener(l);
             tervTorleBtn.addActionListener(e -> controller.tervTorol(torolando));
+        } else if (kiv != null) {
+            tervLabel.setText("<html><b>kijelölt:</b> " + getJarmuNev(kiv) + "</html>");
+            tervTorleBtn.setVisible(false);
         } else {
-            tervLabel.setText("kijelölt jármű: -");
+            tervLabel.setText("kijelölt jármű: –");
             tervTorleBtn.setVisible(false);
         }
 
@@ -184,6 +199,64 @@ public class InfoPanel extends JPanel {
         }
         sor.add(btn, BorderLayout.CENTER);
         return sor;
+    }
+
+    private String getJarmuNev(Iranyithato j) {
+        List<model.Hokotro> hk = controller.getHokotrók();
+        for (int i = 0; i < hk.size(); i++) if (hk.get(i) == j) return "Hókotró " + (i + 1);
+        List<model.Busz> b = controller.getBuszok();
+        for (int i = 0; i < b.size(); i++) if (b.get(i) == j) return "Busz " + (i + 1);
+        return "Jármű";
+    }
+
+    private JPanel buildJelmagyarazat() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(false);
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        Object[][] jm = {
+            {new Color(148, 152, 148), "Tiszta út"},
+            {new Color(195, 210, 238), "Havas (h=magasság)"},
+            {new Color(55,   65, 190), "Mély hó – blokkolt"},
+            {new Color(75,  198, 215), "Jeges (j=vastagság)"},
+            {new Color(218, 214, 135), "Sózott út"},
+            {new Color(255, 215,   0), "Tervezett útvonal"},
+            {new Color(235, 128,  28), "H – Hókotró"},
+            {new Color(52,  185,  68), "B – Busz"},
+            {new Color(235, 192,  48), "A – NPC autó"},
+        };
+
+        for (Object[] sor : jm) {
+            Color szin = (Color) sor[0];
+            String szoveg = (String) sor[1];
+
+            JPanel sorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 1));
+            sorPanel.setOpaque(false);
+            sorPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            sorPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
+
+            JPanel negyzet = new JPanel() {
+                @Override protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.setColor(szin);
+                    g.fillRect(0, 0, 12, 11);
+                    g.setColor(new Color(20, 22, 32));
+                    g.drawRect(0, 0, 11, 10);
+                }
+            };
+            negyzet.setOpaque(false);
+            negyzet.setPreferredSize(new Dimension(12, 12));
+
+            JLabel label = new JLabel(szoveg);
+            label.setFont(new Font("SansSerif", Font.PLAIN, 9));
+            label.setForeground(new Color(40, 40, 60));
+
+            sorPanel.add(negyzet);
+            sorPanel.add(label);
+            panel.add(sorPanel);
+        }
+        return panel;
     }
 
     private JLabel szekcioCim(String szoveg) {
