@@ -146,21 +146,30 @@ public class JatekController implements Megfigyelo {
         Csomopont cs2 = makeCsomopont("B", true,  false);
         Csomopont cs3 = makeCsomopont("C", false, true);
         Csomopont cs4 = makeCsomopont("D", true,  false);
+        Csomopont cs5 = makeCsomopont("E", false, false);
 
-        Ut ut1 = makeUt(cs1, cs2, 2, 5, false);
-        Ut ut2 = makeUt(cs2, cs3, 2, 4, false);
-        Ut ut3 = makeUt(cs3, cs4, 2, 5, false);
-        Ut ut4 = makeUt(cs4, cs1, 2, 4, false);
+        Ut ut1  = makeUt(cs1, cs2, 2, 5, false);
+        Ut ut2  = makeUt(cs2, cs3, 2, 4, false);
+        Ut ut3  = makeUt(cs3, cs4, 2, 5, false);
+        Ut ut4  = makeUt(cs4, cs1, 2, 4, false);
+        Ut utEA = makeUt(cs5, cs1, 2, 3, false);
+        Ut utEB = makeUt(cs5, cs2, 2, 3, false);
+        Ut utEC = makeUt(cs5, cs3, 2, 3, false);
+        Ut utED = makeUtDupla(cs5, cs4, 3, false);
 
         terkep.addCsomopont(cs1); terkep.addCsomopont(cs2);
         terkep.addCsomopont(cs3); terkep.addCsomopont(cs4);
-        terkep.addUt(ut1); terkep.addUt(ut2);
-        terkep.addUt(ut3); terkep.addUt(ut4);
+        terkep.addCsomopont(cs5);
+        terkep.addUt(ut1);  terkep.addUt(ut2);
+        terkep.addUt(ut3);  terkep.addUt(ut4);
+        terkep.addUt(utEA); terkep.addUt(utEB);
+        terkep.addUt(utEC); terkep.addUt(utED);
 
         csomopontPoziciok.put(cs1, new int[]{  0,   0});
         csomopontPoziciok.put(cs2, new int[]{600,   0});
         csomopontPoziciok.put(cs3, new int[]{600, 400});
         csomopontPoziciok.put(cs4, new int[]{  0, 400});
+        csomopontPoziciok.put(cs5, new int[]{300, 200});
     }
 
     private Hokotro ujHokotro() {
@@ -917,6 +926,47 @@ public class JatekController implements Megfigyelo {
             }
         }
         return ut;
+    }
+
+    private Ut makeUtDupla(Csomopont vp1, Csomopont vp2, int uePerSav, boolean alagut) {
+        Ut ut = new Ut();
+        ut.setVegpont1(vp1);
+        ut.setVegpont2(vp2);
+        ut.setAlagut(alagut);
+        vp1.addUt(ut);
+        vp2.addUt(ut);
+
+        // 4 lanes grouped by direction: sav0+sav1 → vp2, sav2+sav3 → vp1
+        for (Csomopont vc : new Csomopont[]{vp2, vp2, vp1, vp1}) {
+            Sav sav = new Sav();
+            sav.setVegCsomopont(vc);
+            Utegyseg prev = null;
+            for (int j = 0; j < uePerSav; j++) {
+                Utegyseg ue = new Utegyseg();
+                ue.setSav(sav);
+                if (prev == null) sav.setElsoUtegyseg(ue);
+                else prev.setKovetkezoUtegyseg(ue);
+                prev = ue;
+            }
+            ut.addSav(sav);
+        }
+
+        // Connect only same-direction pairs
+        List<Sav> savok = ut.getSavok();
+        savokOsszekot(savok.get(0), savok.get(1)); // lane 1 ↔ lane 2 toward vp2
+        savokOsszekot(savok.get(2), savok.get(3)); // lane 1 ↔ lane 2 toward vp1
+        return ut;
+    }
+
+    private void savokOsszekot(Sav savA, Sav savB) {
+        Utegyseg ue1 = savA.getElsoUtegyseg();
+        Utegyseg ue2 = savB.getElsoUtegyseg();
+        while (ue1 != null && ue2 != null) {
+            ue1.setJobbUtegyseg(ue2);
+            ue2.setBalUtegyseg(ue1);
+            ue1 = ue1.getKovetkezoUtegyseg();
+            ue2 = ue2.getKovetkezoUtegyseg();
+        }
     }
 
     private void placeJarmu(Jarmu j, Utegyseg ue) {
