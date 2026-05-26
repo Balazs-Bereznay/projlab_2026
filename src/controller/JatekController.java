@@ -212,6 +212,7 @@ public class JatekController implements Megfigyelo {
         Hokotro hk = new Hokotro(new Sopro());
         hk.setSebesseg(8);
         hk.setTapadas(50);
+        hk.setZuzalekLimit(10);
         hk.setNyilvantarto(nyilvantarto);
         placeOnFreeUtegyseg(hk);
         return hk;

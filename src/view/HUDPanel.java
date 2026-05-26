@@ -110,10 +110,13 @@ public class HUDPanel extends JPanel implements Megfigyelo {
         soLabel.setText("Só: " + ny.getSo());
         bioLabel.setText("Biokerozin: " + ny.getBiokerozin());
 
-        int osszesenZuzalek = 0;
-        for (Hokotro hk : controller.getHokotrók())
-            osszesenZuzalek += hk.getZuzalekMennyiseg();
-        zuzalekLabel.setText("Zúzalék: " + osszesenZuzalek);
+        Iranyithato aktualisJarmu = controller.getKivalasztottJarmu();
+        if (aktualisJarmu instanceof Hokotro) {
+            Hokotro hk = (Hokotro) aktualisJarmu;
+            zuzalekLabel.setText("Zúzalék (aktív): " + hk.getZuzalekMennyiseg() + "/" + hk.getZuzalekLimit());
+        } else {
+            zuzalekLabel.setText("Zúzalék (aktív): -");
+        }
         nemBeertLabel.setText("Nem beért: " + ny.getNemBeertAutokSzama() + "/" + ny.getNemBeertAutokLimit() + " db");
         aktivFejLabel.setText("Aktív fej: " + controller.getAktivHokotroFejNev());
 

@@ -18,6 +18,7 @@ public class PalyaLayout {
     private final Map<Utegyseg, int[]> utegysegIranyok  = new LinkedHashMap<>();
 
     private static final int LANE_OFFSET = 34;
+    private static final double MAX_NODE_MARGIN_RATIO = 0.28;
 
     public Pont getPozicio(Csomopont cs) { return csomopontPoziciok.get(cs); }
     public void setPozicio(Csomopont cs, Pont p) { csomopontPoziciok.put(cs, p); }
@@ -89,10 +90,13 @@ public class PalyaLayout {
                     cur = cur.getKovetkezoUtegyseg();
                 }
                 int m = ueList.size();
+                double nodeMarginPx = Math.max(mertekSzelesseg * 2.0, LANE_OFFSET * 1.35);
+                double nodeMarginRatio = Math.min(MAX_NODE_MARGIN_RATIO, nodeMarginPx / len);
+                double usableRatio = Math.max(0.1, 1.0 - 2.0 * nodeMarginRatio);
                 for (int ui = 0; ui < m; ui++) {
                     double t = (ui + 0.5) / m;
                     double progress = forward ? t : (1.0 - t);
-                    double adjustedProgress = 0.05 + progress * 0.9;
+                    double adjustedProgress = nodeMarginRatio + progress * usableRatio;
                     int x = (int)(p1.x + dx * adjustedProgress + px * offset);
                     int y = (int)(p1.y + dy * adjustedProgress + py * offset);
                     utegysegPoziciok.put(ueList.get(ui), new int[]{x, y});

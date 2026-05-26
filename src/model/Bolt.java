@@ -79,8 +79,18 @@ public class Bolt implements ProtoEntitas, Megfigyelheto {
     }
 
     public void zuzalekVasarol(Hokotro hokotro, int mennyiseg) {
-        if (nyilvantarto.penzLevon(mennyiseg * zuzalekAr)) {
-            hokotro.zuzalekNovel(mennyiseg);
+        if (hokotro == null || nyilvantarto == null || mennyiseg <= 0) {
+            return;
+        }
+
+        int szabadKapacitas = hokotro.getZuzalekLimit() - hokotro.getZuzalekMennyiseg();
+        int vasarolhatoMennyiseg = Math.min(mennyiseg, Math.max(0, szabadKapacitas));
+        if (vasarolhatoMennyiseg <= 0) {
+            return;
+        }
+
+        if (nyilvantarto.penzLevon(vasarolhatoMennyiseg * zuzalekAr)) {
+            hokotro.zuzalekNovel(vasarolhatoMennyiseg);
             ertesit();
         }
     }
