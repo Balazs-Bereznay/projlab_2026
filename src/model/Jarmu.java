@@ -1,18 +1,28 @@
 package model;
 
+import common.Megfigyelo;
+import common.Megfigyelheto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A kozlekedo jarmuvek kozos absztrakt ososztalya.
- *
- * <p>A Jarmu felel a jarmu aktualis helyzetenek, kijelolt utvonalanak,
- * mozgasi tulajdonsagainak es kozlekedesi allapotainak nyilvantartasaert.
- * A konkret jarmutipusok, peldaul a Hokotro, a Busz es az Auto, ebbol az
- * osztalybol szarmaztatva hasznaljak a kozos mozgasi es allapotkezelesi
- * muveleteket.</p>
- */
-public abstract class Jarmu implements ProtoEntitas {
+public abstract class Jarmu implements ProtoEntitas, Megfigyelheto {
+
+    protected final List<Megfigyelo> megfigyelok = new ArrayList<>();
+
+    @Override
+    public void addObserver(Megfigyelo m) {
+        if (m != null && !megfigyelok.contains(m)) megfigyelok.add(m);
+    }
+
+    @Override
+    public void removeObserver(Megfigyelo m) {
+        megfigyelok.remove(m);
+    }
+
+    @Override
+    public void ertesit() {
+        for (Megfigyelo m : new ArrayList<>(megfigyelok)) m.frissit();
+    }
 
     /**
      * A jatek kozos nyilvantartoja. Elsosorban az NPC autok elakadasanak
@@ -152,10 +162,12 @@ public abstract class Jarmu implements ProtoEntitas {
             if (utegyseg.getSav() != null && utegyseg.getSav().getVegCsomopont() != null) {
                 utegyseg.getSav().getVegCsomopont().jarmuErkezik(this);
             }
+            ertesit();
             return;
         }
 
         kovetkezo.ralep(this);
+        ertesit();
     }
 
     /**
@@ -168,14 +180,13 @@ public abstract class Jarmu implements ProtoEntitas {
     public void csuszik() {
         this.megcsuszott = true;
 
-        // Megpróbálunk baleseti partnert keresni
         Jarmu partner = keresPartner();
 
-        // Ha találtunk partnert, mindkettőnél kiváltjuk a baleset eseményt
         if (partner != null) {
             baleset();
             partner.baleset();
         }
+        ertesit();
     }
 
     /**
@@ -188,8 +199,9 @@ public abstract class Jarmu implements ProtoEntitas {
     public void baleset() {
         this.baleset = true;
         this.megcsuszott = false;
-        nyilvantarto.nemBeertAutokNovel(1);
+        if (nyilvantarto != null) nyilvantarto.nemBeertAutokNovel(1);
         if (utegyseg != null) utegyseg.setBlokkolt(true);
+        ertesit();
     }
 
     /**
@@ -202,7 +214,11 @@ public abstract class Jarmu implements ProtoEntitas {
      */
     public void elakad() {
         this.elakadt = true;
+        ertesit();
     }
+
+    public boolean isBaleset() { return baleset; }
+    public boolean isElakadt() { return elakadt; }
 
     /**
      * Frissiti a jarmu aktualis helyzetet egy sikeres ralepes utan.
@@ -225,6 +241,7 @@ public abstract class Jarmu implements ProtoEntitas {
         this.utegyseg = ujUtegyseg;
 
         this.elakadt = false;
+        ertesit();
     }
 
     /**
@@ -254,7 +271,9 @@ public abstract class Jarmu implements ProtoEntitas {
             return false;
         }
 
-        return cel != null && cel.ralep(this);
+        boolean eredmeny = cel != null && cel.ralep(this);
+        ertesit();
+        return eredmeny;
     }
 
     /**

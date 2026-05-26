@@ -1,16 +1,28 @@
 package model;
 
-
+import common.Megfigyelo;
+import common.Megfigyelheto;
+import java.util.ArrayList;
 import java.util.List;
 
-//import static model.Jatekos.bolt;
+public class Bolt implements ProtoEntitas, Megfigyelheto {
 
-/**
- * A játék gazdasági központja, ahol a játékosok a megszerzett pénzből új eszközöket, nyersanyagokat vásárolhatnak,
- * van lehetőség a hókotrófejek cseréjére, valamint a buszok fejlesztésére is. Az áruk listázása is az ő felelőssége.
- */
+    private final List<Megfigyelo> megfigyelok = new ArrayList<>();
 
-public class Bolt implements ProtoEntitas {
+    @Override
+    public void addObserver(Megfigyelo m) {
+        if (m != null && !megfigyelok.contains(m)) megfigyelok.add(m);
+    }
+
+    @Override
+    public void removeObserver(Megfigyelo m) {
+        megfigyelok.remove(m);
+    }
+
+    @Override
+    public void ertesit() {
+        for (Megfigyelo m : new ArrayList<>(megfigyelok)) m.frissit();
+    }
 
     /// a megvasarolható sónak az egységára
     private  int soAr;
@@ -44,42 +56,44 @@ public class Bolt implements ProtoEntitas {
     /**
      * A játékos megvásárol egy új hokotrót
      */
-    public void hokotroVasarol(Jatekos jatekos, Hokotro hokotro){
+    public void hokotroVasarol(Jatekos jatekos, Hokotro hokotro) {
         if (nyilvantarto.penzLevon(hokotroAr)) {
             Fej sopro = new Sopro();
             hokotro.setFej(sopro);
             jatekos.getFlotta().add(hokotro);
             System.out.println("Egy új alap hókotró sikeresen megvásárolva!");
+            ertesit();
         }
-
     }
 
     /**
      * Egy játékos által vásárolt adott mennyiségű sót hozzáadja a nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi sót  akarunk vásárolni.
      */
-    public void soVasarol(int mennyiseg){
+    public void soVasarol(int mennyiseg) {
         if (nyilvantarto.penzLevon(soAr * mennyiseg)) {
             nyilvantarto.soNovel(mennyiseg);
             System.out.println("Sikeres tranzakció: " + mennyiseg + " egység só megvásárolva.");
+            ertesit();
         }
     }
 
     public void zuzalekVasarol(Hokotro hokotro, int mennyiseg) {
-       if (nyilvantarto.penzLevon(mennyiseg * zuzalekAr))
-       {
-           hokotro.zuzalekNovel(mennyiseg);
-       }
+        if (nyilvantarto.penzLevon(mennyiseg * zuzalekAr)) {
+            hokotro.zuzalekNovel(mennyiseg);
+            ertesit();
+        }
     }
 
     /**
      * "Egy játékos által vásárolt adott mennyiségű biokerozint hozzáadja a Nyilvántartó rendszerhez.
      * @param mennyiseg annak a mennyisége, hogy mennyi biokerozint  akarunk vásárolni.
      */
-    public void biokerozinVasarol(int mennyiseg){
+    public void biokerozinVasarol(int mennyiseg) {
         if (nyilvantarto.penzLevon(biokerozinAr * mennyiseg)) {
             nyilvantarto.biokerozinNovel(mennyiseg);
             System.out.println("Sikeres tranzakció: " + mennyiseg + " liter biokerozin megvásárolva.");
+            ertesit();
         }
     }
 
@@ -93,43 +107,39 @@ public class Bolt implements ProtoEntitas {
         if (nyilvantarto.penzLevon(sebessegfejlesztesAr)) {
             busz.setSebesseg(busz.getSebesseg() + novelesMerteke);
             System.out.println("A busz sebessége fejlesztve lett!");
+            ertesit();
         }
-
     }
-    public void tapadasFejlesztes(Busz busz,  int novelesMerteke){
-      //  tapadasfejlesztes.fejleszt(busz);
+
+    public void tapadasFejlesztes(Busz busz, int novelesMerteke) {
         System.out.println("Tapadásfejlesztés alkalmazva.");
-        if(busz == null){
-            return;
-        }
+        if (busz == null) return;
         if (nyilvantarto.penzLevon(tapadasfejlesztesAr)) {
             busz.setTapadas(busz.getTapadas() + novelesMerteke);
             System.out.println("A busz tapadasa fejlesztve lett!");
+            ertesit();
         }
-
     }
-    public void hozamFejlesztes(Busz busz, int  novelesMerteke){
-        //  hozamfejlesztes.fejleszt(busz);
+
+    public void hozamFejlesztes(Busz busz, int novelesMerteke) {
         System.out.println("Hozamfejlesztés alkalmazva.");
-        if(busz == null){
-            return;
-        }
+        if (busz == null) return;
         if (nyilvantarto.penzLevon(hozamfejlesztesAr)) {
             busz.setBevetel(busz.getBevetel() + novelesMerteke);
             System.out.println("A busz hozama fejlesztve lett!");
+            ertesit();
         }
-
     }
 
     /**
      * A jatékos megvásárol egy seprőfejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      * @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void soproVasarol(Hokotro hokotro){
+    public void soproVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(soproAr)) {
-            Fej sepro = new Sopro();
-            hokotro.setFej(sepro);
+            hokotro.setFej(new Sopro());
             System.out.println("Seprőfej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 
@@ -137,11 +147,11 @@ public class Bolt implements ProtoEntitas {
      * A jatékos megvásárol egy hányófejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void hanyoVasarol(Hokotro hokotro){
+    public void hanyoVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(hanyoAr)) {
-            Fej hanyo = new Hanyo();
-            hokotro.setFej(hanyo);
+            hokotro.setFej(new Hanyo());
             System.out.println("Hóhányófej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 
@@ -149,11 +159,11 @@ public class Bolt implements ProtoEntitas {
      *A jatékos megvásárol egy jégtörő fejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void jegtoroVasarol(Hokotro hokotro){
+    public void jegtoroVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(jegtoroAr)) {
-            Fej jegt = new Jegtoro();
-            hokotro.setFej(jegt);
+            hokotro.setFej(new Jegtoro());
             System.out.println("Jégtörő fej megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 
@@ -161,12 +171,13 @@ public class Bolt implements ProtoEntitas {
      * A jatékos megvásárol egy sószoró, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public void soszoroVasarol(Hokotro hokotro){
+    public void soszoroVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(soszoroAr)) {
             Soszoro sSz = new Soszoro(nyilvantarto);
-            sSz.setNyilvantarto(hokotro.getNyilvantarto());
+            sSz.setNyilvantarto(hokotro.getNyilvantarto() != null ? hokotro.getNyilvantarto() : nyilvantarto);
             hokotro.setFej(sSz);
             System.out.println("Sószóró megvásárolva és sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 
@@ -174,21 +185,23 @@ public class Bolt implements ProtoEntitas {
      * A jatékos megvásárol egy sárkány fejet, amit egyből fel is szerelünk a hókotróra, és ezzel együtt a korábbi hókotró eltűnik.
      *  @param hokotro az a hókotró amelyikre fel akarjuk szerelni az új tisztító fejet.
      */
-    public  void sarkanyVasarol(Hokotro hokotro){
+    public void sarkanyVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(sarkanyAr)) {
             Sarkany srkny = new Sarkany(nyilvantarto);
-            srkny.setNyilvantarto(hokotro.getNyilvantarto());
+            srkny.setNyilvantarto(hokotro.getNyilvantarto() != null ? hokotro.getNyilvantarto() : nyilvantarto);
             hokotro.setFej(srkny);
             System.out.println("Sárkány fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 
-    public  void zuzalekszoroVasarol(Hokotro hokotro){
+    public void zuzalekszoroVasarol(Hokotro hokotro) {
         if (nyilvantarto.penzLevon(zuzalekszoroAr)) {
             Zuzalekszoro zsz = new Zuzalekszoro(nyilvantarto);
-            zsz.setNyilvantarto(hokotro.getNyilvantarto());
+            zsz.setNyilvantarto(hokotro.getNyilvantarto() != null ? hokotro.getNyilvantarto() : nyilvantarto);
             hokotro.setFej(zsz);
-            System.out.println("Zúzalékszóró fej megvásárolva! A lángszóró sikeresen felszerelve a kiválasztott hókotróra.");
+            System.out.println("Zúzalékszóró fej megvásárolva! Sikeresen felszerelve a kiválasztott hókotróra.");
+            ertesit();
         }
     }
 

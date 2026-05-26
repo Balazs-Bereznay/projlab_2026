@@ -1,0 +1,198 @@
+package view;
+
+import common.Megfigyelo;
+import controller.JatekController;
+import controller.Fazis;
+import model.*;
+
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.util.List;
+
+public class HUDPanel extends JPanel implements Megfigyelo {
+
+    private final JatekController controller;
+    private final Runnable boltNyitCallback;
+
+    private final JLabel kasszaLabel   = new JLabel();
+    private final JLabel soLabel       = new JLabel();
+    private final JLabel bioLabel      = new JLabel();
+    private final JLabel zuzalekLabel  = new JLabel();
+    private final JLabel nemBeertLabel = new JLabel();
+    private final JLabel aktivFejLabel = new JLabel();
+    private final JLabel tervLabel     = new JLabel();
+    private final JButton tervTorleBtn;
+    private final JPanel jarmuListaPanel = new JPanel();
+
+    public HUDPanel(JatekController controller, Runnable boltNyitCallback) {
+        this.controller = controller;
+        this.boltNyitCallback = boltNyitCallback;
+
+        setBackground(new Color(240, 242, 248));
+        setPreferredSize(new Dimension(190, 0));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(new CompoundBorder(
+            new MatteBorder(0, 1, 0, 0, new Color(180, 180, 200)),
+            new EmptyBorder(10, 8, 8, 8)
+        ));
+
+        Font labelFont = new Font("SansSerif", Font.PLAIN, 12);
+        Color labelSzin = new Color(40, 40, 60);
+
+        add(szekcioCim("Erőforrások"));
+        add(Box.createRigidArea(new Dimension(0, 4)));
+
+        for (JLabel l : new JLabel[]{kasszaLabel, soLabel, bioLabel, zuzalekLabel, nemBeertLabel}) {
+            l.setFont(labelFont); l.setForeground(labelSzin);
+            l.setAlignmentX(Component.LEFT_ALIGNMENT);
+            add(l);
+            add(Box.createRigidArea(new Dimension(0, 3)));
+        }
+
+        add(Box.createRigidArea(new Dimension(0, 8)));
+        add(szekcioCim("Aktív fej"));
+        aktivFejLabel.setFont(labelFont); aktivFejLabel.setForeground(labelSzin);
+        aktivFejLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(aktivFejLabel);
+
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        JButton boltBtn = zoldGomb("Bolt");
+        boltBtn.addActionListener(e -> boltNyitCallback.run());
+        add(boltBtn);
+
+        add(Box.createRigidArea(new Dimension(0, 12)));
+        add(szekcioCim("Járművek"));
+        add(Box.createRigidArea(new Dimension(0, 4)));
+
+        jarmuListaPanel.setLayout(new BoxLayout(jarmuListaPanel, BoxLayout.Y_AXIS));
+        jarmuListaPanel.setOpaque(false);
+        jarmuListaPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(jarmuListaPanel);
+
+        add(Box.createRigidArea(new Dimension(0, 4)));
+        tervLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        tervLabel.setForeground(new Color(80, 80, 100));
+        tervLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(tervLabel);
+
+        tervTorleBtn = new JButton("Terv törlése");
+        tervTorleBtn.setFont(new Font("SansSerif", Font.PLAIN, 10));
+        tervTorleBtn.setBackground(new Color(220, 100, 100));
+        tervTorleBtn.setForeground(Color.WHITE);
+        tervTorleBtn.setBorderPainted(false);
+        tervTorleBtn.setFocusPainted(false);
+        tervTorleBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
+        tervTorleBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        tervTorleBtn.setVisible(false);
+        add(tervTorleBtn);
+
+        add(Box.createVerticalGlue());
+        frissit();
+    }
+
+    @Override
+    public void frissit() {
+        Nyilvantarto ny = controller.getNyilvantarto();
+        if (ny == null) return;
+
+        kasszaLabel.setText("Kassza: " + ny.getPenz() + " T");
+        soLabel.setText("Só: " + ny.getSo());
+        bioLabel.setText("Biokerozin: " + ny.getBiokerozin());
+
+        int osszesenZuzalek = 0;
+        for (Hokotro hk : controller.getHokotrók())
+            osszesenZuzalek += hk.getZuzalekMennyiseg();
+        zuzalekLabel.setText("Zúzalék: " + osszesenZuzalek);
+        nemBeertLabel.setText("Nem beért: " + ny.getNemBeertAutokSzama() + "/" + ny.getNemBeertAutokLimit() + " db");
+        aktivFejLabel.setText("Aktív fej: " + controller.getAktivHokotroFejNev());
+
+        boolean tervezes = controller.getAktualisFazis() == Fazis.TERVEZES;
+        frissitJarmuLista(tervezes);
+
+        Iranyithato kiv = controller.getKivalasztottJarmu();
+        if (kiv != null && tervezes) {
+            List<Utegyseg> terv = controller.getKijeloltUtegysegek();
+            int db = (terv != null) ? terv.size() : 0;
+            tervLabel.setText("<html><b>kijelölt:</b> " + jarmuNev(kiv) + "<br><b>útvonal:</b> " + db + " egység</html>");
+            tervTorleBtn.setVisible(db > 0);
+            for (var l : tervTorleBtn.getActionListeners()) tervTorleBtn.removeActionListener(l);
+            tervTorleBtn.addActionListener(e -> controller.tervTorol(kiv));
+        } else {
+            tervLabel.setText("kijelölt jármű: –");
+            tervTorleBtn.setVisible(false);
+        }
+
+        revalidate(); repaint();
+    }
+
+    public void setAktivFej(String fejNev) { aktivFejLabel.setText("Aktív fej: " + fejNev); }
+
+    private void frissitJarmuLista(boolean tervezes) {
+        jarmuListaPanel.removeAll();
+        Iranyithato kiv = controller.getKivalasztottJarmu();
+        int i = 1;
+        for (Hokotro hk : controller.getHokotrók()) {
+            jarmuListaPanel.add(jarmuSor("Hókotró " + i, hk, kiv == hk, tervezes));
+            i++;
+        }
+        i = 1;
+        for (Busz b : controller.getBuszok()) {
+            jarmuListaPanel.add(jarmuSor("Busz " + i, b, kiv == b, tervezes));
+            i++;
+        }
+        jarmuListaPanel.revalidate();
+        jarmuListaPanel.repaint();
+    }
+
+    private JPanel jarmuSor(String nev, Iranyithato jarmu, boolean kivalasztott, boolean aktiv) {
+        JPanel sor = new JPanel(new BorderLayout());
+        sor.setOpaque(false);
+        sor.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
+        sor.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JButton btn = new JButton(nev);
+        btn.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        btn.setFocusPainted(false);
+        btn.setEnabled(aktiv);
+        if (kivalasztott) {
+            btn.setBackground(new Color(255, 240, 160));
+            btn.setBorder(BorderFactory.createLineBorder(new Color(200, 180, 0), 1));
+        } else {
+            btn.setBackground(new Color(200, 210, 230));
+            btn.setBorder(BorderFactory.createLineBorder(new Color(150, 160, 190), 1));
+        }
+        if (aktiv) btn.addActionListener(e -> controller.kijeloltJarmuValt(jarmu));
+        sor.add(btn, BorderLayout.CENTER);
+        return sor;
+    }
+
+    private String jarmuNev(Iranyithato j) {
+        List<Hokotro> hk = controller.getHokotrók();
+        for (int i = 0; i < hk.size(); i++) if (hk.get(i) == j) return "Hókotró " + (i + 1);
+        List<Busz> b = controller.getBuszok();
+        for (int i = 0; i < b.size(); i++) if (b.get(i) == j) return "Busz " + (i + 1);
+        return "Jármű";
+    }
+
+    private JLabel szekcioCim(String szoveg) {
+        JLabel l = new JLabel(szoveg);
+        l.setFont(new Font("SansSerif", Font.BOLD, 11));
+        l.setForeground(new Color(80, 80, 120));
+        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return l;
+    }
+
+    private JButton zoldGomb(String szoveg) {
+        JButton btn = new JButton(szoveg);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 13));
+        btn.setBackground(new Color(150, 230, 150));
+        btn.setForeground(new Color(20, 60, 20));
+        btn.setBorderPainted(true);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createLineBorder(new Color(100, 180, 100), 1, true));
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 34));
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return btn;
+    }
+}

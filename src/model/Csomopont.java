@@ -1,13 +1,28 @@
 package model;
 
+import common.Megfigyelo;
+import common.Megfigyelheto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Az úthálózat szakaszait (Ut) összekötő csatlakozási pontok. Kezeli a járművek be és
- * kilépését a csomópontba és a hozzá csatlakozó utakra.
- */
-public class Csomopont  implements ProtoEntitas {
+public class Csomopont implements ProtoEntitas, Megfigyelheto {
+
+    private final List<Megfigyelo> megfigyelok = new ArrayList<>();
+
+    @Override
+    public void addObserver(Megfigyelo m) {
+        if (m != null && !megfigyelok.contains(m)) megfigyelok.add(m);
+    }
+
+    @Override
+    public void removeObserver(Megfigyelo m) {
+        megfigyelok.remove(m);
+    }
+
+    @Override
+    public void ertesit() {
+        for (Megfigyelo m : new ArrayList<>(megfigyelok)) m.frissit();
+    }
     private ArrayList<Ut> utLista;
     private boolean celpont;
     private boolean buszmegallo;
@@ -237,15 +252,13 @@ public class Csomopont  implements ProtoEntitas {
             return;
         }
 
-        // Ellenőrizzük a csomópont állapotát és a jármű típusát
         if (this.buszmegallo && jarmu instanceof Busz) {
             Busz busz = (Busz) jarmu;
-
-            // Meghívjuk a busz metódusát, átadva az aktuális csomópontot (this)
             busz.megalloErintese(this);
         }
 
         this.jarmuTavozik(jarmu);
+        ertesit();
     }
 
     /**

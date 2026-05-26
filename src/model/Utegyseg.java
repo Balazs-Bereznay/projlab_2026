@@ -1,15 +1,30 @@
 package model;
 
+import common.Megfigyelo;
+import common.Megfigyelheto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-/**
- * A pálya legkisebb, hálószerűen összekapcsolt felépítési egysége.
- * Felelős az időjárás hatására rajta keletkező és eltűnő természeti hatások
- * feljegyzésére (hó, jég), illetve a rajta álló járművek, és a környező egységek nyilvántartására.
- */
-public class Utegyseg implements ProtoEntitas{
+public class Utegyseg implements ProtoEntitas, Megfigyelheto {
+
+    private final List<Megfigyelo> megfigyelok = new ArrayList<>();
+
+    @Override
+    public void addObserver(Megfigyelo m) {
+        if (m != null && !megfigyelok.contains(m)) megfigyelok.add(m);
+    }
+
+    @Override
+    public void removeObserver(Megfigyelo m) {
+        megfigyelok.remove(m);
+    }
+
+    @Override
+    public void ertesit() {
+        for (Megfigyelo m : new ArrayList<>(megfigyelok)) m.frissit();
+    }
     private static final int HO_ELAKADAS_KUSZOB = 15;
     private static final int LETAPOSOTTSAG_KUSZOB = 5;
     private static final int BEFEDES_KUSZOB = 5;
@@ -122,6 +137,7 @@ public class Utegyseg implements ProtoEntitas{
 
     public void setJarmu(Jarmu jarmu) {
         this.jarmu = jarmu;
+        ertesit();
     }
 
     public Utegyseg getKovetkezoUtegyseg() {
@@ -168,9 +184,9 @@ public class Utegyseg implements ProtoEntitas{
         return blokkolt;
     }
 
-    /// ez a getFoglalt egyes diagramokon
     public void setBlokkolt(boolean blokkolt) {
         this.blokkolt = blokkolt;
+        ertesit();
     }
 
     public int getSoMennyiseg() {
@@ -276,17 +292,16 @@ public class Utegyseg implements ProtoEntitas{
                 blokkolt = true;
             }
 
-            // Ha van kint zúzalék, vizsgálni kell a befedettséget
             if (this.zuzalek) {
                 this.befedettseg += mennyiseg;
 
-                // Ha a befedettség eléri vagy meghaladja a statikus küszöbértéket
                 if (this.befedettseg >= BEFEDES_KUSZOB) {
                     this.zuzalek = false;
                     this.befedettseg = 0;
                 }
             }
         }
+        ertesit();
     }
 
     /**
@@ -296,6 +311,7 @@ public class Utegyseg implements ProtoEntitas{
      */
     public void sozas(int mennyiseg) {
         soMennyiseg += mennyiseg;
+        ertesit();
     }
 
     /**
@@ -310,10 +326,10 @@ public class Utegyseg implements ProtoEntitas{
         this.hoMagassag = 0;
         this.letaposottsag = 0;
 
-        // Ha nincs zúzalék az úton, akkor az útfelület jeges állapotba kerül
         if (!this.zuzalek) {
             this.jeges = true;
         }
+        ertesit();
     }
 
     /**
@@ -327,9 +343,9 @@ public class Utegyseg implements ProtoEntitas{
                 jegesedes();
             }
         } else {
-            // Ha nincs hó a számláló nullázódik
             this.letaposottsag = 0;
         }
+        ertesit();
     }
 
     /**
@@ -344,8 +360,8 @@ public class Utegyseg implements ProtoEntitas{
         }
 
         this.jegMagassag = 0;
-
         this.jeges = false;
+        ertesit();
     }
 
     /**
@@ -370,6 +386,7 @@ public class Utegyseg implements ProtoEntitas{
         if (hoMagassag < HO_ELAKADAS_KUSZOB) {
             blokkolt = false;
         }
+        ertesit();
     }
 
     /**
@@ -380,10 +397,10 @@ public class Utegyseg implements ProtoEntitas{
         this.zuzalek = false;
         blokkolt = false;
 
-        // Ha maradt jég az úton, az útfelületet jegesnek jelöljük
         if (this.jegMagassag > 0) {
             this.jeges = true;
         }
+        ertesit();
     }
 
     /**
@@ -435,7 +452,7 @@ public class Utegyseg implements ProtoEntitas{
 
 
 
-        // A rálépés mindenképpen sikeres (igaz), ha nem volt blokkolt az út
+        ertesit();
         return true;
     }
 

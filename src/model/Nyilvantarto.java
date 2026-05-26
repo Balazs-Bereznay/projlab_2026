@@ -1,14 +1,28 @@
 package model;
 
+import common.Megfigyelo;
+import common.Megfigyelheto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Ez a játék nyilvántartója, ami tárolja az összes globális adatot a játék során (pénz, só, kerozin).
- * Illetve figyeli a játékmenetet és ő dönti el, hogy mikor következik be a vereség, a munkába be nem ért autósok száma alapján.
- */
+public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas, Megfigyelheto {
 
-public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
+    private final List<Megfigyelo> megfigyelok = new ArrayList<>();
+
+    @Override
+    public void addObserver(Megfigyelo m) {
+        if (m != null && !megfigyelok.contains(m)) megfigyelok.add(m);
+    }
+
+    @Override
+    public void removeObserver(Megfigyelo m) {
+        megfigyelok.remove(m);
+    }
+
+    @Override
+    public void ertesit() {
+        for (Megfigyelo m : new ArrayList<>(megfigyelok)) m.frissit();
+    }
 
     /**
      * a közösen tárolt egyenleg
@@ -185,9 +199,10 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
     /**
      * Megnöveli a munkahelyükre be nem ért autók számlálóját.
      */
-    public void nemBeertAutokNovel(int mennyiseg){
-        this.nemBeertAutokSzama+=mennyiseg;
+    public void nemBeertAutokNovel(int mennyiseg) {
+        this.nemBeertAutokSzama += mennyiseg;
         System.out.println("Egy újabb autó nem ért be a munkahelyére.");
+        ertesit();
     }
 
     /**
@@ -197,9 +212,9 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      */
     @Override
     public void soNovel(int mennyiseg) {
-        so+= mennyiseg;
+        so += mennyiseg;
         System.out.println(mennyiseg + " egység só hozzáadva a raktárhoz.");
-
+        ertesit();
     }
 
     /**
@@ -208,14 +223,14 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      *  a rendelkezésre álló mennyiséget.
      */
     @Override
-    public boolean soLevon(int mennyiseg){
+    public boolean soLevon(int mennyiseg) {
         System.out.println(mennyiseg + " egység só elhasználva.");
-
-        if(so - mennyiseg >= 0){
+        if (so - mennyiseg >= 0) {
             so -= mennyiseg;
+            ertesit();
             return true;
         }
-        else {  return  false;}
+        return false;
     }
 
     /**
@@ -225,14 +240,13 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      */
     @Override
     public boolean biokerozinLevon(int mennyiseg) {
-
         System.out.println(mennyiseg + " egység biokerozin elhasználva.");
-
-        if(biokerozin - mennyiseg >= 0){
+        if (biokerozin - mennyiseg >= 0) {
             biokerozin -= mennyiseg;
+            ertesit();
             return true;
         }
-        else {  return  false;}
+        return false;
     }
 
     /**
@@ -244,6 +258,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
     public void biokerozinNovel(int mennyiseg) {
         biokerozin += mennyiseg;
         System.out.println(mennyiseg + " egység biokerozin betöltve a raktárhoz.");
+        ertesit();
     }
 
     /**
@@ -254,6 +269,7 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
     public void penzNovel(int mennyiseg) {
         penz += mennyiseg;
         System.out.println(" A közös kassza " + mennyiseg + " tallérral nőtt.");
+        ertesit();
     }
 
     /**
@@ -262,15 +278,15 @@ public class Nyilvantarto implements EroforrasKezelo, PenzKezel, ProtoEntitas {
      */
     @Override
     public boolean penzLevon(int mennyiseg) {
-        if(penz - mennyiseg >= 0){
+        if (penz - mennyiseg >= 0) {
             penz -= mennyiseg;
-            System.out.println( mennyiseg + " tallér levonva a közös kasszából.");
+            System.out.println(mennyiseg + " tallér levonva a közös kasszából.");
+            ertesit();
             return true;
-        }
-        else {
+        } else {
             System.out.println("Nincs elég pénzed.");
-            return  false;}
-
+            return false;
+        }
     }
 
     /**
