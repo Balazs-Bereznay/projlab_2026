@@ -205,6 +205,27 @@ public abstract class Jarmu implements ProtoEntitas, Megfigyelheto {
     }
 
     /**
+     * GUI oldali, kesleltetett utkozesi allapot jelolese nyilvantarto-modositas
+     * nelkul. A nem beert autok szamolasat a controller vegzi, amikor a
+     * blokkolasi ido tenylegesen lejar.
+     */
+    public void jelolUtkozest() {
+        this.baleset = true;
+        this.megcsuszott = false;
+        ertesit();
+    }
+
+    /**
+     * Feloldja a GUI oldali, kesleltetett utkozesi allapotot.
+     */
+    public void feloldUtkozest() {
+        this.baleset = false;
+        this.elakadt = false;
+        this.megcsuszott = false;
+        ertesit();
+    }
+
+    /**
      * Rogziti a jarmu elakadasat.
      *
      * <p>A metodus csak a jarmu sajat elakadt allapotat allitja be. A legfrissebb

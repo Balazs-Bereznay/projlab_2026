@@ -42,6 +42,29 @@ public class JatekController implements Megfigyelo {
     private final List<String>   jatekosNevek = new ArrayList<>();
 
     public static final int HAVAZAS_PER_TICK = 1;
+    private static final int UTKOZES_BLOKK_KOROK = 2;
+
+    private final List<UtkozesAllapot> utkozesek = new ArrayList<>();
+
+    private static class UtkozesAllapot {
+        private final Jarmu elso;
+        private final Jarmu masodik;
+        private final Utegyseg elsoUtegyseg;
+        private final Utegyseg masodikUtegyseg;
+        private final boolean elsoEredetilegBlokkolt;
+        private final boolean masodikEredetilegBlokkolt;
+        private int hatralevoKor;
+
+        private UtkozesAllapot(Jarmu elso, Jarmu masodik, int hatralevoKor) {
+            this.elso = elso;
+            this.masodik = masodik;
+            this.elsoUtegyseg = elso != null ? elso.getUtegyseg() : null;
+            this.masodikUtegyseg = masodik != null ? masodik.getUtegyseg() : null;
+            this.elsoEredetilegBlokkolt = elsoUtegyseg != null && elsoUtegyseg.getBlokkolt();
+            this.masodikEredetilegBlokkolt = masodikUtegyseg != null && masodikUtegyseg.getBlokkolt();
+            this.hatralevoKor = hatralevoKor;
+        }
+    }
 
     public JatekController() {}
     public JatekController(Prototipus proto) {}
@@ -108,6 +131,7 @@ public class JatekController implements Megfigyelo {
         jatekosok.clear(); jatekosNevek.clear();
         autok.clear(); hokotrók.clear(); buszok.clear();
         tervekMap.clear(); aktivTervek.clear(); szimulacioIndex.clear();
+        utkozesek.clear();
         kijelolhetoUtegysegek.clear();
         csomopontPoziciok.clear();
         aktualisFazis = Fazis.TERVEZES;
@@ -224,6 +248,20 @@ public class JatekController implements Megfigyelo {
 
         placeJarmuAzUtKezdoSavjara(a1, ut4, startCs);
         autok.add(a1);
+
+        Auto a2 = new Auto();
+        a2.setSebesseg(1);
+        a2.setTapadas(30);
+        a2.setNyilvantarto(nyilvantarto);
+        a2.setKezdopont(startCs);
+        a2.setCelpont(startCs);
+
+        // Opposite circular route: ut3(D->C), ut2(C->B), ut1(B->A), ut4(A->D)
+        for (Ut ut : new Ut[]{ut3, ut2, ut1, ut4}) a2.addKijeloltUt(ut);
+        a2.setUtonTolthetoIdo(Integer.MAX_VALUE / 2);
+
+        placeJarmuAzUtKezdoSavjara(a2, ut3, startCs);
+        autok.add(a2);
     }
 
     private void inditas() {
@@ -442,6 +480,7 @@ public class JatekController implements Megfigyelo {
                 pp.setKijelolhetoUtegysegek(kijelolhetoUtegysegek);
                 pp.setKivalasztottJarmu(kivalasztottJarmu instanceof Jarmu ? (Jarmu) kivalasztottJarmu : null);
                 pp.setKivalasztottBusz(kivalasztottJarmu instanceof Busz ? (Busz) kivalasztottJarmu : null);
+                pp.setUtkozesJelolesek(getUtkozesParok());
             }
         }
     }
@@ -544,7 +583,11 @@ public class JatekController implements Megfigyelo {
     }
 
     private Set<Utegyseg> validKovetkezok(Utegyseg ref) {
-        Set<Utegyseg> eredmeny = new HashSet<>();
+        Set<Utegyseg> eredmeny = new LinkedHashSet<>();
+        if (ref == null) return eredmeny;
+        addSavvaltasCel(eredmeny, ref, ref.getBalUtegyseg());
+        addSavvaltasCel(eredmeny, ref, ref.getJobbUtegyseg());
+
         Utegyseg kovetkezo = ref.getKovetkezoUtegyseg();
         if (kovetkezo != null) {
             eredmeny.add(kovetkezo);
@@ -562,6 +605,16 @@ public class JatekController implements Megfigyelo {
             }
         }
         return eredmeny;
+    }
+
+    private void addSavvaltasCel(Set<Utegyseg> eredmeny, Utegyseg ref, Utegyseg cel) {
+        if (eredmeny == null || ref == null || cel == null) return;
+        Sav refSav = ref.getSav();
+        Sav celSav = cel.getSav();
+        if (refSav == null || celSav == null) return;
+        if (refSav.getVegCsomopont() == celSav.getVegCsomopont()) {
+            eredmeny.add(cel);
+        }
     }
 
     public void utvonalVeglegesit() {
@@ -676,6 +729,8 @@ public class JatekController implements Megfigyelo {
     private void runTick() {
         if (terkep == null) return;
 
+        leptetUtkozeseket();
+
         for (Ut ut : terkep.getElLista()) {
             if (!ut.getAlagut()) {
                 for (Sav sav : ut.getSavok()) {
@@ -690,12 +745,15 @@ public class JatekController implements Megfigyelo {
         }
 
         for (Hokotro hk : hokotrók) {
+            if (utkozesbenVan(hk)) continue;
             moveAlongTerv(hk);
         }
         for (Busz b : buszok) {
+            if (utkozesbenVan(b)) continue;
             moveAlongTerv(b);
         }
         for (Auto a : new ArrayList<>(autok)) {
+            if (utkozesbenVan(a)) continue;
             Utegyseg nextUe = getAutoNextUtegyseg(a);
             if (nextUe != null) {
                 a.setUtonToltottIdo(a.getUtonToltottIdo() + 1);
@@ -705,9 +763,7 @@ public class JatekController implements Megfigyelo {
             }
             if (a.nemErBe()) autok.remove(a);
         }
-        for (Ut ut : terkep.getElLista()) {
-            ut.balesetetKeres();
-        }
+        rogzitsMegcsuszasUtkozeseket();
 
         if (nyilvantarto != null) {
             nyilvantarto.ellenorizJatekVege();
@@ -755,18 +811,139 @@ public class JatekController implements Megfigyelo {
         return null;
     }
 
+    private boolean utkozesbenVan(Jarmu jarmu) {
+        if (jarmu == null) return false;
+        for (UtkozesAllapot utkozes : utkozesek) {
+            if (utkozes.elso == jarmu || utkozes.masodik == jarmu) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void rogzitsMegcsuszasUtkozeseket() {
+        for (Ut ut : terkep.getElLista()) {
+            for (Sav sav : ut.getSavok()) {
+                Utegyseg aktualis = sav.getElsoUtegyseg();
+                while (aktualis != null) {
+                    Jarmu jarmu = aktualis.getJarmu();
+                    if (jarmu != null && jarmu.getMegcsuszott() && !utkozesbenVan(jarmu)) {
+                        Jarmu partner = jarmu.keresPartner();
+                        if (partner != null) {
+                            rogzitsUtkozest(jarmu, partner);
+                        }
+                    }
+                    aktualis = aktualis.getKovetkezoUtegyseg();
+                }
+            }
+        }
+    }
+
+    private void rogzitsUtkozest(Jarmu elso, Jarmu masodik) {
+        if (elso == null || masodik == null || elso == masodik) return;
+        for (UtkozesAllapot utkozes : utkozesek) {
+            boolean ugyanazPar = (utkozes.elso == elso && utkozes.masodik == masodik)
+                || (utkozes.elso == masodik && utkozes.masodik == elso);
+            if (ugyanazPar) return;
+        }
+
+        UtkozesAllapot utkozes = new UtkozesAllapot(elso, masodik, UTKOZES_BLOKK_KOROK);
+        elso.jelolUtkozest();
+        masodik.jelolUtkozest();
+        if (utkozes.elsoUtegyseg != null) utkozes.elsoUtegyseg.setBlokkolt(true);
+        if (utkozes.masodikUtegyseg != null) utkozes.masodikUtegyseg.setBlokkolt(true);
+        utkozesek.add(utkozes);
+        frissitUtkozesJelolesek();
+    }
+
+    private void leptetUtkozeseket() {
+        if (utkozesek.isEmpty()) return;
+        Iterator<UtkozesAllapot> it = utkozesek.iterator();
+        while (it.hasNext()) {
+            UtkozesAllapot utkozes = it.next();
+            utkozes.hatralevoKor--;
+            if (utkozes.hatralevoKor <= 0) {
+                feloldUtkozest(utkozes);
+                it.remove();
+            }
+        }
+        frissitUtkozesJelolesek();
+    }
+
+    private void feloldUtkozest(UtkozesAllapot utkozes) {
+        if (utkozes == null) return;
+        if (utkozes.elsoUtegyseg != null) {
+            utkozes.elsoUtegyseg.setBlokkolt(utkozes.elsoEredetilegBlokkolt);
+        }
+        if (utkozes.masodikUtegyseg != null) {
+            utkozes.masodikUtegyseg.setBlokkolt(utkozes.masodikEredetilegBlokkolt);
+        }
+        feloldUtkozottJarmu(utkozes.elso);
+        feloldUtkozottJarmu(utkozes.masodik);
+    }
+
+    private void feloldUtkozottJarmu(Jarmu jarmu) {
+        if (jarmu == null) return;
+        if (jarmu instanceof Auto) {
+            autoNemErtBeEsVisszaHazhoz((Auto) jarmu);
+        } else {
+            jarmu.feloldUtkozest();
+        }
+    }
+
+    private void autoNemErtBeEsVisszaHazhoz(Auto auto) {
+        if (auto == null) return;
+        Utegyseg aktualis = auto.getUtegyseg();
+        if (aktualis != null && aktualis.getJarmu() == auto) {
+            aktualis.setJarmu(null);
+        }
+        auto.setUtegyseg(null);
+        auto.feloldUtkozest();
+        auto.setUtonToltottIdo(0);
+        if (nyilvantarto != null) {
+            nyilvantarto.nemBeertAutokNovel(1);
+        }
+
+        List<Ut> utvonal = auto.getKijeloltUtvonal();
+        Ut induloUt = utvonal.isEmpty() ? null : utvonal.get(0);
+        if (induloUt != null && auto.getKezdopont() != null) {
+            placeJarmuAzUtKezdoSavjara(auto, induloUt, auto.getKezdopont());
+        } else {
+            placeOnFreeUtegyseg(auto);
+        }
+    }
+
+    private List<Jarmu[]> getUtkozesParok() {
+        List<Jarmu[]> parok = new ArrayList<>();
+        for (UtkozesAllapot utkozes : utkozesek) {
+            parok.add(new Jarmu[]{utkozes.elso, utkozes.masodik});
+        }
+        return parok;
+    }
+
+    private void frissitUtkozesJelolesek() {
+        if (ablak == null) return;
+        PalyaPanel pp = ablak.getPalyaPanel();
+        if (pp != null) {
+            pp.setUtkozesJelolesek(getUtkozesParok());
+        }
+    }
+
     private void moveAlongTerv(Iranyithato vehicle) {
         List<Utegyseg> terv = aktivTervek.get(vehicle);
-        if (terv == null || terv.isEmpty()) return;
+        if (terv == null || terv.isEmpty() || !(vehicle instanceof Jarmu)) return;
+        Jarmu jarmu = (Jarmu) vehicle;
         int idx = szimulacioIndex.getOrDefault(vehicle, 0);
         int maxLepes = getJarmuHatotav(vehicle);
         int lepett = 0;
         while (idx < terv.size() && lepett < maxLepes) {
+            if (utkozesbenVan(jarmu)) break;
             Utegyseg target = terv.get(idx);
+            if (target == null) break;
             if (vehicle instanceof Hokotro && target.getBlokkolt()) {
                 target.setBlokkolt(false);
             }
-            if (target.ralep((Jarmu) vehicle)) {
+            if (target.ralep(jarmu)) {
                 idx++;
                 lepett++;
                 szimulacioIndex.put(vehicle, idx);

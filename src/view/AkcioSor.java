@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 public class AkcioSor extends JPanel implements ActionListener {
 
     private final JatekController controller;
-    private final JButton utvonalKijelolesGomb;
     private final JButton korVegeGomb;
 
     public AkcioSor(JatekController controller) {
@@ -25,13 +24,10 @@ public class AkcioSor extends JPanel implements ActionListener {
         ));
         setLayout(new FlowLayout(FlowLayout.CENTER, 16, 0));
 
-        utvonalKijelolesGomb = zoldGomb("Útvonal véglegesítése");
-        korVegeGomb          = zoldGomb("Kör vége");
+        korVegeGomb = zoldGomb("Kör vége");
 
-        utvonalKijelolesGomb.addActionListener(this);
         korVegeGomb.addActionListener(this);
 
-        add(utvonalKijelolesGomb);
         add(korVegeGomb);
 
         fazisFrissites(Fazis.TERVEZES);
@@ -40,16 +36,13 @@ public class AkcioSor extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
-        if (src == utvonalKijelolesGomb) {
-            controller.utvonalVeglegesit();
-        } else if (src == korVegeGomb) {
+        if (src == korVegeGomb) {
             controller.korVegeKattintas();
         }
     }
 
     public void fazisFrissites(Fazis f) {
         boolean tervezes = f == Fazis.TERVEZES;
-        utvonalKijelolesGomb.setEnabled(tervezes);
         korVegeGomb.setEnabled(tervezes);
     }
 

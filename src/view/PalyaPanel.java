@@ -22,6 +22,7 @@ public class PalyaPanel extends JPanel {
 
     private List<Utegyseg> kijeloltUtegysegek = new ArrayList<>();
     private Set<Utegyseg> kijelolhetoUtegysegek = new LinkedHashSet<>();
+    private final List<Jarmu[]> utkozesJelolesek = new ArrayList<>();
     private Jarmu kivalasztottJarmu;
     private Busz kivalasztottBusz;
 
@@ -58,6 +59,18 @@ public class PalyaPanel extends JPanel {
         repaint();
     }
 
+    public void setUtkozesJelolesek(Collection<Jarmu[]> parok) {
+        utkozesJelolesek.clear();
+        if (parok != null) {
+            for (Jarmu[] par : parok) {
+                if (par != null && par.length >= 2 && par[0] != null && par[1] != null) {
+                    utkozesJelolesek.add(new Jarmu[]{par[0], par[1]});
+                }
+            }
+        }
+        repaint();
+    }
+
     public Map<Utegyseg, UtegysegView> getUtegysegViewk() { return utegysegViewk; }
     public Map<Jarmu, JarmuView> getJarmuViewk() { return jarmuViewk; }
 
@@ -75,6 +88,7 @@ public class PalyaPanel extends JPanel {
         for (CsomopontView cv : csomopontViewk.values()) cv.kirajzol(g2);
         rajzolBuszAllomasok(g2);
         rajzolKijeloltek(g2);
+        rajzolUtkozesek(g2);
         for (JarmuView jv : jarmuViewk.values()) jv.kirajzol(g2);
 
         if (controller != null) rajzolFazisJelzo(g2);
@@ -106,6 +120,28 @@ public class PalyaPanel extends JPanel {
             g2.drawRoundRect(r.x - 2, r.y - 2, r.width + 4, r.height + 4, 6, 6);
             g2.setStroke(new BasicStroke(1));
         }
+    }
+
+    private void rajzolUtkozesek(Graphics2D g2) {
+        if (layout == null || utkozesJelolesek.isEmpty()) return;
+        Map<Utegyseg, int[]> poziciok = layout.getUtegysegPoziciok();
+        Stroke eredetiStroke = g2.getStroke();
+        for (Jarmu[] par : utkozesJelolesek) {
+            Utegyseg aUe = par[0].getUtegyseg();
+            Utegyseg bUe = par[1].getUtegyseg();
+            if (aUe == null || bUe == null) continue;
+            int[] a = poziciok.get(aUe);
+            int[] b = poziciok.get(bUe);
+            if (a == null || b == null) continue;
+
+            g2.setStroke(new BasicStroke(11f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2.setColor(new Color(120, 0, 0, 120));
+            g2.drawLine(a[0], a[1], b[0], b[1]);
+            g2.setStroke(new BasicStroke(7f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2.setColor(new Color(235, 35, 35, 230));
+            g2.drawLine(a[0], a[1], b[0], b[1]);
+        }
+        g2.setStroke(eredetiStroke);
     }
 
     private void rajzolSavIranyok(Graphics2D g2) {
