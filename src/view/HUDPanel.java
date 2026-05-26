@@ -114,7 +114,13 @@ public class HUDPanel extends JPanel implements Megfigyelo {
         if (kiv != null && tervezes) {
             List<Utegyseg> terv = controller.getKijeloltUtegysegek();
             int db = (terv != null) ? terv.size() : 0;
-            tervLabel.setText("<html><b>kijelölt:</b> " + jarmuNev(kiv) + "<br><b>útvonal:</b> " + db + " egység</html>");
+            String buszInfo = (kiv instanceof Busz)
+                ? "<br>" + controller.getBuszUtvonalLeiras((Busz) kiv)
+                : "";
+            tervLabel.setText("<html><b>aktuális:</b> " + controller.getJarmuTulajdonosNev(kiv)
+                + " / " + controller.getJarmuNev(kiv)
+                + "<br><b>útvonal:</b> " + db + "/" + controller.getAktivJarmuHatotav() + " egység"
+                + "<br><b>hátralévő:</b> " + controller.getHatralevoHatotav() + buszInfo + "</html>");
             tervTorleBtn.setVisible(db > 0);
             for (var l : tervTorleBtn.getActionListeners()) tervTorleBtn.removeActionListener(l);
             tervTorleBtn.addActionListener(e -> controller.tervTorol(kiv));
@@ -131,15 +137,22 @@ public class HUDPanel extends JPanel implements Megfigyelo {
     private void frissitJarmuLista(boolean tervezes) {
         jarmuListaPanel.removeAll();
         Iranyithato kiv = controller.getKivalasztottJarmu();
-        int i = 1;
-        for (Hokotro hk : controller.getHokotrók()) {
-            jarmuListaPanel.add(jarmuSor("Hókotró " + i, hk, kiv == hk, tervezes));
-            i++;
-        }
-        i = 1;
-        for (Busz b : controller.getBuszok()) {
-            jarmuListaPanel.add(jarmuSor("Busz " + i, b, kiv == b, tervezes));
-            i++;
+        List<Jatekos> jatekosok = controller.getJatekosok();
+        for (int pi = 0; pi < jatekosok.size(); pi++) {
+            JLabel tulaj = new JLabel(controller.getJatekosNev(pi));
+            tulaj.setFont(new Font("SansSerif", Font.BOLD, 10));
+            tulaj.setForeground(pi == controller.getAktualisJatekosIndex()
+                ? new Color(35, 95, 55)
+                : new Color(95, 95, 115));
+            tulaj.setAlignmentX(Component.LEFT_ALIGNMENT);
+            jarmuListaPanel.add(tulaj);
+
+            for (Iranyithato jarmu : jatekosok.get(pi).getFlotta()) {
+                boolean aktualis = controller.isAktualisJarmu(jarmu);
+                boolean aktiv = tervezes && aktualis;
+                jarmuListaPanel.add(jarmuSor(controller.getJarmuNev(jarmu), jarmu, kiv == jarmu, aktiv));
+            }
+            jarmuListaPanel.add(Box.createRigidArea(new Dimension(0, 4)));
         }
         jarmuListaPanel.revalidate();
         jarmuListaPanel.repaint();

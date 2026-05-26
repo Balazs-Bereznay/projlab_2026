@@ -56,28 +56,31 @@ public class Auto extends Jarmu implements RendszerIranyitott, ProtoEntitas {
     @Override
     public void lep() {
         utonToltottIdo++;
-        // Alapvető ellenőrzés: ha már elakadt vagy balesetet szenvedett, nem léphet
         if (elakadt || baleset || utegyseg == null) {
             return;
         }
 
-        // 1. Megpróbálunk ELŐRE lépni
         Utegyseg elore = utegyseg.getKovetkezoUtegyseg();
         if (elore != null && elore.ralep(this)) {
-            return; // Sikerült előre lépni, kész vagyunk
+            return;
         }
 
-        // 2. Ha az előre nem sikerült, megpróbálunk JOBBRA lépni
+        if (elore == null && utegyseg.getSav() != null && utegyseg.getSav().getVegCsomopont() != null) {
+            Utegyseg elozo = utegyseg;
+            utegyseg.getSav().getVegCsomopont().jarmuErkezik(this);
+            if (utegyseg != elozo) {
+                return;
+            }
+        }
+
         Utegyseg jobb = utegyseg.getJobbUtegyseg();
         if (jobb != null && jobb.ralep(this)) {
-            return; // Sikerült jobbra lépni, kész vagyunk
+            return;
         }
 
-        // 3. Ha a jobb sem sikerült, megpróbálunk BALRA lépni
-        // (Feltételezve, hogy a metódus neve getBalUtegyseg)
         Utegyseg bal = utegyseg.getBalUtegyseg();
-        if (bal != null && bal.ralep(this)) {
-            return; // Sikerült balra lépni, kész vagyunk
+        if (bal != null) {
+            bal.ralep(this);
         }
     }
 

@@ -33,7 +33,6 @@ public class BemenetKezelo extends MouseAdapter implements KeyListener {
 
         Jarmu j = palyaPanel.jarmuKattintas(x, y);
         if (j instanceof Iranyithato) {
-            controller.kijeloltJarmuValt((Iranyithato) j);
             return;
         }
 
@@ -50,9 +49,6 @@ public class BemenetKezelo extends MouseAdapter implements KeyListener {
             case KeyEvent.VK_ENTER:
                 if (controller.getAktualisFazis() == Fazis.TERVEZES)
                     controller.korVegeKattintas();
-                break;
-            case KeyEvent.VK_T:
-                controller.takaritKattintas();
                 break;
             case KeyEvent.VK_B:
                 if (controller.getAktualisFazis() == Fazis.BOLT)

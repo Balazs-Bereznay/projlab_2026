@@ -132,9 +132,12 @@ public class JatekAblak extends JFrame {
         if (korLabel == null) return;
         int kor = controller.getAktualisKor();
         korLabel.setText("Eltelt körök: " + (kor > 0 ? kor - 1 : 0));
-        jatekosLabel.setText("Aktív játékos: " + controller.getAktivJatekosNev());
+        String jarmuNev = controller.getKivalasztottJarmu() != null
+            ? " / " + controller.getJarmuNev(controller.getKivalasztottJarmu())
+            : "";
+        jatekosLabel.setText("Aktív játékos: " + controller.getAktivJatekosNev() + jarmuNev);
         int osszes = controller.getJarmuekOsszesenSzama();
-        jarmuLabel.setText("Járművek " + osszes + "/" + osszes);
+        jarmuLabel.setText("Járművek " + controller.getAktivTervezesiSorszam() + "/" + osszes);
     }
 
     public void regisztraljBemenetKezelo() {
