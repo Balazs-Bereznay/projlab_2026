@@ -44,6 +44,7 @@ public class JatekController implements Megfigyelo {
     public static final int HAVAZAS_PER_TICK = 1;
     private static final int UTKOZES_BLOKK_KOROK = 2;
     private static final int SZIMULACIO_ANIMACIO_MS = 280;
+    private static final double GUI_ALAP_MEGCSUSZAS_ESELY = 0.35;
 
     private final List<UtkozesAllapot> utkozesek = new ArrayList<>();
     private final Set<Iranyithato> szimulacioLezartTervek = new HashSet<>();
@@ -1249,6 +1250,7 @@ public class JatekController implements Megfigyelo {
             for (int j = 0; j < uePerSav; j++) {
                 Utegyseg ue = new Utegyseg();
                 ue.setSav(sav);
+                ue.setMegcsuszasEsely(GUI_ALAP_MEGCSUSZAS_ESELY);
                 if (prev == null) sav.setElsoUtegyseg(ue);
                 else prev.setKovetkezoUtegyseg(ue);
                 prev = ue;
@@ -1285,6 +1287,7 @@ public class JatekController implements Megfigyelo {
             for (int j = 0; j < uePerSav; j++) {
                 Utegyseg ue = new Utegyseg();
                 ue.setSav(sav);
+                ue.setMegcsuszasEsely(GUI_ALAP_MEGCSUSZAS_ESELY);
                 if (prev == null) sav.setElsoUtegyseg(ue);
                 else prev.setKovetkezoUtegyseg(ue);
                 prev = ue;
