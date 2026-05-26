@@ -43,8 +43,13 @@ public class JatekController implements Megfigyelo {
 
     public static final int HAVAZAS_PER_TICK = 1;
     private static final int UTKOZES_BLOKK_KOROK = 2;
+    private static final int SZIMULACIO_ANIMACIO_MS = 280;
 
     private final List<UtkozesAllapot> utkozesek = new ArrayList<>();
+    private final Set<Iranyithato> szimulacioLezartTervek = new HashSet<>();
+    private final Set<Auto> szimulacioLepettAutok = new HashSet<>();
+    private javax.swing.Timer szimulacioTimer;
+    private boolean szimulacioKornyezetFrissitve = false;
 
     private static class UtkozesAllapot {
         private final Jarmu elso;
@@ -132,6 +137,13 @@ public class JatekController implements Megfigyelo {
         autok.clear(); hokotrók.clear(); buszok.clear();
         tervekMap.clear(); aktivTervek.clear(); szimulacioIndex.clear();
         utkozesek.clear();
+        szimulacioLezartTervek.clear();
+        szimulacioLepettAutok.clear();
+        if (szimulacioTimer != null) {
+            szimulacioTimer.stop();
+            szimulacioTimer = null;
+        }
+        szimulacioKornyezetFrissitve = false;
         kijelolhetoUtegysegek.clear();
         csomopontPoziciok.clear();
         aktualisFazis = Fazis.TERVEZES;
@@ -692,17 +704,36 @@ public class JatekController implements Megfigyelo {
         frissitPalyaTervezesiAllapot();
         ertesitListeners();
 
+        if (szimulacioTimer != null) {
+            szimulacioTimer.stop();
+            szimulacioTimer = null;
+        }
         aktivTervek.clear();
+        szimulacioIndex.clear();
+        szimulacioLezartTervek.clear();
+        szimulacioLepettAutok.clear();
+        szimulacioKornyezetFrissitve = false;
         for (Map.Entry<Iranyithato, List<Utegyseg>> e : tervekMap.entrySet()) {
             aktivTervek.put(e.getKey(), new ArrayList<>(e.getValue()));
             szimulacioIndex.put(e.getKey(), 0);
         }
 
-        runTick();
+        if (ablak != null) {
+            inditAnimaltSzimulaciot();
+            return;
+        }
 
+        runTick();
+        szimulacioLezarasa();
+    }
+
+    private void szimulacioLezarasa() {
         for (List<Utegyseg> list : tervekMap.values()) list.clear();
         aktivTervek.clear();
         szimulacioIndex.clear();
+        szimulacioLezartTervek.clear();
+        szimulacioLepettAutok.clear();
+        szimulacioKornyezetFrissitve = false;
 
         aktualisKor++;
 
@@ -839,6 +870,86 @@ public class JatekController implements Megfigyelo {
         }
     }
 
+    private void inditAnimaltSzimulaciot() {
+        szimulacioTimer = new javax.swing.Timer(SZIMULACIO_ANIMACIO_MS, e -> animaciosSzimulacioFrame());
+        szimulacioTimer.setInitialDelay(0);
+        szimulacioTimer.start();
+    }
+
+    private void animaciosSzimulacioFrame() {
+        if (terkep == null) {
+            befejezAnimaltSzimulaciot();
+            return;
+        }
+
+        if (!szimulacioKornyezetFrissitve) {
+            leptetUtkozeseket();
+            frissitKorElejiUtegysegeket();
+            szimulacioKornyezetFrissitve = true;
+        }
+
+        boolean tortentMozgas = false;
+        for (Hokotro hk : hokotrók) {
+            tortentMozgas |= moveAlongTervEgyLepes(hk);
+        }
+        for (Busz b : buszok) {
+            tortentMozgas |= moveAlongTervEgyLepes(b);
+        }
+        for (Auto a : new ArrayList<>(autok)) {
+            if (!szimulacioLepettAutok.contains(a)) {
+                autoEgyLepes(a);
+                szimulacioLepettAutok.add(a);
+                tortentMozgas = true;
+            }
+        }
+
+        rogzitsMegcsuszasUtkozeseket();
+        if (nyilvantarto != null) {
+            nyilvantarto.ellenorizJatekVege();
+        }
+        frissitPalyaTervezesiAllapot();
+        ertesitListeners();
+
+        if (!tortentMozgas && !vanMegAnimaciosLepes()) {
+            befejezAnimaltSzimulaciot();
+        }
+    }
+
+    private void befejezAnimaltSzimulaciot() {
+        if (szimulacioTimer != null) {
+            szimulacioTimer.stop();
+            szimulacioTimer = null;
+        }
+        szimulacioLezarasa();
+    }
+
+    private void frissitKorElejiUtegysegeket() {
+        for (Ut ut : terkep.getElLista()) {
+            if (!ut.getAlagut()) {
+                for (Sav sav : ut.getSavok()) {
+                    Utegyseg ue = sav.getElsoUtegyseg();
+                    while (ue != null) {
+                        ue.soOlvasztas();
+                        ue.havazas(HAVAZAS_PER_TICK);
+                        ue = ue.getKovetkezoUtegyseg();
+                    }
+                }
+            }
+        }
+    }
+
+    private void autoEgyLepes(Auto a) {
+        if (a == null || utkozesbenVan(a)) return;
+        Utegyseg nextUe = getAutoNextUtegyseg(a);
+        if (nextUe != null) {
+            a.setUtonToltottIdo(a.getUtonToltottIdo() + 1);
+            nextUe.ralep(a);
+        } else {
+            a.lep();
+        }
+        if (a.nemErBe()) autok.remove(a);
+    }
+
     private void rogzitsUtkozest(Jarmu elso, Jarmu masodik) {
         if (elso == null || masodik == null || elso == masodik) return;
         for (UtkozesAllapot utkozes : utkozesek) {
@@ -927,6 +1038,58 @@ public class JatekController implements Megfigyelo {
         if (pp != null) {
             pp.setUtkozesJelolesek(getUtkozesParok());
         }
+    }
+
+    private boolean vanMegAnimaciosLepes() {
+        for (Hokotro hk : hokotrók) {
+            if (vanMegTervLepes(hk)) return true;
+        }
+        for (Busz b : buszok) {
+            if (vanMegTervLepes(b)) return true;
+        }
+        for (Auto a : autok) {
+            if (!szimulacioLepettAutok.contains(a) && !utkozesbenVan(a)) return true;
+        }
+        return false;
+    }
+
+    private boolean vanMegTervLepes(Iranyithato vehicle) {
+        if (vehicle == null || szimulacioLezartTervek.contains(vehicle) || !(vehicle instanceof Jarmu)) {
+            return false;
+        }
+        if (utkozesbenVan((Jarmu) vehicle)) return false;
+        List<Utegyseg> terv = aktivTervek.get(vehicle);
+        if (terv == null || terv.isEmpty()) return false;
+        int idx = szimulacioIndex.getOrDefault(vehicle, 0);
+        return idx < Math.min(terv.size(), getJarmuHatotav(vehicle));
+    }
+
+    private boolean moveAlongTervEgyLepes(Iranyithato vehicle) {
+        if (!vanMegTervLepes(vehicle)) return false;
+
+        Jarmu jarmu = (Jarmu) vehicle;
+        List<Utegyseg> terv = aktivTervek.get(vehicle);
+        int idx = szimulacioIndex.getOrDefault(vehicle, 0);
+        Utegyseg target = terv.get(idx);
+        if (target == null) {
+            szimulacioLezartTervek.add(vehicle);
+            return false;
+        }
+
+        if (vehicle instanceof Hokotro && target.getBlokkolt()) {
+            target.setBlokkolt(false);
+        }
+
+        if (target.ralep(jarmu)) {
+            szimulacioIndex.put(vehicle, idx + 1);
+            if (vehicle instanceof Hokotro) {
+                ((Hokotro) vehicle).takarit();
+            }
+            return true;
+        }
+
+        szimulacioLezartTervek.add(vehicle);
+        return false;
     }
 
     private void moveAlongTerv(Iranyithato vehicle) {
