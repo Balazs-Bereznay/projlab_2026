@@ -157,15 +157,15 @@ public class JatekController implements Megfigyelo {
         terkep.addUt(ut1); terkep.addUt(ut2);
         terkep.addUt(ut3); terkep.addUt(ut4);
 
-        csomopontPoziciok.put(cs1, new int[]{100, 140});
-        csomopontPoziciok.put(cs2, new int[]{500, 140});
-        csomopontPoziciok.put(cs3, new int[]{500, 380});
-        csomopontPoziciok.put(cs4, new int[]{100, 380});
+        csomopontPoziciok.put(cs1, new int[]{  0,   0});
+        csomopontPoziciok.put(cs2, new int[]{600,   0});
+        csomopontPoziciok.put(cs3, new int[]{600, 400});
+        csomopontPoziciok.put(cs4, new int[]{  0, 400});
     }
 
     private Hokotro ujHokotro() {
         Hokotro hk = new Hokotro(new Sopro());
-        hk.setSebesseg(1);
+        hk.setSebesseg(8);
         hk.setTapadas(50);
         hk.setNyilvantarto(nyilvantarto);
         placeOnFreeUtegyseg(hk);
@@ -195,18 +195,25 @@ public class JatekController implements Megfigyelo {
     private void npcAutoLetrehozas() {
         List<Csomopont> csList = terkep.getCsomopontLista();
         List<Ut> utLista = terkep.getElLista();
-        if (csList.size() < 4 || utLista.isEmpty()) return;
+        if (csList.size() < 4 || utLista.size() < 4) return;
 
         Auto a1 = new Auto();
         a1.setSebesseg(1);
         a1.setTapadas(30);
         a1.setNyilvantarto(nyilvantarto);
-        a1.setKezdopont(csList.get(3));
-        a1.setCelpont(csList.get(1));
-        List<Ut> path = terkep.utvonalTervezes(csList.get(3), csList.get(1));
-        for (Ut ut : path) a1.addKijeloltUt(ut);
-        Ut induloUt = path.isEmpty() ? utLista.get(0) : path.get(0);
-        placeJarmuAzUtKezdoSavjara(a1, induloUt, csList.get(3));
+        Csomopont startCs = csList.get(3); // D
+        a1.setKezdopont(startCs);
+        a1.setCelpont(startCs);
+
+        // Circular route: ut4(D→A), ut1(A→B), ut2(B→C), ut3(C→D)
+        Ut ut4 = utLista.get(3);
+        Ut ut1 = utLista.get(0);
+        Ut ut2 = utLista.get(1);
+        Ut ut3 = utLista.get(2);
+        for (Ut ut : new Ut[]{ut4, ut1, ut2, ut3}) a1.addKijeloltUt(ut);
+        a1.setUtonTolthetoIdo(Integer.MAX_VALUE / 2);
+
+        placeJarmuAzUtKezdoSavjara(a1, ut4, startCs);
         autok.add(a1);
     }
 
@@ -214,26 +221,66 @@ public class JatekController implements Megfigyelo {
         if (ablak != null) {
             clearListeners();
             addAllapotValtozoListener(() -> ablak.frissitJatek());
-            osszekot();
-            valasszAktualisJarmuvet();
             if (bolt != null) bolt.addObserver(ablak.getBoltPanel());
             ablak.mutatJatek();
             ablak.regisztraljBemenetKezelo();
+            // Run after layout is finalized so panel has its real size for centering
+            SwingUtilities.invokeLater(() -> {
+                osszekot();
+                valasszAktualisJarmuvet();
+                ertesitListeners();
+            });
+        } else {
+            valasszAktualisJarmuvet();
+            ertesitListeners();
         }
-        ertesitListeners();
     }
 
     // -------------------------------------------------------------------------
     // Observer kapcsolás
     // -------------------------------------------------------------------------
 
+    private Map<Csomopont, int[]> computeDisplayPoziciok(int panelW, int panelH) {
+        if (csomopontPoziciok.isEmpty()) return csomopontPoziciok;
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
+        for (int[] p : csomopontPoziciok.values()) {
+            minX = Math.min(minX, p[0]); maxX = Math.max(maxX, p[0]);
+            minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]);
+        }
+        int logW = maxX - minX;
+        int logH = maxY - minY;
+        if (logW == 0 || logH == 0) return csomopontPoziciok;
+        int pad = 80;
+        double scale = Math.min((double)(panelW - 2*pad) / logW,
+                                (double)(panelH - 2*pad) / logH);
+        int scaledW = (int)(logW * scale);
+        int scaledH = (int)(logH * scale);
+        int offX = (panelW - scaledW) / 2 - (int)(minX * scale);
+        int offY = (panelH - scaledH) / 2 - (int)(minY * scale);
+        Map<Csomopont, int[]> result = new LinkedHashMap<>();
+        for (Map.Entry<Csomopont, int[]> e : csomopontPoziciok.entrySet()) {
+            result.put(e.getKey(), new int[]{
+                (int)(e.getValue()[0] * scale) + offX,
+                (int)(e.getValue()[1] * scale) + offY
+            });
+        }
+        return result;
+    }
+
     public void osszekot() {
         if (ablak == null || terkep == null) return;
         PalyaPanel palyaPanel = ablak.getPalyaPanel();
         if (palyaPanel == null) return;
 
+        int pw = palyaPanel.getWidth();
+        int ph = palyaPanel.getHeight();
+        if (pw < 200) pw = 900;
+        if (ph < 200) ph = 600;
+        Map<Csomopont, int[]> displayPoziciok = computeDisplayPoziciok(pw, ph);
+
         layout = new PalyaLayout();
-        layout.setCsomopontPoziciokFromIntArray(csomopontPoziciok);
+        layout.setCsomopontPoziciokFromIntArray(displayPoziciok);
         layout.szamolUtegysegPoziciok(terkep);
         palyaPanel.setLayout2(layout);
         palyaPanel.setController(this);
@@ -266,7 +313,7 @@ public class JatekController implements Megfigyelo {
 
         List<UtView> utViewList = new ArrayList<>();
         for (Ut ut : terkep.getElLista()) {
-            UtView uv = new UtView(ut, csomopontPoziciok);
+            UtView uv = new UtView(ut, displayPoziciok);
             for (Sav sav : ut.getSavok()) {
                 SavView sv = new SavView(sav);
                 Utegyseg ue = sav.getElsoUtegyseg();
@@ -437,7 +484,9 @@ public class JatekController implements Megfigyelo {
     }
 
     private boolean tervezhetoUtegyseg(Utegyseg ue, Iranyithato jarmu) {
-        return ue != null && !ue.getBlokkolt();
+        if (ue == null) return false;
+        if (!ue.getBlokkolt()) return true;
+        return jarmu instanceof Hokotro;
     }
 
     // -------------------------------------------------------------------------
@@ -666,17 +715,33 @@ public class JatekController implements Megfigyelo {
         Csomopont vegCsp = curSav.getVegCsomopont();
         if (vegCsp == null) return null;
         List<Ut> utvonal = auto.getKijeloltUtvonal();
+        if (utvonal.isEmpty()) return null;
+
         boolean foundCurrent = false;
         for (Ut ut : utvonal) {
             if (!foundCurrent) {
                 if (ut.getSavok().contains(curSav)) foundCurrent = true;
                 continue;
             }
-            if (ut.getVegpont1() != vegCsp && ut.getVegpont2() != vegCsp) continue;
-            for (Sav sav : ut.getSavok()) {
-                if (sav.getVegCsomopont() == vegCsp) continue;
-                if (sav.getElsoUtegyseg() != null) return sav.getElsoUtegyseg();
+            Utegyseg first = elsoUtegysegFele(ut, vegCsp);
+            if (first != null) return first;
+        }
+        // Circular wrap: restart from beginning of route
+        if (foundCurrent) {
+            for (Ut ut : utvonal) {
+                if (ut.getSavok().contains(curSav)) break;
+                Utegyseg first = elsoUtegysegFele(ut, vegCsp);
+                if (first != null) return first;
             }
+        }
+        return null;
+    }
+
+    private Utegyseg elsoUtegysegFele(Ut ut, Csomopont fel) {
+        if (ut.getVegpont1() != fel && ut.getVegpont2() != fel) return null;
+        for (Sav sav : ut.getSavok()) {
+            if (sav.getVegCsomopont() != fel && sav.getElsoUtegyseg() != null)
+                return sav.getElsoUtegyseg();
         }
         return null;
     }
@@ -751,7 +816,7 @@ public class JatekController implements Megfigyelo {
                         Jatekos j = getAktualisJatekos();
                         if (j != null) {
                             Hokotro ujHk = new Hokotro(new Sopro());
-                            ujHk.setSebesseg(1);
+                            ujHk.setSebesseg(8);
                             ujHk.setTapadas(50);
                             ujHk.setZuzalekLimit(10);
                             ujHk.setNyilvantarto(nyilvantarto);
