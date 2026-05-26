@@ -12,12 +12,12 @@ import java.util.*;
 
 public class PalyaLayout {
     private final Map<Csomopont, Pont> csomopontPoziciok = new LinkedHashMap<>();
-    private int mertekSzelesseg = 20;
+    private int mertekSzelesseg = 30;
 
     private final Map<Utegyseg, int[]> utegysegPoziciok = new LinkedHashMap<>();
     private final Map<Utegyseg, int[]> utegysegIranyok  = new LinkedHashMap<>();
 
-    private static final int LANE_OFFSET = 22;
+    private static final int LANE_OFFSET = 34;
 
     public Pont getPozicio(Csomopont cs) { return csomopontPoziciok.get(cs); }
     public void setPozicio(Csomopont cs, Pont p) { csomopontPoziciok.put(cs, p); }

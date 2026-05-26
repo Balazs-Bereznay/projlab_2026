@@ -61,6 +61,16 @@ public class HUDPanel extends JPanel implements Megfigyelo {
         boltBtn.addActionListener(e -> boltNyitCallback.run());
         add(boltBtn);
 
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        add(szekcioCim("Jelmagyarázat"));
+        add(Box.createRigidArea(new Dimension(0, 4)));
+        add(jelsor(new Color(148, 152, 148), "Tiszta út"));
+        add(jelsor(new Color(195, 210, 238), "Havas (hX)"));
+        add(jelsor(new Color(55,  65,  190), "Mély hó – blokkolt"));
+        add(jelsor(new Color(75,  198, 215), "Jeges (jX)"));
+        add(jelsor(new Color(218, 214, 135), "Sózott (sX)"));
+        add(jelsor(new Color(185, 165, 135), "Zúzalékos (Z)"));
+
         add(Box.createRigidArea(new Dimension(0, 12)));
         add(szekcioCim("Járművek"));
         add(Box.createRigidArea(new Dimension(0, 4)));
@@ -186,6 +196,28 @@ public class HUDPanel extends JPanel implements Megfigyelo {
         List<Busz> b = controller.getBuszok();
         for (int i = 0; i < b.size(); i++) if (b.get(i) == j) return "Busz " + (i + 1);
         return "Jármű";
+    }
+
+    private JPanel jelsor(Color szin, String szoveg) {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+        p.setOpaque(false);
+        p.setAlignmentX(Component.LEFT_ALIGNMENT);
+        p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
+        JLabel negyzet = new JLabel() {
+            @Override protected void paintComponent(Graphics g) {
+                g.setColor(szin);
+                g.fillRoundRect(0, 1, 12, 12, 3, 3);
+                g.setColor(new Color(0, 0, 0, 80));
+                g.drawRoundRect(0, 1, 12, 12, 3, 3);
+            }
+        };
+        negyzet.setPreferredSize(new Dimension(14, 14));
+        JLabel szovegL = new JLabel(szoveg);
+        szovegL.setFont(new Font("SansSerif", Font.PLAIN, 10));
+        szovegL.setForeground(new Color(40, 40, 60));
+        p.add(negyzet);
+        p.add(szovegL);
+        return p;
     }
 
     private JLabel szekcioCim(String szoveg) {

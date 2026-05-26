@@ -228,6 +228,9 @@ public class BoltPanel extends JPanel implements Megfigyelo {
                 hozzaadSor("Biokerozin (+5)", bolt.getBiokerozinAr() * 5,
                     "5 egység biokerozin vásárlása.",
                     () -> controller.vasarol("Erőforrás", "Biokerozin", null, 5), true);
+                hozzaadSor("Zúzalék (+5)", bolt.getZuzalekAr() * 5,
+                    "5 egység zúzalék feltöltése a kiválasztott hókotróra.",
+                    this::vasarolZuzalekkal, !hokotrók.isEmpty());
                 break;
             case "Buszfejlesztés":
                 hozzaadSor("Sebesség (+10)", bolt.getSebessegfejlesztesAr(),
@@ -306,12 +309,21 @@ public class BoltPanel extends JPanel implements Megfigyelo {
         kinalatPanel.add(sor);
     }
 
+    private void vasarolZuzalekkal() {
+        List<Hokotro> hk = controller.getHokotrók();
+        int idx = celCB.getSelectedIndex();
+        if (idx >= 0 && idx < hk.size()) {
+            controller.vasarol("Erőforrás", "Zúzalék", hk.get(idx), 5);
+        }
+    }
+
     private void frissitCelCB(String kat) {
         celCB.removeAllItems();
-        if ("Fejek".equals(kat) || "Erőforrás".equals(kat)) {
+        boolean zuzalekKivalasztva = kivalasztvaLabel.getText().contains("Zúzalék");
+        if ("Fejek".equals(kat) || ("Erőforrás".equals(kat) && zuzalekKivalasztva)) {
             List<Hokotro> hk = controller.getHokotrók();
             for (int i = 0; i < hk.size(); i++) celCB.addItem("Hókotró " + (i + 1));
-            celCB.setVisible(!hk.isEmpty() && ("Fejek".equals(kat) || "Zúzalék".equals(kivalasztvaLabel.getText())));
+            celCB.setVisible(!hk.isEmpty());
         } else if ("Buszfejlesztés".equals(kat)) {
             List<Busz> b = controller.getBuszok();
             for (int i = 0; i < b.size(); i++) celCB.addItem("Busz " + (i + 1));

@@ -112,6 +112,13 @@ public class JatekAblak extends JFrame {
     public void mutatBolt() {
         if (boltDialog == null || !boltDialog.isDisplayable()) {
             boltDialog = new JDialog(this, "Bolt", false);
+            boltDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+            boltDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    controller.boltBezar();
+                }
+            });
             boltDialog.setContentPane(boltPanel);
             boltDialog.setSize(680, 520);
             boltDialog.setLocationRelativeTo(this);

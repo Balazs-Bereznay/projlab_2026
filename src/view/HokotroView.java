@@ -38,7 +38,15 @@ public class HokotroView extends JarmuView {
         String fejRovid = "";
         if (hokotro.getFej() != null) {
             String fn = hokotro.getFej().getClass().getSimpleName();
-            fejRovid = fn.length() >= 2 ? fn.substring(0, 2) : fn;
+            switch (fn) {
+                case "Sopro":         fejRovid = "Sp"; break;
+                case "Soszoro":       fejRovid = "So"; break;
+                case "Hanyo":         fejRovid = "Há"; break;
+                case "Jegtoro":       fejRovid = "Jt"; break;
+                case "Sarkany":       fejRovid = "Sá"; break;
+                case "Zuzalekszoro":  fejRovid = "Zs"; break;
+                default: fejRovid = fn.length() >= 2 ? fn.substring(0, 2) : fn;
+            }
         }
         String lbl = "H" + fejRovid;
 

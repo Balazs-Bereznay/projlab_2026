@@ -80,9 +80,14 @@ public class UtegysegView extends View {
 
     private String allapotSzoveg() {
         if (utegyseg.getBlokkolt()) return "B!";
-        if (utegyseg.getJeges() && utegyseg.getJegMagassag() > 0) return "j" + utegyseg.getJegMagassag();
-        if (utegyseg.getHoMagassag() > 0) return "h" + utegyseg.getHoMagassag();
-        if (utegyseg.getSoMennyiseg() > 0) return "só";
+        int jeg = utegyseg.getJegMagassag();
+        int so  = utegyseg.getSoMennyiseg();
+        if (utegyseg.getJeges() && jeg > 0) return "j" + jeg + (so > 0 ? " s" + so : "");
+        int ho = utegyseg.getHoMagassag();
+        if (ho > 0 && so > 0) return "h" + ho + " s" + so;
+        if (ho > 0) return "h" + ho;
+        if (so > 0) return "s" + so;
+        if (utegyseg.getZuzalek()) return "Z";
         return null;
     }
 

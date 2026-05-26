@@ -437,11 +437,7 @@ public class JatekController implements Megfigyelo {
     }
 
     private boolean tervezhetoUtegyseg(Utegyseg ue, Iranyithato jarmu) {
-        if (ue == null || ue.getBlokkolt()) {
-            return false;
-        }
-        Jarmu rajta = ue.getJarmu();
-        return rajta == null || rajta == jarmu;
+        return ue != null && !ue.getBlokkolt();
     }
 
     // -------------------------------------------------------------------------
@@ -642,10 +638,14 @@ public class JatekController implements Megfigyelo {
             moveAlongTerv(b);
         }
         for (Auto a : new ArrayList<>(autok)) {
-            a.lep();
-            if (a.nemErBe()) {
-                autok.remove(a);
+            Utegyseg nextUe = getAutoNextUtegyseg(a);
+            if (nextUe != null) {
+                a.setUtonToltottIdo(a.getUtonToltottIdo() + 1);
+                nextUe.ralep(a);
+            } else {
+                a.lep();
             }
+            if (a.nemErBe()) autok.remove(a);
         }
         for (Ut ut : terkep.getElLista()) {
             ut.balesetetKeres();
@@ -656,6 +656,31 @@ public class JatekController implements Megfigyelo {
         }
     }
 
+    private Utegyseg getAutoNextUtegyseg(Auto auto) {
+        Utegyseg cur = auto.getUtegyseg();
+        if (cur == null) return null;
+        Utegyseg next = cur.getKovetkezoUtegyseg();
+        if (next != null) return next;
+        Sav curSav = cur.getSav();
+        if (curSav == null) return null;
+        Csomopont vegCsp = curSav.getVegCsomopont();
+        if (vegCsp == null) return null;
+        List<Ut> utvonal = auto.getKijeloltUtvonal();
+        boolean foundCurrent = false;
+        for (Ut ut : utvonal) {
+            if (!foundCurrent) {
+                if (ut.getSavok().contains(curSav)) foundCurrent = true;
+                continue;
+            }
+            if (ut.getVegpont1() != vegCsp && ut.getVegpont2() != vegCsp) continue;
+            for (Sav sav : ut.getSavok()) {
+                if (sav.getVegCsomopont() == vegCsp) continue;
+                if (sav.getElsoUtegyseg() != null) return sav.getElsoUtegyseg();
+            }
+        }
+        return null;
+    }
+
     private void moveAlongTerv(Iranyithato vehicle) {
         List<Utegyseg> terv = aktivTervek.get(vehicle);
         if (terv == null || terv.isEmpty()) return;
@@ -664,6 +689,9 @@ public class JatekController implements Megfigyelo {
         int lepett = 0;
         while (idx < terv.size() && lepett < maxLepes) {
             Utegyseg target = terv.get(idx);
+            if (vehicle instanceof Hokotro && target.getBlokkolt()) {
+                target.setBlokkolt(false);
+            }
             if (target.ralep((Jarmu) vehicle)) {
                 idx++;
                 lepett++;
